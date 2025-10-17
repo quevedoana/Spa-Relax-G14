@@ -7,6 +7,7 @@ package Persistencia;
 import Modelo.Cliente;
 import Modelo.Conexion;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,14 +20,14 @@ import javax.swing.JOptionPane;
  *
  * @author Toto
  */
-public class clienteData {
+public class ClienteData {
     
     private Connection conexion = null;
 
-    public clienteData() {
+    public ClienteData() {
         conexion = Conexion.getConexion();
     }
-    
+    //Parte TOTO
     public void guardarCliente(Cliente c) { //insert
         String query = "INSERT INTO cliente(DNI, NombreCompleto, Telefono, Edad, Afecciones, Estado) VALUES (?,?,?,?,?,?)";
         try {
@@ -97,6 +98,74 @@ public class clienteData {
         }
         return cliente;
     }
-    
+    //Parte Turco
+    //ACTUALIZAR CLIENTE 
+    public void actualizarAlumno(Cliente c) {
+        String query = "UPDATE cliente SET DNI = ?, NombreCompleto = ?, Telefono = ?, Edad = ?, Afecciones = ?, Estado = ? WHERE codCli = ?";
+
+        try {
+            PreparedStatement ps = conexion.prepareStatement(query);
+                ps.setInt(1, c.getDni());
+                ps.setString(2, c.getNombreCompleto());
+                ps.setInt(3, c.getTelefono());
+                ps.setInt(4, c.getEdad());
+                ps.setString(5, c.getAfecciones());
+                ps.setBoolean(6, c.isEstado());
+                ps.executeUpdate();
+                
+                ps.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el cliente" + e.getMessage());
+        }
+    }
+    //BORRAR CLIENTE
+    public void BorrarCliente(int codCli) {
+        String query = "DELETE FROM cliente WHERE codCli = ?";
+
+        try {
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, codCli);
+            ps.executeUpdate();
+            
+            ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar el cliente" + e.getMessage());
+        }
+    }
+     //ALTA LOGICA = darle estado activo a los inactivos?
+     public void HabilitarCliente(Cliente c){
+        String query = "UPDATE cliente SET Estado = 1 WHERE codCli = ? AND Estado = 0";
+        
+        try {
+            PreparedStatement ps = conexion.prepareStatement(query);
+                ps.setInt(1, c.getCodCli());
+                ps.setBoolean(2, c.isEstado());
+                ps.executeUpdate();
+                
+                ps.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al habilitar el cliente" + e.getMessage());
+        }
+    }
+     //BAJA LOGICA = darle estado inactivo a los activos?
+    public void DeshabilitarCliente(Cliente c){
+        String query = "UPDATE cliente SET Estado = 0 WHERE codCli = ? AND Estado = 1";
+        
+        try {
+            PreparedStatement ps = conexion.prepareStatement(query);
+                ps.setInt(1, c.getCodCli());
+                ps.setBoolean(2, c.isEstado());
+                ps.executeUpdate();
+                
+                ps.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al deshabilitar el cliente" + e.getMessage());
+        }
+    }
+     
     
 }
