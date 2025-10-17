@@ -79,7 +79,7 @@ public class ClienteData {
     }
     
     public List<Cliente> ListarCliente() { //select 1 alumno
-        String sql = "SELECT * FROM cliente WHERE";
+        String sql = "SELECT * FROM cliente";
         List<Cliente> cliente = new ArrayList ();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
