@@ -9,6 +9,6 @@ package Modelo;
  *
  * @author Anitabonita
  */
-public class Masajista {
+public class Especialista {
     
 }
