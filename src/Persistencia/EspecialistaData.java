@@ -9,6 +9,6 @@ package Persistencia;
  *
  * @author Anitabonita
  */
-public class MasajistaData {
+public class EspecialistaData {
     
 }
