@@ -16,15 +16,16 @@ public class Tratamiento {
     private int codTratam;
     private String nombre;
     private String detalle;
+    private String tipo;
     private int duracion;
     private double costo;
     private boolean activo;
-    private List<String> productos;
+    private List<Producto> productos;
 
     public Tratamiento() {
     }
 
-    public Tratamiento(int codTratam, String nombre, String detalle, int duracion, double costo, boolean activo, List<String> productos) {
+    public Tratamiento(int codTratam, String nombre, String detalle, String tipo, int duracion, double costo, boolean activo, List<Producto> productos) {
         this.codTratam = codTratam;
         this.nombre = nombre;
         this.detalle = detalle;
@@ -32,6 +33,15 @@ public class Tratamiento {
         this.costo = costo;
         this.activo = activo;
         this.productos = productos;
+        this.tipo= tipo;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public int getCodTratam() {
@@ -82,18 +92,20 @@ public class Tratamiento {
         this.activo = activo;
     }
 
-    public List<String> getProductos() {
+    public List<Producto> getProductos() {
         return productos;
     }
 
-    public void setProductos(List<String> productos) {
+    public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
 
     @Override
     public String toString() {
-        return "Tratamiento{" + "codTratam=" + codTratam + ", nombre=" + nombre + ", detalle=" + detalle + ", duracion=" + duracion + ", costo=" + costo + ", activo=" + activo + ", productos=" + productos + '}';
+        return "Tratamiento{" + "codTratam=" + codTratam + ", nombre=" + nombre + ", detalle=" + detalle + ", tipo=" + tipo + ", duracion=" + duracion + ", costo=" + costo + ", activo=" + activo + ", productos=" + productos + '}';
     }
+
+   
     
 
 }
