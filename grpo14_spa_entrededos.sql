@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-10-2025 a las 00:43:14
+-- Tiempo de generación: 22-10-2025 a las 02:07:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -134,13 +134,27 @@ CREATE TABLE `sesion` (
 CREATE TABLE `tratamiento` (
   `codTratam` int(11) NOT NULL,
   `nombre` varchar(40) NOT NULL,
-  `detalle` varchar(60) NOT NULL,
-  `productos` varchar(40) NOT NULL,
+  `detalle` varchar(150) NOT NULL,
   `duracion` int(11) NOT NULL,
   `costo` double NOT NULL,
   `activo` tinyint(1) NOT NULL,
-  `tipo` varchar(30) NOT NULL
+  `tipo` varchar(30) NOT NULL,
+  `producto` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tratamiento`
+--
+
+INSERT INTO `tratamiento` (`codTratam`, `nombre`, `detalle`, `duracion`, `costo`, `activo`, `tipo`, `producto`) VALUES
+(1, 'Limpieza facial profunda', 'Limpieza completa con vaporizador, extracción, exfoliación y mascarilla hidratante.', 60, 12000, 1, 'Facial', 'Leche limpiadora Dermacare'),
+(3, 'Facial anti-age con colágeno', 'Rejuvenecimiento facial con mascarilla reafirmante y masaje drenante.', 60, 15000, 1, 'Facial', 'Ampolla de Colágeno ActiveLift,'),
+(4, 'Reafirmante con algas', 'Aplicación de algas frías para mejorar tonicidad y circulación.', 55, 15000, 1, 'Corporal', 'Mascarilla de Algas Marinas SeaFirm'),
+(6, 'Exfoliación corporal total', 'Exfoliación con sales aromáticas para renovar la piel y activar la circulación.', 45, 11000, 1, 'Corporal', 'Exfoliante de Sales del Himalaya'),
+(9, 'Baño de sales aromáticas', 'Inmersión en tina con sales relajantes y esencias naturales.', 40, 10000, 1, 'Relajacion', 'Sales Aromáticas de Lavanda,'),
+(11, 'Masaje con piedras calientes', 'Terapia de calor con piedras volcánicas y aceites para eliminar tensiones.', 70, 17000, 1, 'Relajacion', 'Piedras Volcánicas Basalt'),
+(16, 'Depilación completa', 'Depilación con cera tibia para cuerpo y rostro.', 60, 9000, 1, 'Estetico', 'Cera Roll-On MielSpa'),
+(19, 'Manicura', 'Limpieza, exfoliación, esmaltado y masaje de manos.', 45, 7000, 1, 'Estetico', 'Esmalte Nutritivo NailCare Pro');
 
 --
 -- Índices para tablas volcadas

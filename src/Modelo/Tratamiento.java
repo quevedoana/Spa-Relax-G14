@@ -20,19 +20,19 @@ public class Tratamiento {
     private int duracion;
     private double costo;
     private boolean activo;
-    private List<Producto> productos;
+    private String producto;
 
     public Tratamiento() {
     }
 
-    public Tratamiento(int codTratam, String nombre, String detalle, String tipo, int duracion, double costo, boolean activo, List<Producto> productos) {
+    public Tratamiento(int codTratam, String nombre, String detalle, String tipo, int duracion, double costo, boolean activo, String producto) {
         this.codTratam = codTratam;
         this.nombre = nombre;
         this.detalle = detalle;
         this.duracion = duracion;
         this.costo = costo;
         this.activo = activo;
-        this.productos = productos;
+        this.producto = producto;
         this.tipo= tipo;
     }
 
@@ -92,17 +92,17 @@ public class Tratamiento {
         this.activo = activo;
     }
 
-    public List<Producto> getProductos() {
-        return productos;
+    public String getProductos() {
+        return producto;
     }
 
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
+    public void setProductos(String producto) {
+        this.producto = producto;
     }
 
     @Override
     public String toString() {
-        return "Tratamiento{" + "codTratam=" + codTratam + ", nombre=" + nombre + ", detalle=" + detalle + ", tipo=" + tipo + ", duracion=" + duracion + ", costo=" + costo + ", activo=" + activo + ", productos=" + productos + '}';
+        return "Tratamiento{" + "codTratam=" + codTratam + ", nombre=" + nombre + ", detalle=" + detalle + ", tipo=" + tipo + ", duracion=" + duracion + ", costo=" + costo + ", activo=" + activo + ", producto utilizado=" + producto + '}';
     }
 
    
