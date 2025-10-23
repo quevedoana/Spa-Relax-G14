@@ -100,7 +100,7 @@ public class ClienteData {
     }
     //Parte Turco
     //ACTUALIZAR CLIENTE 
-    public void actualizarAlumno(Cliente c) {
+    public void actualizarCliente(Cliente c) {
         String query = "UPDATE cliente SET DNI = ?, NombreCompleto = ?, Telefono = ?, Edad = ?, Afecciones = ?, Estado = ? WHERE codCli = ?";
 
         try {
@@ -111,6 +111,7 @@ public class ClienteData {
                 ps.setInt(4, c.getEdad());
                 ps.setString(5, c.getAfecciones());
                 ps.setBoolean(6, c.isEstado());
+                ps.setInt(7, c.getCodCli());
                 ps.executeUpdate();
                 
                 ps.close();
