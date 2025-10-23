@@ -107,6 +107,11 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         });
 
         jBRefrescar.setText("Refrescar Tabla");
+        jBRefrescar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBRefrescarMouseClicked(evt);
+            }
+        });
         jBRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBRefrescarActionPerformed(evt);
@@ -322,6 +327,11 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         cambiarEstadoCliente();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
+        // TODO add your handling code here:
+        cargarDatos();
+    }//GEN-LAST:event_jBRefrescarMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBActualizar;
@@ -364,9 +374,12 @@ private void armarCabecera() {
 
     }
 
-    private void cargarDatos(Cliente c) {
+    private void cargarDatos() {
         String activo;
         modelo.setRowCount(0);
+        for (Cliente c : clientedata.ListarCliente()) {
+            
+        
         if (c.isEstado()) {
             activo = "Activo";
         } else {
@@ -374,7 +387,9 @@ private void armarCabecera() {
         }
         modelo.addRow(new Object[]{c.getCodCli(), c.getDni(), c.getNombreCompleto(), c.getTelefono(), c.getEdad(), c.getAfecciones(), activo});
     }
+    }
     private void buscarPorId(){
+        
         try{
             String id=(jTId.getText().trim());
             
@@ -386,7 +401,16 @@ private void armarCabecera() {
             modelo.setRowCount(0);
             
             clienteAc= clientedata.buscarCliente(Integer.parseInt(id));
-            cargarDatos(clienteAc);
+            String activo;
+             if (clienteAc.isEstado()) {
+            activo = "Activo";
+        } else {
+            activo = "Inactivo";
+        }
+        modelo.addRow(new Object[]{clienteAc.getCodCli(), clienteAc.getDni(), clienteAc.getNombreCompleto(), clienteAc.getTelefono(), clienteAc.getEdad(), clienteAc.getAfecciones(), activo});
+    
+            
+            cargarDatos();
             
         }catch(Exception e){
              JOptionPane.showMessageDialog(this, "Error al ingresar ID", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -460,7 +484,7 @@ private void armarCabecera() {
 
             JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-            cargarDatos(clienteActualizado);
+            cargarDatos();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al actualizar cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -494,7 +518,7 @@ private void armarCabecera() {
                 clientedata.DeshabilitarCliente(aux);
                 aux.setEstado(estadoBoolean);
             }
-            cargarDatos(aux);
+            cargarDatos();
 
             JOptionPane.showMessageDialog(this, "Estado del cliente cambio a: " + nuevoEstado, "Exito", JOptionPane.INFORMATION_MESSAGE);
 
