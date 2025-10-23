@@ -15,8 +15,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Anitabonita
  */
 public class VistaCliente extends javax.swing.JInternalFrame {
-    private Cliente clienteAc=null;
-    private ClienteData clientedata= new ClienteData();
+
+    private Cliente clienteAc = null;
+    private ClienteData clientedata = new ClienteData();
 
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
@@ -53,7 +54,7 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         jBRefrescar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jCEstado = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
+        jBEstado = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jTDni = new javax.swing.JTextField();
         jTNombreC = new javax.swing.JTextField();
@@ -73,6 +74,11 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         jLabel1.setText("ID:");
 
         jBBuscar.setText("Buscar");
+        jBBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBBuscarMouseClicked(evt);
+            }
+        });
         jBBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBBuscarActionPerformed(evt);
@@ -93,6 +99,11 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTCliente);
 
         jBBorrar.setText("Borrar");
+        jBBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBBorrarMouseClicked(evt);
+            }
+        });
         jBBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBBorrarActionPerformed(evt);
@@ -100,6 +111,11 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         });
 
         jBActualizar.setText("Actualizar");
+        jBActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBActualizarMouseClicked(evt);
+            }
+        });
         jBActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBActualizarActionPerformed(evt);
@@ -122,10 +138,15 @@ public class VistaCliente extends javax.swing.JInternalFrame {
 
         jCEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
-        jButton5.setText("Editar Estado");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jBEstado.setText("Editar Estado");
+        jBEstado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBEstadoMouseClicked(evt);
+            }
+        });
+        jBEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jBEstadoActionPerformed(evt);
             }
         });
 
@@ -148,6 +169,11 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         jLabel8.setText("Afecciones:");
 
         jBAgregar.setText("Agregar");
+        jBAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBAgregarMouseClicked(evt);
+            }
+        });
         jBAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBAgregarActionPerformed(evt);
@@ -205,7 +231,7 @@ public class VistaCliente extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
-                                .addComponent(jButton5))
+                                .addComponent(jBEstado))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -250,7 +276,7 @@ public class VistaCliente extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5))
+                    .addComponent(jBEstado))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(19, 19, 19)
@@ -297,24 +323,23 @@ public class VistaCliente extends javax.swing.JInternalFrame {
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
         // TODO add your handling code here:
-        buscarPorId();
-        
+
+
     }//GEN-LAST:event_jBBuscarActionPerformed
 
     private void jBBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBorrarActionPerformed
         // TODO add your handling code here:
-        borrarCliente();
+
     }//GEN-LAST:event_jBBorrarActionPerformed
 
     private void jBAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarActionPerformed
         // TODO add your handling code here:
-        agregarCliente();
-        limpiarCampos();
+
     }//GEN-LAST:event_jBAgregarActionPerformed
 
     private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
         // TODO add your handling code here:
-        guardarCambiosDesdeTabla();
+
     }//GEN-LAST:event_jBActualizarActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
@@ -322,15 +347,41 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jBSalirActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jBEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEstadoActionPerformed
         // TODO add your handling code here:
-        cambiarEstadoCliente();
-    }//GEN-LAST:event_jButton5ActionPerformed
+
+    }//GEN-LAST:event_jBEstadoActionPerformed
 
     private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
         // TODO add your handling code here:
         cargarDatos();
     }//GEN-LAST:event_jBRefrescarMouseClicked
+
+    private void jBBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBuscarMouseClicked
+        // TODO add your handling code here:
+        buscarPorId();
+    }//GEN-LAST:event_jBBuscarMouseClicked
+
+    private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
+        // TODO add your handling code here:
+        borrarCliente();
+    }//GEN-LAST:event_jBBorrarMouseClicked
+
+    private void jBActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBActualizarMouseClicked
+        // TODO add your handling code here:
+        guardarCambiosDesdeTabla();
+    }//GEN-LAST:event_jBActualizarMouseClicked
+
+    private void jBEstadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBEstadoMouseClicked
+        // TODO add your handling code here:
+        cambiarEstadoCliente();
+    }//GEN-LAST:event_jBEstadoMouseClicked
+
+    private void jBAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAgregarMouseClicked
+        // TODO add your handling code here:
+        agregarCliente();
+        limpiarCampos();
+    }//GEN-LAST:event_jBAgregarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -338,9 +389,9 @@ public class VistaCliente extends javax.swing.JInternalFrame {
     private javax.swing.JButton jBAgregar;
     private javax.swing.JButton jBBorrar;
     private javax.swing.JButton jBBuscar;
+    private javax.swing.JButton jBEstado;
     private javax.swing.JButton jBRefrescar;
     private javax.swing.JButton jBSalir;
-    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jCEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -378,44 +429,47 @@ private void armarCabecera() {
         String activo;
         modelo.setRowCount(0);
         for (Cliente c : clientedata.ListarCliente()) {
-            
-        
-        if (c.isEstado()) {
-            activo = "Activo";
-        } else {
-            activo = "Inactivo";
+
+            if (c.isEstado()) {
+                activo = "Activo";
+            } else {
+                activo = "Inactivo";
+            }
+            modelo.addRow(new Object[]{c.getCodCli(), c.getDni(), c.getNombreCompleto(), c.getTelefono(), c.getEdad(), c.getAfecciones(), activo});
         }
-        modelo.addRow(new Object[]{c.getCodCli(), c.getDni(), c.getNombreCompleto(), c.getTelefono(), c.getEdad(), c.getAfecciones(), activo});
     }
-    }
-    private void buscarPorId(){
-        
-        try{
-            String id=(jTId.getText().trim());
-            
-            
+
+    private void buscarPorId() {
+
+        try {
+            String id = (jTId.getText().trim());
+            modelo.setRowCount(0);
+
             if (id.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese un nombre para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             modelo.setRowCount(0);
-            
-            clienteAc= clientedata.buscarCliente(Integer.parseInt(id));
+
+            clienteAc = clientedata.buscarCliente(Integer.parseInt(id));
             String activo;
-             if (clienteAc.isEstado()) {
-            activo = "Activo";
-        } else {
-            activo = "Inactivo";
-        }
-        modelo.addRow(new Object[]{clienteAc.getCodCli(), clienteAc.getDni(), clienteAc.getNombreCompleto(), clienteAc.getTelefono(), clienteAc.getEdad(), clienteAc.getAfecciones(), activo});
-    
-            
-           jTId.setText("");
-            
-        }catch(Exception e){
-             JOptionPane.showMessageDialog(this, "Error al ingresar ID", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            if (clienteAc != null) {
+
+                if (clienteAc.isEstado()) {
+                    activo = "Activo";
+                } else {
+                    activo = "Inactivo";
+                }
+                modelo.addRow(new Object[]{clienteAc.getCodCli(), clienteAc.getDni(), clienteAc.getNombreCompleto(), clienteAc.getTelefono(), clienteAc.getEdad(), clienteAc.getAfecciones(), activo});
+
+                jTId.setText("");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error al ingresar ID", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
+
     private void borrarCliente() {
         int fila = jTCliente.getSelectedRow();
         if (fila == -1) {
@@ -445,25 +499,27 @@ private void armarCabecera() {
             }
         }
     }
-    private void agregarCliente(){
+
+    private void agregarCliente() {
         int dni = Integer.parseInt(jTDni.getText().trim());
         String nombreCompleto = jTNombreC.getText().trim();
         int teléfono = Integer.parseInt(jTTelefono.getText().trim());
         int edad = Integer.parseInt(jTEdad.getText().trim());
         String afecciones = jTAfecciones.getText().trim();
-        
-        Cliente c = new Cliente(dni,nombreCompleto,teléfono,edad,afecciones,true ); 
+
+        Cliente c = new Cliente(dni, nombreCompleto, teléfono, edad, afecciones, true);
         clientedata.guardarCliente(c);
     }
-    private void limpiarCampos(){
-       jTDni.setText("");
-       jTNombreC.setText("");
-       jTTelefono.setText("");
-       jTEdad.setText("");
-       jTAfecciones.setText("");
-       
-       
+
+    private void limpiarCampos() {
+        jTDni.setText("");
+        jTNombreC.setText("");
+        jTTelefono.setText("");
+        jTEdad.setText("");
+        jTAfecciones.setText("");
+
     }
+
     private void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTCliente.getSelectedRow();
 
@@ -473,11 +529,11 @@ private void armarCabecera() {
             String nombreCompleto = modelo.getValueAt(filaSeleccionada, 1).toString().trim();
             int telefono = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 2).toString().trim());
             int edad = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString().trim());
-             String afecciones = modelo.getValueAt(filaSeleccionada, 4).toString().trim();
+            String afecciones = modelo.getValueAt(filaSeleccionada, 4).toString().trim();
             String estadoStr = modelo.getValueAt(filaSeleccionada, 5).toString();
             boolean estado = estadoStr.equals("Activo");
 
-            Cliente clienteActualizado = new Cliente(codcli,nombreCompleto,telefono,edad,afecciones,estado ); 
+            Cliente clienteActualizado = new Cliente(codcli, nombreCompleto, telefono, edad, afecciones, estado);
             clienteActualizado.setCodCli(codcli);
 
             clientedata.actualizarCliente(clienteActualizado);
@@ -490,6 +546,7 @@ private void armarCabecera() {
             JOptionPane.showMessageDialog(this, "Error al actualizar cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     private void cambiarEstadoCliente() {
         int fila = jTCliente.getSelectedRow();
         Cliente aux = new Cliente();
@@ -498,25 +555,25 @@ private void armarCabecera() {
             return;
         }
 
-        aux.setCodCli((int)modelo.getValueAt(fila, 0));
-        aux.setDni((int)modelo.getValueAt(fila, 1));
-        aux.setNombreCompleto((String)modelo.getValueAt(fila, 2));
-        aux.setTelefono((int)modelo.getValueAt(fila, 3));
-        aux.setEdad((int)modelo.getValueAt(fila, 4));
-        aux.setAfecciones((String)modelo.getValueAt(fila, 5));
-        
+        aux.setCodCli((int) modelo.getValueAt(fila, 0));
+        aux.setDni((int) modelo.getValueAt(fila, 1));
+        aux.setNombreCompleto((String) modelo.getValueAt(fila, 2));
+        aux.setTelefono((int) modelo.getValueAt(fila, 3));
+        aux.setEdad((int) modelo.getValueAt(fila, 4));
+        aux.setAfecciones((String) modelo.getValueAt(fila, 5));
+
         String nuevoEstado = (String) jCEstado.getSelectedItem();
         boolean estadoBoolean = nuevoEstado.equals("Activo");
 
         try {
             if (estadoBoolean) {
-                
+
                 clientedata.HabilitarCliente(aux);
-                aux.setEstado(estadoBoolean);
+
             } else {
-                
+
                 clientedata.DeshabilitarCliente(aux);
-                aux.setEstado(estadoBoolean);
+
             }
             cargarDatos();
 
