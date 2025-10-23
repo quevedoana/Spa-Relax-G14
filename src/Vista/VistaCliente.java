@@ -410,7 +410,7 @@ private void armarCabecera() {
         modelo.addRow(new Object[]{clienteAc.getCodCli(), clienteAc.getDni(), clienteAc.getNombreCompleto(), clienteAc.getTelefono(), clienteAc.getEdad(), clienteAc.getAfecciones(), activo});
     
             
-            cargarDatos();
+           jTId.setText("");
             
         }catch(Exception e){
              JOptionPane.showMessageDialog(this, "Error al ingresar ID", "Advertencia", JOptionPane.WARNING_MESSAGE);
