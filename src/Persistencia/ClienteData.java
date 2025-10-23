@@ -34,7 +34,7 @@ public class ClienteData {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, c.getDni());
             ps.setString(2, c.getNombreCompleto());
-            ps.setInt(3, c.getTelefono());
+            ps.setLong(3, c.getTelefono());
             ps.setInt(4, c.getEdad());
             ps.setString(5, c.getAfecciones());
             ps.setBoolean(6, c.isEstado());
@@ -107,7 +107,7 @@ public class ClienteData {
             PreparedStatement ps = conexion.prepareStatement(query);
                 ps.setInt(1, c.getDni());
                 ps.setString(2, c.getNombreCompleto());
-                ps.setInt(3, c.getTelefono());
+                ps.setLong(3, c.getTelefono());
                 ps.setInt(4, c.getEdad());
                 ps.setString(5, c.getAfecciones());
                 ps.setBoolean(6, c.isEstado());
