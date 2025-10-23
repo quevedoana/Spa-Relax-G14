@@ -12,16 +12,14 @@ package Modelo;
 public class Especialista {
     //Masajista: matricula, nombre y ape, teléfono, especialidad (facial, corporal, relajación, o estético), estado
     private String matricula;
-    private String nombre;
-    private String apellido;
+    private String nombreYApellido;
     private int telefono;
     private String especialidad;
     private boolean estado;
 
-    public Especialista(String matricula, String nombre, String apellido, int telefono, String especialidad, boolean estado) {
+    public Especialista(String matricula, String nombreYApellido, int telefono, String especialidad, boolean estado) {
         this.matricula = matricula;
-        this.nombre = nombre;
-        this.apellido = apellido;
+        this.nombreYApellido = nombreYApellido;
         this.telefono = telefono;
         this.especialidad = especialidad;
         this.estado = estado;
@@ -35,20 +33,12 @@ public class Especialista {
         this.matricula = matricula;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreYApellido() {
+        return nombreYApellido;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setNombre(String nombreYApellido) {
+        this.nombreYApellido = nombreYApellido;
     }
 
     public int getTelefono() {
@@ -77,7 +67,7 @@ public class Especialista {
 
     @Override
     public String toString() {
-        return "Especialista: " + "matricula=" + matricula + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", especialidad=" + especialidad + ", estado=" + estado;
+        return "Especialista: " + "matricula=" + matricula + ", nombre y apellido=" + nombreYApellido + ", telefono=" + telefono + ", especialidad=" + especialidad + ", estado=" + estado;
     }
 
     public String getMessage() {
