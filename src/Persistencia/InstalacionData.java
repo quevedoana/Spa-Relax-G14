@@ -5,7 +5,7 @@
  */
 package Persistencia;
 
-import Modelo.Cliente;
+
 import Modelo.Conexion;
 import Modelo.Instalacion;
 import java.sql.Connection;
@@ -54,7 +54,7 @@ public class InstalacionData {
     }
 
     public Instalacion buscarInstalacion(int CodInstal) {
-        String sql = "SELECT * FROM instalacion WHERE codCli=?";
+        String sql = "SELECT * FROM instalacion WHERE codInstal=?";
         Instalacion ins = null;
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -63,7 +63,7 @@ public class InstalacionData {
             if (resultado.next()) {
 
                 ins = new Instalacion(resultado.getString("nombre"), resultado.getString("detalleDeUso"), resultado.getDouble("precio30m"), resultado.getBoolean("estado"));
-                ins.setCodInstal(resultado.getInt("CodInstal"));
+                ins.setCodInstal(resultado.getInt("codInstal"));
 
             } else {
                 System.out.println("No se encontro la instalacion");
@@ -86,7 +86,8 @@ public class InstalacionData {
             while (resultado.next()) {
 
                 Instalacion ins = new Instalacion(resultado.getString("nombre"), resultado.getString("detalleDeUso"), resultado.getDouble("precio30m"), resultado.getBoolean("estado"));
-                ins.setCodInstal(resultado.getInt("CodInstal"));
+                ins.setCodInstal(resultado.getInt("codInstal"));
+                instalacion.add(ins);
             }
             ps.close();
 
@@ -129,13 +130,12 @@ public class InstalacionData {
         }
     }
     
-    public void HabilitarCliente(Instalacion in){
+    public void HabilitarInstalacion(Instalacion in){
         String query = "UPDATE instalacion SET estado = 1 WHERE codInstal = ? AND estado = 0";
         
         try {
             PreparedStatement ps = conexion.prepareStatement(query);
                 ps.setInt(1, in.getCodInstal());
-                ps.setBoolean(2, in.isEstado());
                 ps.executeUpdate();
                 
                 ps.close();
@@ -145,13 +145,12 @@ public class InstalacionData {
         }
     }
     
-    public void DeshabilitarCliente(Instalacion in){
-        String query = "UPDATE cliente SET estado = 0 WHERE codInstal = ? AND estado = 1";
+    public void DeshabilitarInstalacion(Instalacion in){
+        String query = "UPDATE instalacion SET estado = 0 WHERE codInstal = ? AND estado = 1";
         
         try {
             PreparedStatement ps = conexion.prepareStatement(query);
                 ps.setInt(1, in.getCodInstal());
-                ps.setBoolean(2, in.isEstado());
                 ps.executeUpdate();
                 
                 ps.close();
