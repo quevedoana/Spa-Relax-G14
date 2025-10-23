@@ -25,7 +25,7 @@ public class spaRelax {
      */
     public static void main(String[] args) {
         clienteData = new ClienteData();
-      /* List <Cliente>listaCliente=new ArrayList();
+       List <Cliente>listaCliente=new ArrayList();
        Cliente cli1=new Cliente(45563392,"Naranjo Maria Candela",266412344, 22,"Muy eneferma de la cabezita", true);
        clienteData.guardarCliente(cli1);
        Cliente cli2=new Cliente(44075900,"Assat Antonio Tomas",26645687, 23,"Demasiado sano",false);
@@ -41,7 +41,7 @@ public class spaRelax {
        
         for (Cliente cliente : listaCliente) {
             System.out.println(cliente);
-        }*/
+        }
     }
     
 }

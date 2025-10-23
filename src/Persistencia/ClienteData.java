@@ -101,7 +101,7 @@ public class ClienteData {
     //Parte Turco
     //ACTUALIZAR CLIENTE 
     public void actualizarCliente(Cliente c) {
-        String query = "UPDATE cliente SET DNI = ?, NombreCompleto = ?, Telefono = ?, Edad = ?, Afecciones = ?, Estado = ? WHERE codCli = ?";
+        String query = "UPDATE cliente SET DNI = ?, NombreCompleto = ?, Telefono = ?, Edad = ?, Afecciones = ?, Estado = ? WHERE codCli = ? ";
 
         try {
             PreparedStatement ps = conexion.prepareStatement(query);
