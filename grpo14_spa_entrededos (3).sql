@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-10-2025 a las 02:07:13
+-- Tiempo de generación: 23-10-2025 a las 23:49:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `cliente` (
   `codCli` int(11) NOT NULL,
   `DNI` int(11) NOT NULL,
   `NombreCompleto` varchar(60) NOT NULL,
-  `Telefono` int(11) NOT NULL,
+  `Telefono` bigint(20) NOT NULL,
   `Edad` int(11) NOT NULL,
   `Afecciones` varchar(30) NOT NULL,
   `Estado` tinyint(4) NOT NULL
@@ -44,11 +44,11 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`codCli`, `DNI`, `NombreCompleto`, `Telefono`, `Edad`, `Afecciones`, `Estado`) VALUES
-(21, 45563392, 'Naranjo Maria Candela', 266412344, 22, 'Muy eneferma de la cabezita', 1),
 (22, 44075900, 'Assat Antonio Tomas', 26645687, 23, 'Demasiado sano', 0),
 (23, 39137807, 'di Fiore Mariano Enzo', 26645687, 15, 'Mucha facha', 1),
 (24, 45886496, 'Barroso Esteban Jose', 26645609, 21, 'Mucho counter', 1),
-(25, 43343200, 'Quevedo Ana Banana', 26647324, 25, 'Mucha lokura', 1);
+(25, 43343200, 'Quevedo Ana Banana', 26647324, 25, 'Mucha lokura', 1),
+(37, 4545454, 'Candela Naranjo', 2665121235, 21, 'nada', 1);
 
 -- --------------------------------------------------------
 
@@ -134,27 +134,13 @@ CREATE TABLE `sesion` (
 CREATE TABLE `tratamiento` (
   `codTratam` int(11) NOT NULL,
   `nombre` varchar(40) NOT NULL,
-  `detalle` varchar(150) NOT NULL,
+  `detalle` varchar(60) NOT NULL,
+  `productos` varchar(40) NOT NULL,
   `duracion` int(11) NOT NULL,
   `costo` double NOT NULL,
   `activo` tinyint(1) NOT NULL,
-  `tipo` varchar(30) NOT NULL,
-  `producto` varchar(50) NOT NULL
+  `tipo` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `tratamiento`
---
-
-INSERT INTO `tratamiento` (`codTratam`, `nombre`, `detalle`, `duracion`, `costo`, `activo`, `tipo`, `producto`) VALUES
-(1, 'Limpieza facial profunda', 'Limpieza completa con vaporizador, extracción, exfoliación y mascarilla hidratante.', 60, 12000, 1, 'Facial', 'Leche limpiadora Dermacare'),
-(3, 'Facial anti-age con colágeno', 'Rejuvenecimiento facial con mascarilla reafirmante y masaje drenante.', 60, 15000, 1, 'Facial', 'Ampolla de Colágeno ActiveLift,'),
-(4, 'Reafirmante con algas', 'Aplicación de algas frías para mejorar tonicidad y circulación.', 55, 15000, 1, 'Corporal', 'Mascarilla de Algas Marinas SeaFirm'),
-(6, 'Exfoliación corporal total', 'Exfoliación con sales aromáticas para renovar la piel y activar la circulación.', 45, 11000, 1, 'Corporal', 'Exfoliante de Sales del Himalaya'),
-(9, 'Baño de sales aromáticas', 'Inmersión en tina con sales relajantes y esencias naturales.', 40, 10000, 1, 'Relajacion', 'Sales Aromáticas de Lavanda,'),
-(11, 'Masaje con piedras calientes', 'Terapia de calor con piedras volcánicas y aceites para eliminar tensiones.', 70, 17000, 1, 'Relajacion', 'Piedras Volcánicas Basalt'),
-(16, 'Depilación completa', 'Depilación con cera tibia para cuerpo y rostro.', 60, 9000, 1, 'Estetico', 'Cera Roll-On MielSpa'),
-(19, 'Manicura', 'Limpieza, exfoliación, esmaltado y masaje de manos.', 45, 7000, 1, 'Estetico', 'Esmalte Nutritivo NailCare Pro');
 
 --
 -- Índices para tablas volcadas
@@ -217,7 +203,7 @@ ALTER TABLE `tratamiento`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `codCli` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `codCli` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `consultorio`
