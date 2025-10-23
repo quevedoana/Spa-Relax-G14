@@ -512,6 +512,9 @@ private void armarCabecera() {
     }
 
     private void agregarCliente() {
+        try{
+            
+        
         int dni = Integer.parseInt(jTDni.getText().trim());
         String nombreCompleto = jTNombreC.getText().trim();
         long teléfono = Long.parseLong(jTTelefono.getText().trim());
@@ -520,6 +523,11 @@ private void armarCabecera() {
 
         Cliente c = new Cliente(dni, nombreCompleto, teléfono, edad, afecciones, true);
         clientedata.guardarCliente(c);
+        JOptionPane.showMessageDialog(this, "Cliente agregado correctamente.");
+        
+    }catch(NumberFormatException e){
+    JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos en DNI, teléfono y edad.");
+    }
     }
 
     private void limpiarCampos() {
