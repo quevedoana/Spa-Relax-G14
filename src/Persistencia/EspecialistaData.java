@@ -31,7 +31,7 @@ public class EspecialistaData {
             PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, e.getMatricula());
             ps.setString(2, e.getNombreYApellido());
-            ps.setInt(4, e.getTelefono());
+            ps.setLong(4, e.getTelefono());
             ps.setString(3, e.getEspecialidad());
             ps.setBoolean(6, e.isEstado());
             ps.executeUpdate();
@@ -98,14 +98,14 @@ public class EspecialistaData {
         return especia;
     }
     //ACTUALIZAR Especialista
-    public void actualizarAlumno(Especialista a) {
+    public void actualizarEspecialista(Especialista a) {
         String query = "UPDATE especialista SET matricula = ?, NombreYApellido = ?, telefono = ?, especialidad = ?, estado = ? WHERE idAlumno = ?";
 
         try {
             PreparedStatement ps = conexion.prepareStatement(query);
                 ps.setString(1, a.getMatricula());
                 ps.setString(2, a.getNombreYApellido());
-                ps.setInt(3, a.getTelefono());
+                ps.setLong(3, a.getTelefono());
                 ps.setString(1, a.getEspecialidad());
                 ps.setBoolean(5, a.isEstado());
                 
@@ -119,7 +119,7 @@ public class EspecialistaData {
         
     }
     //BORRAR Especialista
-    public void BorrarAlumno(String matricula) {
+    public void BorrarEspecialista(String matricula) {
         String query = "DELETE FROM especialista WHERE matricula = ?";
 
         try {
@@ -134,7 +134,7 @@ public class EspecialistaData {
         }
     }
     //ALTA LOGICA = darle estado activo a los inactivos
-    public void HabilitarAlumno(Especialista a){
+    public void HabilitarEspecialista(Especialista a){
         String query = "UPDATE especialista SET estado = 1 WHERE matricula = ? AND Estado = 0";
         
         try {
@@ -150,7 +150,7 @@ public class EspecialistaData {
         }
     }
     //BAJA LOGICA = darle estado inactivo a los activos
-     public void DeshabilitarAlumno(Especialista a){
+     public void DeshabilitarEspecialista(Especialista a){
         String query = "UPDATE especialista SET estado = 0 WHERE matricula = ? AND Estado = 1";
         
         try {

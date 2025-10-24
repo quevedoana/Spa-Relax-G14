@@ -13,11 +13,15 @@ public class Especialista {
     //Masajista: matricula, nombre y ape, teléfono, especialidad (facial, corporal, relajación, o estético), estado
     private String matricula;
     private String nombreYApellido;
-    private int telefono;
+    private long telefono;
     private String especialidad;
     private boolean estado;
 
-    public Especialista(String matricula, String nombreYApellido, int telefono, String especialidad, boolean estado) {
+    public Especialista() {
+    }
+
+    
+    public Especialista(String matricula, String nombreYApellido, long telefono, String especialidad, boolean estado) {
         this.matricula = matricula;
         this.nombreYApellido = nombreYApellido;
         this.telefono = telefono;
@@ -37,15 +41,15 @@ public class Especialista {
         return nombreYApellido;
     }
 
-    public void setNombre(String nombreYApellido) {
+    public void setNombreYApellido(String nombreYApellido) {
         this.nombreYApellido = nombreYApellido;
     }
 
-    public int getTelefono() {
+    public long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(long telefono) {
         this.telefono = telefono;
     }
 
