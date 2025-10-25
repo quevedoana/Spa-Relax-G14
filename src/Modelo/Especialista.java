@@ -74,9 +74,7 @@ public class Especialista {
         return "Especialista: " + "matricula=" + matricula + ", nombre y apellido=" + nombreYApellido + ", telefono=" + telefono + ", especialidad=" + especialidad + ", estado=" + estado;
     }
 
-    public String getMessage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
     
     
 }
