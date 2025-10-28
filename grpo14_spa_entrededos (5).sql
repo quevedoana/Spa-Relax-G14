@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-10-2025 a las 23:49:59
+-- Tiempo de generación: 28-10-2025 a las 23:15:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -93,6 +93,13 @@ CREATE TABLE `especialista` (
   `estado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `especialista`
+--
+
+INSERT INTO `especialista` (`matricula`, `NombreYApellido`, `telefono`, `especialidad`, `estado`) VALUES
+('e45879', 'Antonio Assat', 2147483647, 'masajista', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -106,6 +113,18 @@ CREATE TABLE `instalacion` (
   `precio30m` double NOT NULL,
   `estado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `instalacion`
+--
+
+INSERT INTO `instalacion` (`codInstal`, `nombre`, `detalleDeUso`, `precio30m`, `estado`) VALUES
+(1, 'Piscina climatizada', 'Piscinas con agua a temperatura agradable, a veces equipadas', 20000, 1),
+(3, 'Hidromasaje', 'Bañeras con chorros de agua a presión para relajar los músc', 15000, 0),
+(4, 'Sauna', 'Habitaciones con vapor de agua caliente que ayudan a purifi', 20000, 1),
+(5, 'Duchas de sensaciones', 'Combina diferentes temperaturas, presiones y aromas para est', 10000, 1),
+(6, 'Pediluvio', 'Baño de pies que generalmente combina agua fría y caliente p', 10000, 1),
+(7, 'Circuito de hidroterapia', 'Secuencia de 3 bañeras de agua con diferentes temperaturas p', 25000, 1);
 
 -- --------------------------------------------------------
 
@@ -170,7 +189,8 @@ ALTER TABLE `dia_de_spa`
 -- Indices de la tabla `especialista`
 --
 ALTER TABLE `especialista`
-  ADD PRIMARY KEY (`matricula`);
+  ADD PRIMARY KEY (`matricula`),
+  ADD UNIQUE KEY `matricula` (`matricula`);
 
 --
 -- Indices de la tabla `instalacion`
@@ -221,7 +241,7 @@ ALTER TABLE `dia_de_spa`
 -- AUTO_INCREMENT de la tabla `instalacion`
 --
 ALTER TABLE `instalacion`
-  MODIFY `codInstal` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codInstal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `sesion`
