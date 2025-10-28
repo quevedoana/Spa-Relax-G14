@@ -29,21 +29,79 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     public VistaEspecialista() {
         initComponents();
         armarCabecera();
+        inicializarComboTipoEspecialidad();
         cargarDatos();
     }
+    private void inicializarComboTipoEspecialidad() {
+    String[] opciones = { "Seleccione…","Facial", "Corporal", "Relajación", "Estético" };
+    comboTipoEspecialidad.removeAllItems();  // limpia items anteriores
+    for (String opt : opciones) {
+        comboTipoEspecialidad.addItem(opt);
+    }
+    comboTipoEspecialidad.setSelectedIndex(0);
+    }
     private void agregarEspecialistaNuevo() {
-        String nombreYApe = txtNombreyApellido.getText().trim();
-        String especialidad = txtEspecialista.getText().trim();
+        /*String nombreYApe = txtNombreyApellido.getText().trim();
+        String especialidad = (String) comboTipoEspecialidad.getSelectedItem();
         long telefono = Long.parseLong(txtTelefono.getText().trim());
         String matricula=txtMatricula.getText().trim();
 
         Especialista a = new Especialista(matricula, nombreYApe,telefono, especialidad, true);
-        especialistaData.guardarEspecialista(a);
+        especialistaData.guardarEspecialista(a);*/
+    String nombreYApe = txtNombreyApellido.getText().trim();
+    // Obtener la especialidad seleccionada del combo
+    String especialidad = (String) comboTipoEspecialidad.getSelectedItem();
+    long telefono;
+    String matricula = txtMatricula.getText().trim();
+
+    // Validaciones
+    if (nombreYApe.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "Ingrese el nombre y apellido del especialista",
+            "Advertencia",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    // Validar que el nombre y apellido contengan solo letras y espacios
+    if (!nombreYApe.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+        JOptionPane.showMessageDialog(this,"El nombre y apellido deben contener solo letras y espacios.","Advertencia",JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    if (especialidad == null || especialidad.trim().isEmpty() || especialidad.equals("Seleccione...")) {
+        JOptionPane.showMessageDialog(this,
+            "Seleccione una especialidad válida",
+            "Advertencia",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    try {
+        telefono = Long.parseLong(txtTelefono.getText().trim());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+            "Ingrese un número de teléfono válido",
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    if (matricula.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "Ingrese la matrícula del especialista",
+            "Advertencia",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Si todo está bien, crear objeto y guardar
+    Especialista a = new Especialista(matricula, nombreYApe, telefono, especialidad, true);
+    especialistaData.guardarEspecialista(a);
+
+    JOptionPane.showMessageDialog(this,"Especialista agregado correctamente","Éxito",JOptionPane.INFORMATION_MESSAGE);
 
     }
     private void limpiarCampos() {
         txtNombreyApellido.setText("");
-        txtEspecialista.setText("");
+        //txtEspecialista.setText("");
         txtTelefono.setText("");
         txtMatricula.setText("");
     }
@@ -223,13 +281,13 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         txtNombreyApellido = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtEspecialista = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtMatricula = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        comboTipoEspecialidad = new javax.swing.JComboBox<>();
 
         jLabel1.setText("Matricula del Especialista");
 
@@ -342,13 +400,17 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
                                         .addComponent(txtNombreyApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                                         .addComponent(txtTelefono))))
                             .addGap(129, 129, 129)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel5)
-                                .addComponent(txtEspecialista, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                                .addComponent(jLabel7)
-                                .addComponent(txtMatricula))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAgregar))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel7)
+                                        .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnAgregar))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(comboTipoEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE))))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(23, 23, 23)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -400,7 +462,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombreyApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboTipoEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -415,7 +477,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -473,6 +535,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnRegrescar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> comboEstadoEspecialista;
+    private javax.swing.JComboBox<String> comboTipoEspecialidad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -483,7 +546,6 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtEspecialista;
     private javax.swing.JTextField txtBuscarMatricula;
-    private javax.swing.JTextField txtEspecialista;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNombreyApellido;
     private javax.swing.JTextField txtTelefono;
