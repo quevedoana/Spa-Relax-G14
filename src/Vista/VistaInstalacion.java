@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Anitabonita
  */
 public class VistaInstalacion extends javax.swing.JInternalFrame {
+
     private InstalacionData instalacionData = new InstalacionData();
     private Instalacion instalacion = null;
     private DefaultTableModel modelo = new DefaultTableModel() {
@@ -23,6 +24,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             return column == 1 || column == 2 || column == 3;
         }
     };
+
     private void armarCabecera() {
         modelo.addColumn("codInstalacion");
         modelo.addColumn("Nombre");
@@ -31,6 +33,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         modelo.addColumn("Estado");
         jTInstalacion.setModel(modelo);
     }
+
     private void cargarDatos() {
         String activo;
         try {
@@ -56,6 +59,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar los alumnos " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     private void buscarInstalacionPorCod() {
         try {
             String cod = txtBuscaPorCod.getText().trim();
@@ -89,23 +93,59 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "El codigo es un numero: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-     private void agregarInstalacionNueva() {
-        String nombre = txtNombre.getText().trim();
-        String detalles = txtDetalles.getText().trim();
-        double precio = Double.parseDouble(txtPrecio.getText().trim());
 
-        Instalacion in = new Instalacion(nombre, detalles, precio, true);
-        instalacionData.guardarInstalacion(in);
+    private void agregarInstalacionNueva() {
+        try {
+
+            String nombre = txtNombre.getText().trim();
+            String detalles = txtDetalles.getText().trim();
+            String prec = txtPrecio.getText().trim();
+            if (nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El campo 'Nombre' no puede estar vacío.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtNombre.requestFocus();
+                return;
+            }
+
+            if (detalles.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un detalle de uso.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtDetalles.requestFocus();
+                return;
+            }
+
+            if (prec.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un precio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtPrecio.requestFocus();
+                return;
+            }
+
+            double precio = Double.parseDouble(prec);
+
+            if (precio <= 0) {
+                JOptionPane.showMessageDialog(this, "El precio debe ser mayor a 0.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtPrecio.requestFocus();
+                return;
+            }
+
+            Instalacion in = new Instalacion(nombre, detalles, precio, true);
+            instalacionData.guardarInstalacion(in);
+            limpiarCampos();
+            JOptionPane.showMessageDialog(this, "Instalación agregada correctamente.", "mensaje", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al agregar la instalación: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
     }
-    
+
     private void borrarInstalacion() {
+        
         int fila = jTInstalacion.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "seleccione una instalación a eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
 
         if (fila != -1) {
+            
+            
             int conf = JOptionPane.showConfirmDialog(
                     this,
                     "¿Seguro que desea eliminar la instalación seleccionada?", "Advertencia", JOptionPane.YES_NO_OPTION);
@@ -127,8 +167,9 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                 }
             }
         }
-    } 
-     private void guardarCambiosDesdeTabla() {
+    }
+
+    private void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTInstalacion.getSelectedRow();
 
         try {
@@ -136,7 +177,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             int cod = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
             String nombre = modelo.getValueAt(filaSeleccionada, 1).toString().trim();
             String detalle = modelo.getValueAt(filaSeleccionada, 2).toString().trim();
-            double precio = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 3).toString()) ;
+            double precio = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 3).toString());
             String estadoStr = modelo.getValueAt(filaSeleccionada, 4).toString();
             boolean estado = estadoStr.equals("Activa");
 
@@ -152,7 +193,8 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al actualizar instalación: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-     private void cambiarEstado() {
+
+    private void cambiarEstado() {
         int fila = jTInstalacion.getSelectedRow();
         Instalacion aux = new Instalacion();
         if (fila == -1) {
@@ -169,10 +211,10 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
 
         try {
             if (estadoBoolean) {
-                
+
                 instalacionData.HabilitarInstalacion(aux);
             } else {
-                
+
                 instalacionData.DeshabilitarInstalacion(aux);
             }
             cargarDatos();
@@ -183,12 +225,25 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-     
+
     private void limpiarCampos() {
         txtNombre.setText("");
         txtDetalles.setText("");
         txtPrecio.setText("");
-    } 
+    }
+    private void deshabilitarBotones() {
+        
+        btnBorrarInstalacion.setEnabled(false);
+        btnActualizarInstalacion.setEnabled(false);
+        btnAltaBajaLogica.setEnabled(false);
+        comboEstadoInstalacion.setEnabled(false);
+    }
+    private void habilitarBotones() {
+        btnBorrarInstalacion.setEnabled(true);
+        btnActualizarInstalacion.setEnabled(true);
+        btnAltaBajaLogica.setEnabled(true);
+        comboEstadoInstalacion.setEnabled(true);
+    }
 
     /**
      * Creates new form VistaInstalacion
@@ -197,6 +252,19 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         initComponents();
         armarCabecera();
         cargarDatos();
+        deshabilitarBotones(); // 🔹 desactiva los botones al inicio
+
+    // 🔹 Detecta selección en la tabla
+    jTInstalacion.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int filaSeleccionada = jTInstalacion.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                habilitarBotones();
+            } else {
+                deshabilitarBotones();
+            }
+        }
+    });
     }
 
     /**
@@ -246,12 +314,20 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTInstalacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTInstalacionMouseEntered(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTInstalacion);
 
         btnBorrarInstalacion.setText("Borrar");
         btnBorrarInstalacion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnBorrarInstalacionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnBorrarInstalacionMouseEntered(evt);
             }
         });
 
@@ -284,6 +360,18 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         jLabel4.setText("Nombre: ");
 
         jLabel5.setText("Precio de 30 minutos:");
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
+            }
+        });
 
         jLabel6.setText("Detalle de uso: ");
 
@@ -344,13 +432,12 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtDetalles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(1, 1, 1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(35, 35, 35))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(3, 6, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -498,7 +585,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
     private void btnActualizarInstalacionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarInstalacionMouseEntered
         // TODO add your handling code here:
         btnActualizarInstalacion.setToolTipText("modifica el campo con doble click y luego presiona aqui");
-        
+
     }//GEN-LAST:event_btnActualizarInstalacionMouseEntered
 
     private void btnAltaBajaLogicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAltaBajaLogicaMouseClicked
@@ -508,12 +595,13 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
 
     private void BtnAgregarAlumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnAgregarAlumnoMouseClicked
         // TODO add your handling code here:
-        agregarInstalacionNueva();
-        limpiarCampos();
+        
+        
     }//GEN-LAST:event_BtnAgregarAlumnoMouseClicked
 
     private void BtnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarAlumnoActionPerformed
         // TODO add your handling code here:
+        agregarInstalacionNueva();
     }//GEN-LAST:event_BtnAgregarAlumnoActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
@@ -523,15 +611,52 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
 
     private void txtBuscaPorCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscaPorCodActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtBuscaPorCodActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         buscarInstalacionPorCod();
-        
-        
+
+
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isISOControl(c)) {
+            return;
+        }
+        if (!Character.isLetter(c) && !Character.isWhitespace(c)) {
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "El nombre solo permite letras", "Advertencia", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isISOControl(c)) {
+            return;
+        }
+
+        if (!Character.isDigit(c) && c != '.') {
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "El precio solo permite numeros", "Advertencia", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void jTInstalacionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTInstalacionMouseEntered
+        // TODO add your handling code here:
+        jTInstalacion.setToolTipText("doble click en el campo que quiere modificar");
+    }//GEN-LAST:event_jTInstalacionMouseEntered
+
+    private void btnBorrarInstalacionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBorrarInstalacionMouseEntered
+        // TODO add your handling code here:
+        btnBorrarInstalacion.setToolTipText("seleccione de la lista la instalación a borrar");
+    }//GEN-LAST:event_btnBorrarInstalacionMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
