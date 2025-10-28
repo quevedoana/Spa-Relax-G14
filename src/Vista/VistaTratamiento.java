@@ -27,21 +27,157 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaTratamientosFiltrados = new javax.swing.JTable();
+        btnFacial = new javax.swing.JRadioButton();
+        btnCorporal = new javax.swing.JRadioButton();
+        btnRelajacion = new javax.swing.JRadioButton();
+        btnEstetico = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnEliminarTrata = new javax.swing.JButton();
+        btnModificarTrata = new javax.swing.JButton();
+        btnActualizarTablaTrata = new javax.swing.JButton();
+        btnAgregarTratam = new javax.swing.JButton();
+
+        setResizable(true);
+        setTitle("Ver Tratamientos");
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        tablaTratamientosFiltrados.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tablaTratamientosFiltrados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tablaTratamientosFiltrados);
+
+        btnFacial.setText("Facial");
+        btnFacial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacialActionPerformed(evt);
+            }
+        });
+
+        btnCorporal.setText("Corporal");
+
+        btnRelajacion.setText("Relajacion");
+
+        btnEstetico.setText("Estetico");
+
+        jLabel1.setBackground(new java.awt.Color(255, 153, 102));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel1.setText("TRATAMIENTOS");
+
+        btnEliminarTrata.setText("Eliminar");
+
+        btnModificarTrata.setText("Modificar");
+
+        btnActualizarTablaTrata.setText("Actualizar");
+
+        btnAgregarTratam.setBackground(new java.awt.Color(255, 153, 102));
+        btnAgregarTratam.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAgregarTratam.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarTratam.setText("Agregar Tratamiento");
+        btnAgregarTratam.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnFacial)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCorporal)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRelajacion))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(84, 84, 84)
+                                .addComponent(jLabel1)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEstetico))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(btnEliminarTrata)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnModificarTrata)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnActualizarTablaTrata))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(btnAgregarTratam, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFacial)
+                    .addComponent(btnCorporal)
+                    .addComponent(btnRelajacion)
+                    .addComponent(btnEstetico))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminarTrata)
+                    .addComponent(btnModificarTrata)
+                    .addComponent(btnActualizarTablaTrata))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(btnAgregarTratam, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnFacialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFacialActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarTablaTrata;
+    private javax.swing.JButton btnAgregarTratam;
+    private javax.swing.JRadioButton btnCorporal;
+    private javax.swing.JButton btnEliminarTrata;
+    private javax.swing.JRadioButton btnEstetico;
+    private javax.swing.JRadioButton btnFacial;
+    private javax.swing.JButton btnModificarTrata;
+    private javax.swing.JRadioButton btnRelajacion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tablaTratamientosFiltrados;
     // End of variables declaration//GEN-END:variables
 }
