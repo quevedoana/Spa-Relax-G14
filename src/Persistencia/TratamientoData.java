@@ -30,31 +30,36 @@ public class TratamientoData {
 
     //AGREGAR UN TRATAMIENTO
     public void AltaTratamiento(Tratamiento t) {
-        String query = "INSERT INTO tratamiento(codTratam, nombre, detalle, duracion, costo, activo, tipo, producto) VALUES (?,?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, t.getCodTratam());
-            ps.setString(2, t.getNombre());
-            ps.setString(3, t.getDetalle());
-            ps.setInt(4, t.getDuracion());
-            ps.setDouble(5, t.getCosto());
-            ps.setBoolean(6, t.isActivo());
-            ps.setString(7, t.getTipo());
-            ps.setString(7, t.getProductos());
+    String query = "INSERT INTO tratamiento(codTratam, nombre, detalle, tipo, duracion, costo, activo, productos) VALUES (?,?,?,?,?,?,?,?)";
+    try {
+        PreparedStatement ps = conexion.prepareStatement(query);
+        ps.setInt(1, t.getCodTratam());
+        ps.setString(2, t.getNombre());
+        ps.setString(3, t.getDetalle());
+        ps.setString(4, t.getTipo());
+        ps.setInt(5, t.getDuracion());
+        ps.setDouble(6, t.getCosto());
+        ps.setBoolean(7, t.isActivo());
+        ps.setString(8, t.getProductos()); 
 
-            ps.executeUpdate();
-
-            ResultSet rs = ps.getGeneratedKeys();
-
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al guardar el Tratamiento" + e.getMessage());
+        int filasAfectadas = ps.executeUpdate();
+        
+        if (filasAfectadas > 0) {
+            System.out.println("Tratamiento agregado correctamente a la BD");
+        } else {
+            System.out.println("No se pudo agregar el tratamiento");
         }
-
+        
+        ps.close();
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al guardar el Tratamiento: " + e.getMessage());
+        
     }
+}
 
     //ELIMAR UN TRATAMIENTO
-    public void BajaTratamiento(int codTratam) {
+    public boolean BajaTratamiento(int codTratam) {
 
         String sql = "DELETE FROM tratamiento WHERE codTratam = ?";
 
@@ -64,10 +69,12 @@ public class TratamientoData {
             ps.executeUpdate();
 
             ps.close();
+            return true;
 
         } catch (SQLException ex) {
             System.out.println("Error al eliminar tratamiento: " + ex.getMessage());
         }
+        return false;
 
     }
     //PONER INACTIVO UN TRATAMIENTO
@@ -103,8 +110,8 @@ public class TratamientoData {
     }
 
     //MODIFICAR UN TRATAMIENTO
-    public void ModificarTratamiento(Tratamiento t) {
-        String sql = "UPDATE tratamiento SET nombre = ?, detalle = ?, tipo = ?, duracion = ?, costo = ?, activo = ?, producto = ? WHERE codTratam = ?";
+    public boolean ModificarTratamiento(Tratamiento t) {
+        String sql = "UPDATE tratamiento SET nombre = ?, detalle = ?, tipo = ?, duracion = ?, costo = ?, activo = ?, productos = ? WHERE codTratam = ?";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, t.getNombre());
@@ -118,10 +125,12 @@ public class TratamientoData {
 
             ps.executeUpdate();
             ps.close();
+            return true;
 
         } catch (SQLException ex) {
             System.out.println("Error al actualizar tratamiento: " + ex.getMessage());
         }
+        return false;
     }
 
     //LISTAR TRATAMIENTOS POR TIPO
@@ -145,6 +154,25 @@ public class TratamientoData {
         return tratamientos;
     }
     
+    public List<Tratamiento> listarTodosTratamientos() {
+        List<Tratamiento> tratamientos = new ArrayList<>();
+        String sql = "SELECT * FROM tratamiento WHERE activo = true ORDER BY nombre";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Tratamiento tratamiento = crearTratamientoDesdeResultSet(rs);
+                tratamientos.add(tratamiento);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error al listar todos los tratamientos: " + ex.getMessage());
+        }
+
+        return tratamientos;
+    }
+    
 
     //METODO AUX
     private Tratamiento crearTratamientoDesdeResultSet(ResultSet rs) throws SQLException {
@@ -156,6 +184,7 @@ public class TratamientoData {
         tratamiento.setDuracion(rs.getInt("duracion"));
         tratamiento.setCosto(rs.getDouble("costo"));
         tratamiento.setActivo(rs.getBoolean("activo"));
+        tratamiento.setProductos(rs.getString("productos"));
 
         return tratamiento;
     }

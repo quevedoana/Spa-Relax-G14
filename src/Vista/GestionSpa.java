@@ -39,6 +39,8 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        btnVerTratamientos = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -54,11 +56,11 @@ public class GestionSpa extends javax.swing.JFrame {
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 754, Short.MAX_VALUE)
+            .addGap(0, 783, Short.MAX_VALUE)
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 491, Short.MAX_VALUE)
+            .addGap(0, 528, Short.MAX_VALUE)
         );
 
         jMenu1.setText(" Clientes");
@@ -102,6 +104,18 @@ public class GestionSpa extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu2.setText("Tratamientos");
+
+        btnVerTratamientos.setText("Ver Tratamientos");
+        btnVerTratamientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerTratamientosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(btnVerTratamientos);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -109,19 +123,18 @@ public class GestionSpa extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(escritorio)
-                .addContainerGap())
+                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(escritorio)
-                .addContainerGap())
+                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
@@ -170,6 +183,19 @@ public class GestionSpa extends javax.swing.JFrame {
         ve.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void btnVerTratamientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTratamientosActionPerformed
+        // TODO add your handling code here:
+         escritorio.removeAll();
+        escritorio.repaint();
+        VistaTratamiento ve = new VistaTratamiento();
+        ve.setLocation(
+                (escritorio.getWidth() - ve.getWidth()) / 2,
+                (escritorio.getHeight() - ve.getHeight()) / 2
+        );
+        escritorio.add(ve);
+        ve.setVisible(true);
+    }//GEN-LAST:event_btnVerTratamientosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -206,9 +232,11 @@ public class GestionSpa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnVerTratamientos;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuItem jMCliente;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
