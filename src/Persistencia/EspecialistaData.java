@@ -60,7 +60,7 @@ public class EspecialistaData {
                 esp.setMatricula(resultado.getString("Matricula"));
 
             } else {
-                System.out.println("No se encontro el alumno");
+                System.out.println("No se encontro el Especialista");
             }
             ps.close();
 
