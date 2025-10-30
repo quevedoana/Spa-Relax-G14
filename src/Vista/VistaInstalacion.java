@@ -252,9 +252,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         initComponents();
         armarCabecera();
         cargarDatos();
-        deshabilitarBotones(); // 🔹 desactiva los botones al inicio
-
-    // 🔹 Detecta selección en la tabla
+        deshabilitarBotones(); 
     jTInstalacion.getSelectionModel().addListSelectionListener(e -> {
         if (!e.getValueIsAdjusting()) {
             int filaSeleccionada = jTInstalacion.getSelectedRow();
