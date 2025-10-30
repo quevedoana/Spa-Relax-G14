@@ -57,7 +57,32 @@ public class TratamientoData {
         
     }
 }
+    //buscar un tratamiento
+public Tratamiento buscarTratamiento(int codTratam) { 
+        String sql = "SELECT * FROM tratamiento WHERE codTratam = ? ";
+        Tratamiento t = null;
+        
+        
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, codTratam);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
 
+                t = new Tratamiento(rs.getString("nombre"),rs.getString("detalle"),rs.getString("tipo"),rs.getInt("duracion"),rs.getDouble("costo"),rs.getBoolean("estado"),rs.getString("productos"));
+               t.setCodTratam(rs.getInt("codTratam"));
+
+            } else {
+                System.out.println("No se encontro el tratamiento");
+            }
+            ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar el tratamiento" + e.getMessage());
+
+        }
+        return t;
+    }
     //ELIMAR UN TRATAMIENTO
     public boolean BajaTratamiento(int codTratam) {
 

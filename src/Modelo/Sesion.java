@@ -17,7 +17,7 @@ public class Sesion {
     private LocalDateTime fechaYHoraDeFin;
     private Tratamiento tratamiento;
     private Consultorio Consultorio;
-    private String matriculaMasajista;
+    private Especialista especialista;
     private Instalacion instalacion;
     private DiaDeSpa DiaDeSpa;
     private boolean estado;
@@ -25,14 +25,18 @@ public class Sesion {
     public Sesion() {
     }
 
-    public Sesion(LocalDateTime fechaYHoraDeInicio, LocalDateTime fechaYHoraDeFin, Tratamiento tratamiento, Consultorio Consultorio, Instalacion instalacion, boolean estado) {
+    public Sesion(LocalDateTime fechaYHoraDeInicio, LocalDateTime fechaYHoraDeFin, Tratamiento tratamiento, Consultorio Consultorio, Especialista especialista, Instalacion instalacion, DiaDeSpa DiaDeSpa, boolean estado) {
         this.fechaYHoraDeInicio = fechaYHoraDeInicio;
         this.fechaYHoraDeFin = fechaYHoraDeFin;
         this.tratamiento = tratamiento;
         this.Consultorio = Consultorio;
+        this.especialista = especialista;
         this.instalacion = instalacion;
+        this.DiaDeSpa = DiaDeSpa;
         this.estado = estado;
     }
+
+   
 
     public int getCodSesion() {
         return codSesion;
@@ -74,13 +78,15 @@ public class Sesion {
         this.Consultorio = Consultorio;
     }
 
-    public String getMatriculaMasajista() {
-        return matriculaMasajista;
+    public Especialista getEspecialista() {
+        return especialista;
     }
 
-    public void setMatriculaMasajista(String matriculaMasajista) {
-        this.matriculaMasajista = matriculaMasajista;
+    public void setEspecialista(Especialista especialista) {
+        this.especialista = especialista;
     }
+
+    
 
     public Instalacion getInstalacion() {
         return instalacion;

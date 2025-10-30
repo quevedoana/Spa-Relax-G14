@@ -7,6 +7,7 @@ package Persistencia;
 
 import Modelo.Conexion;
 import Modelo.DiaDeSpa;
+import Modelo.Sesion;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
@@ -32,7 +33,7 @@ public class DiaDeSpaData {
     //Métodos 
     public void guardarDiaDeSpa(DiaDeSpa d){
        
-        String query = "INSERT INTO dia_de_spa(fechaYHORa, preferencias, codCli, estado, sesiones, monto) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO dia_de_spa(fechaYHora, preferencias, codCli, estado, codSesion, monto) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             Timestamp tm = Timestamp.valueOf(d.getFechaYHora());
@@ -40,8 +41,9 @@ public class DiaDeSpaData {
             ps.setString(2, d.getPreferencias());
             ps.setInt(3, d.getCliente().getCodCli());
             ps.setBoolean(4, d.isEstado());
-            ps.setString(5, d.getSesiones());
+            ps.setInt(5, d.getSesion().getCodSesion());
             ps.setDouble(6, d.getMonto());
+            
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -61,6 +63,7 @@ public class DiaDeSpaData {
         String sql = "SELECT * FROM dia_de_spa WHERE codPack=?";
         DiaDeSpa dia = null;
         ClienteData cd = new ClienteData();
+        SesionData sd = new SesionData();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ps.setInt(1, codPack);
@@ -68,7 +71,7 @@ public class DiaDeSpaData {
             if (rs.next()) {
                 Timestamp ts = rs.getTimestamp("fechaYHora");
 
-                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),rs.getString("sesiones"));
+                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),sd.buscarSesion(rs.getInt("codSesion")));
                 dia.setCodPack(rs.getInt("codPack"));
 
             } else {
@@ -87,6 +90,7 @@ public class DiaDeSpaData {
         String sql = "SELECT * FROM dia_de_spa WHERE 1";
         DiaDeSpa dia = null;
         ClienteData cd = new ClienteData();
+        SesionData sd = new SesionData();
         List<DiaDeSpa> dias = new ArrayList();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -94,13 +98,14 @@ public class DiaDeSpaData {
             while(rs.next()){
                 Timestamp ts = rs.getTimestamp("fechaYHora");
 
-                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),rs.getString("sesiones"));
+                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),sd.buscarSesion(rs.getInt("codSesion")));
                 dia.setCodPack(rs.getInt("codPack"));
                 dias.add(dia);
 
-            ps.close();
+            
 
         }
+            ps.close();
         }catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al listar los días de spa" + e.getMessage());
 
@@ -108,7 +113,7 @@ public class DiaDeSpaData {
         return dias;
     }
     public void actualizarDiaDeSpa(DiaDeSpa d){
-        String sql = "UPDATE dia_de_spa SET fechaYHora = ?, preferencias = ?, codCli = ?, estado = ?, sesiones = ?, monto = ? WHERE codPack = ? ";
+        String sql = "UPDATE dia_de_spa SET fechaYHora = ?, preferencias = ?, codCli = ?, estado = ?, codSesion = ?, monto = ? WHERE codPack = ? ";
         try{
             PreparedStatement ps = conexion.prepareStatement(sql);
             Timestamp tm = Timestamp.valueOf(d.getFechaYHora());
@@ -116,7 +121,7 @@ public class DiaDeSpaData {
             ps.setString(2, d.getPreferencias());
             ps.setInt(3, d.getCliente().getCodCli());
             ps.setBoolean(4, d.isEstado());
-            ps.setString(5,d.getSesiones());
+            ps.setInt(5,d.getSesion().getCodSesion());
             ps.setDouble(6, d.getMonto());
             ps.setInt(7, d.getCodPack());
             ps.executeUpdate();

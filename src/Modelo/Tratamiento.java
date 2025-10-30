@@ -25,8 +25,8 @@ public class Tratamiento {
     public Tratamiento() {
     }
 
-    public Tratamiento(int codTratam, String nombre, String detalle, String tipo, int duracion, double costo, boolean activo, String producto) {
-        this.codTratam = codTratam;
+    public Tratamiento(String nombre, String detalle, String tipo, int duracion, double costo, boolean activo, String producto) {
+        
         this.nombre = nombre;
         this.detalle = detalle;
         this.duracion = duracion;
