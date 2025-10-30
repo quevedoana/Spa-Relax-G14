@@ -7,8 +7,12 @@ package Vista;
 
 import Modelo.Especialista;
 import Persistencia.EspecialistaData;
+import java.util.Arrays;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -20,7 +24,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = new DefaultTableModel() {
 
         public boolean isCellEditable(int fila, int column) {
-            return column == 1 || column == 2 || column == 3 || column == 4 ||column==5;
+            return column == 1 || column == 2 || column == 3;// || column == 4;
         }
     };
     /**
@@ -31,15 +35,48 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         armarCabecera();
         inicializarComboTipoEspecialidad();
         cargarDatos();
+        inicializarEditorEspecialidadEnTabla();
+        deshabilitarBotones();
+        jtEspecialista.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int filaSeleccionada = jtEspecialista.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                habilitarBotones();
+            } else {
+                deshabilitarBotones();
+            }
+        }
+    });
+    }
+    private void deshabilitarBotones() {
+        
+        btnBorrar.setEnabled(false);
+        btnActualizar.setEnabled(false);
+        btnEditarEstado.setEnabled(false);
+        comboEstadoEspecialista.setEnabled(false);
+    }
+    private void habilitarBotones() {
+        btnBorrar.setEnabled(true);
+        btnActualizar.setEnabled(true);
+        btnEditarEstado.setEnabled(true);
+        comboEstadoEspecialista.setEnabled(true);
     }
     private void inicializarComboTipoEspecialidad() {
-    String[] opciones = { "Seleccione…","Facial", "Corporal", "Relajación", "Estético" };
+    String[] opciones = { "Seleccione...","Facial", "Corporal", "Relajación", "Estético" };
     comboTipoEspecialidad.removeAllItems();  // limpia items anteriores
     for (String opt : opciones) {
         comboTipoEspecialidad.addItem(opt);
     }
     comboTipoEspecialidad.setSelectedIndex(0);
     }
+    //prueba tabla columna especialidad
+    private void inicializarEditorEspecialidadEnTabla() {
+        String[] opciones = { "Facial", "Corporal", "Relajación", "Estético" };
+        TableColumn columnaEspecialidad = jtEspecialista.getColumnModel().getColumn(3);
+        JComboBox<String> comboEditor = new JComboBox<>(opciones);
+        columnaEspecialidad.setCellEditor(new DefaultCellEditor(comboEditor));
+    }
+    //Agregar Especialista nuevo
     private void agregarEspecialistaNuevo() {
         /*String nombreYApe = txtNombreyApellido.getText().trim();
         String especialidad = (String) comboTipoEspecialidad.getSelectedItem();
@@ -68,7 +105,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         return;
     }
 
-    if (especialidad == null || especialidad.trim().isEmpty() || especialidad.equals("Seleccione...")) {
+    if (especialidad == null || especialidad.equals("Seleccione...")) {
         JOptionPane.showMessageDialog(this,
             "Seleccione una especialidad válida",
             "Advertencia",
@@ -91,6 +128,13 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.WARNING_MESSAGE);
         return;
     }
+    if (!matricula.matches("[a-zA-Z0-9]+")) {
+    JOptionPane.showMessageDialog(this,
+        "La matrícula debe contener solo letras y números, sin espacios ni signos.",
+        "Advertencia",
+        JOptionPane.WARNING_MESSAGE);
+    return;
+}
 
     // Si todo está bien, crear objeto y guardar
     Especialista a = new Especialista(matricula, nombreYApe, telefono, especialidad, true);
@@ -99,12 +143,15 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     JOptionPane.showMessageDialog(this,"Especialista agregado correctamente","Éxito",JOptionPane.INFORMATION_MESSAGE);
 
     }
+    
+    //Limpiar Campos
     private void limpiarCampos() {
         txtNombreyApellido.setText("");
         //txtEspecialista.setText("");
         txtTelefono.setText("");
         txtMatricula.setText("");
     }
+    //Armado de Cabecera
     private void armarCabecera() {
         modelo.addColumn("Matricula");
         modelo.addColumn("Nombre y Apellido");
@@ -113,6 +160,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         modelo.addColumn("Estado");
         jtEspecialista.setModel(modelo);
     }
+    //Cargar datos
     private void cargarDatos() {
         String activo;
         try {
@@ -138,6 +186,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar Especialistas " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    //Buscar Especialista
      private void buscarEspecialistaPorMatricula() {
         try {
             String matri = txtBuscarMatricula.getText().trim();
@@ -171,6 +220,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "La matricula no esta bien escrita o esta vacia: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    //Borrar Especialista
       private void borrarEspecialista() {
         int fila = jtEspecialista.getSelectedRow();
         if (fila == -1) {
@@ -200,20 +250,74 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             }
         }
     }
+    //Guardar cambios de especialista al apretar boton Actualizar 
+      private boolean validarNombreApellido(String nombre) {
+    if (nombre == null || nombre.trim().isEmpty()) {
+        return false;
+    }
+    // Expresión regular que acepta letras mayúsculas/minúsculas, vocales con tilde, ñ/Ñ, y espacios.
+    String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+";
+    return nombre.matches(regex);
+}
       private void guardarCambiosDesdeTabla() {
-        int filaSeleccionada = jtEspecialista.getSelectedRow();
+          if (jtEspecialista.isEditing()) {
+        jtEspecialista.getCellEditor().stopCellEditing();
+        }
+          int filaSeleccionada = jtEspecialista.getSelectedRow();
 
         try {
             // obtener datos de la fila seleccionada
-            
             String matri=modelo.getValueAt(filaSeleccionada, 0).toString().trim();
+           // Validar matrícula
+                if (!matri.matches("[a-zA-Z0-9]+")) {
+                JOptionPane.showMessageDialog(this,
+                "La matrícula debe contener solo letras y números, sin espacios ni signos.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE);
+                return;
+                }
             String nomYApellido = modelo.getValueAt(filaSeleccionada, 1).toString().trim();
-            long tel = Long.parseLong(modelo.getValueAt(filaSeleccionada, 2).toString().trim());
+            // Validar nombre y apellido
+            System.out.println("Valor nombre y apellido: '"+nomYApellido+"'");
+          
+               // Validar nombre y apellido usando el método
+if (!validarNombreApellido(nomYApellido)) {
+    JOptionPane.showMessageDialog(this,
+        "El nombre y apellido deben contener solo letras y espacios.",
+        "Advertencia",
+        JOptionPane.WARNING_MESSAGE);
+    return;
+}
+            /* if (!nomYApellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+                JOptionPane.showMessageDialog(this,"El nombre y apellido deben contener solo letras y espacios.",
+                "Advertencia",JOptionPane.WARNING_MESSAGE);
+                return;
+                }*/
+            //long tel = Long.parseLong(modelo.getValueAt(filaSeleccionada, 2).toString().trim());
             String espe = modelo.getValueAt(filaSeleccionada, 3).toString().trim();
+            // Validar especialidad
+            String[] especialidadesPermitidas = {"Facial", "Corporal", "Relajación", "Estético"};
+                if (!Arrays.asList(especialidadesPermitidas).contains(espe)) {
+                JOptionPane.showMessageDialog(this,
+                "La especialidad debe ser una de las siguientes: Facial, Corporal, Relajación, Estético.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE);
+                return;
+                }
             String estadoStr = modelo.getValueAt(filaSeleccionada, 4).toString();
             boolean estado = estadoStr.equals("Activo");
-
-            Especialista especialistaActualizado = new Especialista(matri, nomYApellido, tel, espe, estado);
+            // Validar teléfono
+            long telefono;
+            try {
+                 telefono = Long.parseLong(modelo.getValueAt(filaSeleccionada, 2).toString().trim());
+                 } catch (NumberFormatException e) {
+                   JOptionPane.showMessageDialog(this,
+                   "Ingrese un número de teléfono válido.",
+                   "Error",
+                   JOptionPane.ERROR_MESSAGE);
+                   return;
+                   }
+            Especialista especialistaActualizado = new Especialista(matri, nomYApellido, telefono, espe, estado);
             especialistaActualizado.setMatricula(matri);
 
             especialistaData.actualizarEspecialista(especialistaActualizado);
@@ -226,6 +330,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al actualizar Especialista: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+      //Cambio de Estado del Especialista
     private void cambiarEstadoEspecialista() {
         int fila = jtEspecialista.getSelectedRow();
         Especialista aux = new Especialista();
@@ -309,9 +414,19 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtEspecialista.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jtEspecialistaMouseEntered(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtEspecialista);
 
         btnBorrar.setText("Borrar");
+        btnBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnBorrarMouseEntered(evt);
+            }
+        });
         btnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBorrarActionPerformed(evt);
@@ -319,6 +434,11 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         });
 
         btnActualizar.setText("Actualizar");
+        btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnActualizarMouseEntered(evt);
+            }
+        });
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActualizarActionPerformed(evt);
@@ -460,9 +580,9 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombreyApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboTipoEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboTipoEspecialidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombreyApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -518,12 +638,30 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         guardarCambiosDesdeTabla();
+        
+        
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnRegrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegrescarActionPerformed
         // TODO add your handling code here:
         cargarDatos();
     }//GEN-LAST:event_btnRegrescarActionPerformed
+
+    private void btnActualizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseEntered
+        // TODO add your handling code here:
+        //btnActualizarInstalacion.setToolTipText("modifica el campo con doble click y luego presiona aqui");
+        btnActualizar.setToolTipText("Modifica el campo con doble click y luego presiona aqui");
+    }//GEN-LAST:event_btnActualizarMouseEntered
+
+    private void jtEspecialistaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtEspecialistaMouseEntered
+        // TODO add your handling code here:
+        jtEspecialista.setToolTipText("Doble click en el campo que quiere modificar");
+    }//GEN-LAST:event_jtEspecialistaMouseEntered
+
+    private void btnBorrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBorrarMouseEntered
+        // TODO add your handling code here:
+         btnBorrar.setToolTipText("seleccione de la lista la instalación a borrar");
+    }//GEN-LAST:event_btnBorrarMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
