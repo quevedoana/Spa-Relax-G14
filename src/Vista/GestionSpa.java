@@ -41,6 +41,8 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         btnVerTratamientos = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        btnGestionConsultorios = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -115,6 +117,18 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenu2.add(btnVerTratamientos);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu8.setText("Consultorio");
+
+        btnGestionConsultorios.setText("Gestionar Consultorios");
+        btnGestionConsultorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionConsultoriosActionPerformed(evt);
+            }
+        });
+        jMenu8.add(btnGestionConsultorios);
+
+        jMenuBar1.add(jMenu8);
 
         setJMenuBar(jMenuBar1);
 
@@ -196,6 +210,19 @@ public class GestionSpa extends javax.swing.JFrame {
         ve.setVisible(true);
     }//GEN-LAST:event_btnVerTratamientosActionPerformed
 
+    private void btnGestionConsultoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionConsultoriosActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaConsultorio ve = new VistaConsultorio();
+        ve.setLocation(
+                (escritorio.getWidth() - ve.getWidth()) / 2,
+                (escritorio.getHeight() - ve.getHeight()) / 2
+        );
+        escritorio.add(ve);
+        ve.setVisible(true);
+    }//GEN-LAST:event_btnGestionConsultoriosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -232,6 +259,7 @@ public class GestionSpa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnGestionConsultorios;
     private javax.swing.JMenuItem btnVerTratamientos;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuItem jMCliente;
@@ -242,6 +270,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
