@@ -7,6 +7,7 @@ package Modelo;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -20,12 +21,12 @@ public class DiaDeSpa {
     private double monto;
     private boolean estado;
     private Cliente c;
-    private String sesiones;
+    private  List<Sesion> sesiones;
 
     public DiaDeSpa() {
     }
 
-    public DiaDeSpa(LocalDateTime fechaYHora, String preferencias, double monto, boolean estado, Cliente c, String sesiones) {
+    public DiaDeSpa(LocalDateTime fechaYHora, String preferencias, double monto, boolean estado, Cliente c, List<Sesion> sesiones) {
         this.fechaYHora = fechaYHora;
         this.preferencias = preferencias;
         this.monto = monto;
@@ -77,13 +78,15 @@ public class DiaDeSpa {
         this.estado = estado;
     }
 
-    public String getSesiones() {
+    public List<Sesion> getSesiones() {
         return sesiones;
     }
 
-    public void setSesiones(String sesiones) {
+    public void setSesiones(List<Sesion> sesiones) {
         this.sesiones = sesiones;
     }
+
+
 
     public Cliente getCliente() {
         return c;
@@ -94,10 +97,7 @@ public class DiaDeSpa {
     }
     
 
-    @Override
-    public String toString() {
-        return "DiaDeSpa{" + "codPack=" + codPack + ", fecha Y Hora=" + fechaYHora + ", preferencias=" + preferencias + ", monto=" + monto + ", estado=" + estado + '}';
-    }
+   
 
    
     
