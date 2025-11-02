@@ -457,7 +457,7 @@ private void armarCabecera() {
             modelo.setRowCount(0);
 
             if (id.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un nombre para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ingrese un id para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             modelo.setRowCount(0);
