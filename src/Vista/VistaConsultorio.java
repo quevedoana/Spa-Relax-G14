@@ -1,39 +1,263 @@
-
 package Vista;
 
 import Modelo.Consultorio;
 import Persistencia.ConsultorioData;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class VistaConsultorio extends javax.swing.JInternalFrame {
-    
-    private ConsultorioData consultorioData = new ConsultorioData();
-    private DefaultTableModel modelo;
 
-    
-    public VistaConsultorio() {
-        initComponents();
-        
-        modelo = new DefaultTableModel(){
-            @Override
-            public boolean isCellEditable(int fila, int column){
-                return column != 0;
+    private ConsultorioData consultorioData = new ConsultorioData();
+    private Consultorio consultorio = null;
+    private DefaultTableModel modelo = new DefaultTableModel() {
+
+        public boolean isCellEditable(int fila, int column) {
+            return column == 1 || column == 2;
+        }
+    };
+
+    private void armarCabecera() {
+        modelo.addColumn("Nro Consultorio");
+        modelo.addColumn("Usos");
+        modelo.addColumn("Equipamiento");
+        modelo.addColumn("Apto");
+        jTConsultorio.setModel(modelo);
+    }
+
+    private void deshabilitarBotones() {
+
+        btnBorrar.setEnabled(false);
+        btnActualizar.setEnabled(false);
+        btnCambiarApto.setEnabled(false);
+    }
+
+    private void habilitarBotones() {
+        btnBorrar.setEnabled(true);
+        btnActualizar.setEnabled(true);
+        btnCambiarApto.setEnabled(true);
+    }
+
+    private void inicializarComboTipoEspecialidad() {
+        String[] opciones = {"Seleccione...", "Facial", "Corporal", "Masajes", "Depilacion"};
+        jCBusos.removeAllItems();  // limpia items anteriores
+        for (String opt : opciones) {
+            jCBusos.addItem(opt);
+        }
+        jCBusos.setSelectedIndex(0);
+    }
+
+    private void inicializarEditorEspecialidadEnTabla() {
+        String[] opciones = {"Facial", "Corporal", "Masajes", "Depilacion"};
+        TableColumn columnaEspecialidad = jTConsultorio.getColumnModel().getColumn(1);
+        JComboBox<String> comboEditor = new JComboBox<>(opciones);
+        columnaEspecialidad.setCellEditor(new DefaultCellEditor(comboEditor));
+    }
+
+    private void cargarDatos() {
+        String activo;
+        try {
+            modelo.setRowCount(0);
+
+            for (Consultorio con : consultorioData.ListarConsultorios()) {
+                if (con.isApto()) {
+                    activo = "si";
+                } else {
+                    activo = "no";
+                }
+                modelo.addRow(new Object[]{
+                    con.getNroConsultorio(),
+                    con.getUsos(),
+                    con.getEquipamiento(),
+                    activo
+
+                });
             }
-        };
-        armarCabecera();
-        
-        inicializarComboUsos();
-        soloNumeros(txtNroConNew);
-        soloNumeros(txtNroConBusqueda);
-        refrescarTabla();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los alumnos " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void buscarConsultorioPorCod() {
+        try {
+            String cod = txtBuscaPorCod.getText().trim();
+            modelo.setRowCount(0);
+            if (cod.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un numero para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            modelo.setRowCount(0);
+
+            consultorio = consultorioData.buscarConsultorio(Integer.parseInt(cod));
+            String activo;
+            if (consultorio != null) {
+                if (consultorio.isApto()) {
+                    activo = "Si";
+                } else {
+                    activo = "No";
+                }
+                modelo.addRow(new Object[]{
+                    consultorio.getNroConsultorio(),
+                    consultorio.getUsos(),
+                    consultorio.getEquipamiento(),
+                    activo
+
+                });
+            }
+            txtBuscaPorCod.setText("");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El codigo es un numero: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void agregarConsultorioNuevo() {
+        try {
+
+            String especialidad = (String) jCBusos.getSelectedItem();
+            String equipamiento = txtEquipamiento.getText().trim();
+
+            if (equipamiento.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El campo equipamiento no puede estar vacío.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                txtEquipamiento.requestFocus();
+                return;
+            }
+
+            Consultorio con = new Consultorio(especialidad, equipamiento, true);
+            consultorioData.guardarConsultorio(con);
+            txtEquipamiento.setText("");
+            JOptionPane.showMessageDialog(this, "Consultorio agregado correctamente.", "mensaje", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al agregar la consultorio: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    private void borrarConsultorio() {
+
+        int fila = jTConsultorio.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "seleccione un consultorio a eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
+        if (fila != -1) {
+
+            int conf = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Seguro que desea eliminar el consultorio seleccionada?", "Advertencia", JOptionPane.YES_NO_OPTION);
+
+            if (conf == JOptionPane.YES_OPTION) {
+                try {
+                    int cod = (int) jTConsultorio.getValueAt(fila, 0);
+
+                    consultorioData.borrarConsultorio(cod);
+
+                    modelo.removeRow(fila);
+
+                    JOptionPane.showMessageDialog(this, "Consultorio eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Error al eliminar el consultorio: " + e.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+
+    private void guardarCambiosDesdeTabla() {
+        if (jTConsultorio.isEditing()) {
+            jTConsultorio.getCellEditor().stopCellEditing();
+        }
+        int filaSeleccionada = jTConsultorio.getSelectedRow();
+
+        try {
+            int nro = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
+            String usos = modelo.getValueAt(filaSeleccionada, 1).toString().trim();
+            String[] especialidadesPermitidas = {"Facial", "Corporal", "Masajes", "Depilacion"};
+            if (!Arrays.asList(especialidadesPermitidas).contains(usos)) {
+                JOptionPane.showMessageDialog(this,
+                        "Los usos deben ser alguno de los siguientes: Facial, Corporal, Masajes, Depilación.",
+                        "Advertencia",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            String equipamiento = modelo.getValueAt(filaSeleccionada, 2).toString();
+            String aptoStr = modelo.getValueAt(filaSeleccionada, 3).toString();
+            boolean apto = aptoStr.equals("Si");
+
+            Consultorio consultorioActualizado = new Consultorio(usos,equipamiento,apto);
+            consultorioActualizado.setNroConsultorio(nro);
+
+            consultorioData.actualizarConsultorio(consultorioActualizado);
+
+            JOptionPane.showMessageDialog(this, "Consultorio actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            cargarDatos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el consultorio: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
-   
+    private void cambiarEstado() {
+        int fila = jTConsultorio.getSelectedRow();
+        Consultorio aux = new Consultorio();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un consultorio", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
+        aux.setNroConsultorio((int) modelo.getValueAt(fila, 0));
+        aux.setUsos((String) modelo.getValueAt(fila, 1));
+        aux.setEquipamiento((String) modelo.getValueAt(fila, 2));
+        String nuevoEstado = (String) jCBapto.getSelectedItem();
+        boolean estadoBoolean = nuevoEstado.equals("Si");
+
+        try {
+            if (estadoBoolean) {
+
+                consultorioData.habilitarConsultorio(aux);
+            } else {
+
+                consultorioData.deshabilitarConsultorio(aux);
+            }
+            cargarDatos();
+
+            JOptionPane.showMessageDialog(this, "consultorio apto actualizado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cambiar consultorio apto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
+
+    public VistaConsultorio() {
+        initComponents();
+        armarCabecera();
+        cargarDatos();
+        deshabilitarBotones();
+        inicializarComboTipoEspecialidad();
+        inicializarEditorEspecialidadEnTabla();
+    jTConsultorio.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int filaSeleccionada = jTConsultorio.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                habilitarBotones();
+            } else {
+                deshabilitarBotones();
+            }
+        }
+    });;
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -42,32 +266,24 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jBbuscar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jBborrar = new javax.swing.JButton();
-        jBactualizar = new javax.swing.JButton();
-        jBrefrescar = new javax.swing.JButton();
+        btnBorrar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnRefrescar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jCBapto = new javax.swing.JComboBox<>();
-        jBaceptarApto = new javax.swing.JButton();
+        btnCambiarApto = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        txtNroConBusqueda = new javax.swing.JTextField();
-        txtNroConNew = new javax.swing.JTextField();
+        txtBuscaPorCod = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jRBcamilla = new javax.swing.JRadioButton();
-        jRBvacuumterapia = new javax.swing.JRadioButton();
-        jRBvaporizador = new javax.swing.JRadioButton();
-        jRBems = new javax.swing.JRadioButton();
-        jRBradiofrecuencia = new javax.swing.JRadioButton();
-        jRBcavitador = new javax.swing.JRadioButton();
-        jBsalir = new javax.swing.JButton();
-        jBguardar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jCBusos = new javax.swing.JComboBox<>();
-        jBaceptarUsos = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTConsultorio = new javax.swing.JTable();
+        txtEquipamiento = new javax.swing.JTextField();
 
         setTitle("Consultorio");
 
@@ -77,38 +293,32 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         jLabel2.setText("Nro de Consultorio:");
 
         jBbuscar.setText("Buscar");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Nro", "Usos", "Apto", "Equipamiento"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        jBborrar.setText("Borrar");
-        jBborrar.addActionListener(new java.awt.event.ActionListener() {
+        jBbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBborrarActionPerformed(evt);
+                jBbuscarActionPerformed(evt);
             }
         });
 
-        jBactualizar.setText("Actualizar");
+        btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
+            }
+        });
 
-        jBrefrescar.setText("Refrescar");
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        btnRefrescar.setText("Refrescar Tabla");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Apto:");
@@ -120,33 +330,29 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
-        jBaceptarApto.setText("Aceptar");
+        btnCambiarApto.setText("Aceptar");
+        btnCambiarApto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarAptoActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Agregar Consultorio");
 
-        jLabel5.setText("Nro de Consultorio:");
-
         jLabel6.setText("Equipamiento:");
 
-        jRBcamilla.setText("Camilla");
-
-        jRBvacuumterapia.setText("Vacuumterapia");
-
-        jRBvaporizador.setText("Vaporizador");
-
-        jRBems.setText("EMS");
-
-        jRBradiofrecuencia.setText("Radiofrecuencia");
-
-        jRBcavitador.setText("Cavitador");
-
-        jBsalir.setText("Salir");
-
-        jBguardar.setText("Guardar");
-        jBguardar.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBguardarActionPerformed(evt);
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
             }
         });
 
@@ -154,86 +360,89 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
 
         jCBusos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Facial", "Corporal", "Masajes", "Depilacion" }));
 
-        jBaceptarUsos.setText("Aceptar");
+        jTConsultorio.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTConsultorio);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(146, 146, 146)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(jLabel4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 5, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel3))
-                                .addGap(110, 110, 110)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCBapto, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(84, 84, 84)
-                                        .addComponent(jBaceptarApto))
-                                    .addComponent(jCBusos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(20, 20, 20)
-                                    .addComponent(txtNroConBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jBbuscar))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jBborrar)
-                                    .addGap(90, 90, 90)
-                                    .addComponent(jBactualizar)
-                                    .addGap(82, 82, 82)
-                                    .addComponent(jBrefrescar))))
-                        .addGap(20, 20, 20))
+                        .addComponent(jLabel2)
+                        .addGap(29, 29, 29)
+                        .addComponent(txtBuscaPorCod, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68)
+                        .addComponent(jBbuscar)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jSeparator1)
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jBaceptarUsos))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNroConNew))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRBcamilla)
-                                    .addComponent(jRBems))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRBvacuumterapia)
-                                    .addComponent(jRBradiofrecuencia))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRBcavitador)
-                                    .addComponent(jRBvaporizador)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(126, 126, 126)
+                                        .addComponent(jLabel1))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(61, 61, 61)
+                                        .addComponent(jLabel4)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(23, 23, 23))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jBsalir)
+                                .addComponent(btnBorrar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jBguardar)))
-                        .addGap(23, 23, 23))))
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(56, 56, 56)
+                                .addComponent(btnRefrescar))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(45, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jLabel7))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabel6)))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtEquipamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jCBusos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(46, 46, 46)
+                        .addComponent(btnGuardar)
+                        .addGap(15, 15, 15))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCBapto, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94)
+                .addComponent(btnCambiarApto)
+                .addGap(53, 53, 53))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(233, 233, 233)
+                .addComponent(btnSalir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,210 +452,123 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jBbuscar)
-                    .addComponent(txtNroConBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBuscaPorCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBactualizar)
-                    .addComponent(jBborrar)
-                    .addComponent(jBrefrescar))
+                    .addComponent(btnBorrar)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnRefrescar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBapto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBaceptarApto)
+                    .addComponent(btnCambiarApto)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCBusos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jBaceptarUsos))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addGap(8, 8, 8)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtNroConNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jRBvaporizador)
-                    .addComponent(jRBvacuumterapia)
-                    .addComponent(jRBcamilla))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRBcavitador)
-                    .addComponent(jRBradiofrecuencia)
-                    .addComponent(jRBems))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBguardar)
-                    .addComponent(jBsalir))
-                .addGap(65, 65, 65))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCBusos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtEquipamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGuardar)))
+                .addGap(54, 54, 54)
+                .addComponent(btnSalir)
+                .addGap(129, 129, 129))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 466, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBborrarActionPerformed
-       try {
-        int nro = Integer.parseInt(txtNroConNew.getText());
-        consultorioData.borrarConsultorio(nro);
-        JOptionPane.showMessageDialog(this, "Consultorio eliminado correctamente");
-        refrescarTabla();
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Ingrese un número válido de consultorio");
-    }
-    }//GEN-LAST:event_jBborrarActionPerformed
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        borrarConsultorio();
+    }//GEN-LAST:event_btnBorrarActionPerformed
 
-    
-    
+
     private void jCBaptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBaptoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCBaptoActionPerformed
 
-    private void jBguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBguardarActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        agregarConsultorioNuevo();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-        try {
-        //Toma número de consultorio
-        int nro = Integer.parseInt(txtNroConNew.getText().trim());
+        guardarCambiosDesdeTabla();
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
-        //Verifica que haya al menos un equipamiento seleccionado
-        StringBuilder equipamiento = new StringBuilder();
-        if (jRBcamilla.isSelected()) equipamiento.append("Camilla, ");
-        if (jRBvacuumterapia.isSelected()) equipamiento.append("Vacuumterapia, ");
-        if (jRBvaporizador.isSelected()) equipamiento.append("Vaporizador, ");
-        if (jRBems.isSelected()) equipamiento.append("EMS, ");
-        if (jRBradiofrecuencia.isSelected()) equipamiento.append("Radiofrecuencia, ");
-        if (jRBcavitador.isSelected()) equipamiento.append("Cavitador, ");
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        // TODO add your handling code here:
+        cargarDatos();
+    }//GEN-LAST:event_btnRefrescarActionPerformed
 
-        if (equipamiento.length() == 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione al menos un equipamiento.");
-            return;
-        }
-        
-        
+    private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
+        // TODO add your handling code here:
+        buscarConsultorioPorCod();
+    }//GEN-LAST:event_jBbuscarActionPerformed
 
-        // Eliminar última coma y espacio
-        equipamiento.setLength(equipamiento.length() - 2);
+    private void btnCambiarAptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarAptoActionPerformed
+        // TODO add your handling code here:
+        cambiarEstado();
+    }//GEN-LAST:event_btnCambiarAptoActionPerformed
 
-        //Crear objeto Consultorio
-        Consultorio con = new Consultorio(nro, null, equipamiento.toString(), true);
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
-        //Guardar en BD
-        consultorioData.guardarConsultorio(con);
-
-        //Mostrar mensaje y limpiar
-        JOptionPane.showMessageDialog(this, "Consultorio guardado correctamente.");
-        txtNroConNew.setText("");
-        jRBcamilla.setSelected(false);
-        jRBvacuumterapia.setSelected(false);
-        jRBvaporizador.setSelected(false);
-        jRBems.setSelected(false);
-        jRBradiofrecuencia.setSelected(false);
-        jRBcavitador.setSelected(false);
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Ingrese un número de consultorio válido.");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al guardar el consultorio: " + e.getMessage());
-    }
-        
-    }//GEN-LAST:event_jBguardarActionPerformed
-
-    private void soloNumeros(javax.swing.JTextField campo) {
-    campo.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyTyped(java.awt.event.KeyEvent evt) {
-            char c = evt.getKeyChar();
-            if (!Character.isDigit(c)) {
-                evt.consume();
-            }
-        }
-    });
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBaceptarApto;
-    private javax.swing.JButton jBaceptarUsos;
-    private javax.swing.JButton jBactualizar;
-    private javax.swing.JButton jBborrar;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnBorrar;
+    private javax.swing.JButton btnCambiarApto;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnRefrescar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JButton jBbuscar;
-    private javax.swing.JButton jBguardar;
-    private javax.swing.JButton jBrefrescar;
-    private javax.swing.JButton jBsalir;
     private javax.swing.JComboBox<String> jCBapto;
     private javax.swing.JComboBox<String> jCBusos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRBcamilla;
-    private javax.swing.JRadioButton jRBcavitador;
-    private javax.swing.JRadioButton jRBems;
-    private javax.swing.JRadioButton jRBradiofrecuencia;
-    private javax.swing.JRadioButton jRBvacuumterapia;
-    private javax.swing.JRadioButton jRBvaporizador;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txtNroConBusqueda;
-    private javax.swing.JTextField txtNroConNew;
+    private javax.swing.JTable jTConsultorio;
+    private javax.swing.JTextField txtBuscaPorCod;
+    private javax.swing.JTextField txtEquipamiento;
     // End of variables declaration//GEN-END:variables
-
-    private void armarCabecera() {
-    modelo.addColumn("Nro Consultorio");
-    modelo.addColumn("Usos");
-    modelo.addColumn("Apto");
-    modelo.addColumn("Equipamiento");
-    jTable1.setModel(modelo);
-}
-
-private void inicializarComboUsos() {
-    jCBusos.removeAllItems();
-    jCBusos.addItem("Facial");
-    jCBusos.addItem("Corporal");
-    jCBusos.addItem("Masajes");
-    jCBusos.addItem("Depilacion");
-}
-
-private void refrescarTabla() {
-    modelo.setRowCount(0); // Limpia la tabla
-    List<Consultorio> lista = consultorioData.ListarConsultorios();
-    for (Consultorio c : lista) {
-        modelo.addRow(new Object[]{
-            c.getNroConsultorio(),
-            c.getUsos(),
-            c.isApto() ? "Sí" : "No",
-            c.getEquipamiento()
-        });
-    }
-}
-
-private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {                                         
-    this.dispose(); // cierra solo esta ventana
-    // o System.exit(0); si querés cerrar todo el programa
-}
 
 }

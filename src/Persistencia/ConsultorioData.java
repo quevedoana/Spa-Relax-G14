@@ -28,13 +28,12 @@ public class ConsultorioData {
     }
     
     public void guardarConsultorio(Consultorio con) {
-        String query = "INSERT INTO consultorio (nroConsultorio, usos, equipamiento, apto) VALUES (?, ?, ?, ?";
+        String query = "INSERT INTO consultorio (usos, equipamiento, apto) VALUES (?, ?, ?)";
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, con.getNroConsultorio());
-            ps.setString(2, con.getUsos());
-            ps.setString(3, con.getEquipamiento());
-            ps.setBoolean(4, con.isApto());
+            ps.setString(1, con.getUsos());
+            ps.setString(2, con.getEquipamiento());
+            ps.setBoolean(3, con.isApto());
             ps.executeUpdate();
             
             ResultSet rs = ps.getGeneratedKeys();
@@ -60,7 +59,6 @@ public class ConsultorioData {
             
             if (resultado.next()) {
                 cons = new Consultorio(
-                resultado.getInt("nroConsultorio"),
                 resultado.getString("usos"),
                 resultado.getString("equipamiento"),
                 resultado.getBoolean("apto")
@@ -77,26 +75,22 @@ public class ConsultorioData {
     
     
     public List<Consultorio> ListarConsultorios() {
-        String sql = "SELECT * FROM consultorio";
         List<Consultorio> consultorios = new ArrayList<>();
-        
+        String sql = "SELECT * FROM consultorio";
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
-            ResultSet resultado = ps.executeQuery();
-            
-            while (resultado.next()) {
-                Consultorio con = new Consultorio(
-                resultado.getInt("nroConsultorio"),
-                resultado.getString("usos"),
-                resultado.getString("equipamiento"),
-                resultado.getBoolean("apto")
-                );
-                consultorios.add(con);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Consultorio c = new Consultorio();
+                c.setNroConsultorio(rs.getInt("nroConsultorio"));
+                c.setUsos(rs.getString("usos"));
+                c.setEquipamiento(rs.getString("equipamiento"));
+                c.setApto(rs.getBoolean("apto"));
+                consultorios.add(c);
             }
-            
             ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al listar los consultorios: " + e.getMessage());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al listar consultorios: " + ex.getMessage());
         }
         return consultorios;
     }

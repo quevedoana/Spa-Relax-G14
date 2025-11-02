@@ -56,7 +56,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar los alumnos " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al cargar la instalación " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -65,7 +65,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             String cod = txtBuscaPorCod.getText().trim();
             modelo.setRowCount(0);
             if (cod.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un nombre para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ingrese un codigo para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -152,9 +152,9 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
 
             if (conf == JOptionPane.YES_OPTION) {
                 try {
-                    int codCliente = (int) jTInstalacion.getValueAt(fila, 0);
+                    int cod = (int) jTInstalacion.getValueAt(fila, 0);
 
-                    instalacionData.BorrarInstalacion(codCliente);
+                    instalacionData.BorrarInstalacion(cod);
 
                     modelo.removeRow(fila);
 

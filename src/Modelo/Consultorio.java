@@ -22,8 +22,7 @@ public class Consultorio {
         
     }
 
-    public Consultorio(int nroConsultorio, String usos, String equipamiento, boolean apto) {
-        this.nroConsultorio = nroConsultorio;
+    public Consultorio( String usos, String equipamiento, boolean apto) {
         this.usos = usos;
         this.equipamiento = equipamiento;
         this.apto = apto;
@@ -59,6 +58,11 @@ public class Consultorio {
 
     public void setApto(boolean apto) {
         this.apto = apto;
+    }
+
+    @Override
+    public String toString() {
+        return  nroConsultorio + " " + usos + " " + equipamiento + " " + apto;
     }
     
     
