@@ -24,7 +24,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
-            return false;
+            return column == 1 || column == 2 || column == 6;
         }
     };
 
@@ -59,6 +59,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         jCEstado = new javax.swing.JComboBox<>();
         jBEstado = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jBSalir = new javax.swing.JButton();
 
         jLabel1.setText("codPack:");
 
@@ -116,6 +117,13 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
 
         jLabel3.setText("jLabel3");
 
+        jBSalir.setText("Salir");
+        jBSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBSalirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,7 +161,10 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(41, 41, 41)
-                        .addComponent(jLabel3)))
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(290, 290, 290)
+                        .addComponent(jBSalir)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -178,7 +189,9 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(179, 179, 179))
+                .addGap(123, 123, 123)
+                .addComponent(jBSalir)
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -209,12 +222,18 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         cambiarEstadoDiaDeSpa();
     }//GEN-LAST:event_jBEstadoMouseClicked
 
+    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jBSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBActualizar;
     private javax.swing.JButton jBBorrar;
     private javax.swing.JButton jBEstado;
     private javax.swing.JButton jBRefrescar;
+    private javax.swing.JButton jBSalir;
     private javax.swing.JComboBox<String> jCEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -318,10 +337,10 @@ private void borrarDiaDeSpa() {
             int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
             LocalDateTime fechaYHora = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
             String preferencias = modelo.getValueAt(filaSeleccionada, 2).toString().trim();
-            int codCli = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString().trim());
+            int codCli = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString());
             String estadoStr = modelo.getValueAt(filaSeleccionada, 4).toString();
-            int codSesion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 5).toString().trim());
-            double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 3).toString().trim());
+            int codSesion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 5).toString());
+            double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
             boolean estado = estadoStr.equals("Activo");
 
             DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.buscarSesion(codSesion));

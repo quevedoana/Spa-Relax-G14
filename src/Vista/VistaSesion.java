@@ -32,7 +32,7 @@ public class VistaSesion extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
-            return false;
+            return column ==1 || column == 2;
         }
     };
 
@@ -65,6 +65,7 @@ public class VistaSesion extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jCEstado = new javax.swing.JComboBox<>();
         jBEstado = new javax.swing.JButton();
+        jBSalir = new javax.swing.JButton();
 
         jLabel1.setText("CodSesion:");
 
@@ -120,6 +121,13 @@ public class VistaSesion extends javax.swing.JInternalFrame {
             }
         });
 
+        jBSalir.setText("Salir");
+        jBSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBSalirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,7 +158,10 @@ public class VistaSesion extends javax.swing.JInternalFrame {
                         .addGap(60, 60, 60)
                         .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51)
-                        .addComponent(jBEstado)))
+                        .addComponent(jBEstado))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(315, 315, 315)
+                        .addComponent(jBSalir)))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -175,7 +186,9 @@ public class VistaSesion extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBEstado))
-                .addGap(0, 193, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                .addComponent(jBSalir)
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -206,6 +219,11 @@ public class VistaSesion extends javax.swing.JInternalFrame {
         cambiarEstadoSesion();
     }//GEN-LAST:event_jBEstadoMouseClicked
 
+    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jBSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBActualizar;
@@ -213,6 +231,7 @@ public class VistaSesion extends javax.swing.JInternalFrame {
     private javax.swing.JButton jBBuscar;
     private javax.swing.JButton jBEstado;
     private javax.swing.JButton jBRefrescar;
+    private javax.swing.JButton jBSalir;
     private javax.swing.JComboBox<String> jCEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -319,11 +338,11 @@ private void borrarSesion() {
             LocalDateTime fechaYHoraInicio = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
             LocalDateTime fechaYHoraFin = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 2).toString().trim());
             int codTratam = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString());
-            int nroConsultorio = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 4).toString().trim());
+            int nroConsultorio = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 4).toString());
             String matriculaMasajista = modelo.getValueAt(filaSeleccionada, 5).toString();
-            int codInstalacion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
-            int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 7).toString().trim());
-            String estadoStr = modelo.getValueAt(filaSeleccionada, 8).toString().trim();
+            int codInstalacion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 6).toString());
+            int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 7).toString());
+            String estadoStr = modelo.getValueAt(filaSeleccionada, 8).toString();
             boolean estado = estadoStr.equals("Activo");
 
             Sesion sesionactualizada = new Sesion(fechaYHoraInicio, fechaYHoraFin, tratamientod.buscarTratamiento(codTratam),consultoriod.buscarConsultorio(nroConsultorio),especialistad.buscarEspecialista(matriculaMasajista), 
