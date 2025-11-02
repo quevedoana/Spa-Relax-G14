@@ -4,18 +4,38 @@
  * and open the template in the editor.
  */
 package Vista;
+import Modelo.DiaDeSpa;
+import Persistencia.ClienteData;
+import Persistencia.DiaDeSpaData;
+import Persistencia.SesionData;
+import java.time.LocalDateTime;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author esteb
  */
 public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
+    private DiaDeSpa diadespa = null;
+    private DiaDeSpaData diadespadata = new DiaDeSpaData();
+    private ClienteData cd = new ClienteData();
+    private SesionData sd= new SesionData();
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int fila, int column) {
+            return false;
+        }
+    };
 
     /**
      * Creates new form VistaDiaDeSpa
      */
     public VistaDiaDeSpa() {
         initComponents();
+        armarCabecera();
+        cargarDatos();
+        
     }
 
     /**
@@ -27,21 +47,330 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTCodPack = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jTBuscar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTDiaDeSpa = new javax.swing.JTable();
+        jBBorrar = new javax.swing.JButton();
+        jBActualizar = new javax.swing.JButton();
+        jBRefrescar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jCEstado = new javax.swing.JComboBox<>();
+        jBEstado = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+
+        jLabel1.setText("codPack:");
+
+        jTBuscar.setText("Buscar");
+        jTBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTBuscarMouseClicked(evt);
+            }
+        });
+
+        jTDiaDeSpa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTDiaDeSpa);
+
+        jBBorrar.setText("Borrar");
+        jBBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBBorrarMouseClicked(evt);
+            }
+        });
+
+        jBActualizar.setText("Actualizar");
+        jBActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBActualizarMouseClicked(evt);
+            }
+        });
+
+        jBRefrescar.setText("Refrescar Tabla");
+        jBRefrescar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBRefrescarMouseClicked(evt);
+            }
+        });
+
+        jLabel2.setText("Estado:");
+
+        jCEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+
+        jBEstado.setText("Editar Estado");
+        jBEstado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBEstadoMouseClicked(evt);
+            }
+        });
+
+        jLabel3.setText("jLabel3");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addComponent(jLabel1)
+                .addGap(59, 59, 59)
+                .addComponent(jTCodPack, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addComponent(jTBuscar)
+                .addGap(184, 184, 184))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(70, 70, 70)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(84, 84, 84)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel2)
+                                .addComponent(jBBorrar))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(127, 127, 127)
+                                    .addComponent(jBActualizar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jBRefrescar))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(66, 66, 66)
+                                    .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(61, 61, 61)
+                                    .addComponent(jBEstado)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel3)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTCodPack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTBuscar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBBorrar)
+                    .addComponent(jBActualizar)
+                    .addComponent(jBRefrescar))
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBEstado)
+                    .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(179, 179, 179))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTBuscarMouseClicked
+        // TODO add your handling code here:
+        buscarPorCodPack();
+    }//GEN-LAST:event_jTBuscarMouseClicked
+
+    private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
+        // TODO add your handling code here:
+        borrarDiaDeSpa();
+    }//GEN-LAST:event_jBBorrarMouseClicked
+
+    private void jBActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBActualizarMouseClicked
+        // TODO add your handling code here:
+        guardarCambiosDesdeTabla();
+    }//GEN-LAST:event_jBActualizarMouseClicked
+
+    private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
+        // TODO add your handling code here:
+        cargarDatos();
+    }//GEN-LAST:event_jBRefrescarMouseClicked
+
+    private void jBEstadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBEstadoMouseClicked
+        // TODO add your handling code here:
+        cambiarEstadoDiaDeSpa();
+    }//GEN-LAST:event_jBEstadoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBActualizar;
+    private javax.swing.JButton jBBorrar;
+    private javax.swing.JButton jBEstado;
+    private javax.swing.JButton jBRefrescar;
+    private javax.swing.JComboBox<String> jCEstado;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jTBuscar;
+    private javax.swing.JTextField jTCodPack;
+    private javax.swing.JTable jTDiaDeSpa;
     // End of variables declaration//GEN-END:variables
+private void armarCabecera() {
+
+        modelo.addColumn("CodPack");
+        modelo.addColumn("Fecha y Hora");
+        modelo.addColumn("Preferencias");
+        modelo.addColumn("codCli");
+        modelo.addColumn("Estado");
+        modelo.addColumn("codSesion");
+        modelo.addColumn("Monto");
+
+        jTDiaDeSpa.setModel(modelo);
+
+    }
+private void cargarDatos() {
+        String activo;
+        modelo.setRowCount(0);
+        for (DiaDeSpa d : diadespadata.listarDiasDeSpa()) {
+
+            if (d.isEstado()) {
+                activo = "Activo";
+            } else {
+                activo = "Inactivo";
+            }
+            modelo.addRow(new Object[]{d.getCodPack(),d.getFechaYHora(),d.getPreferencias(),d.getCliente().getCodCli(),activo,d.getSesion().getCodSesion(),d.getMonto()});
+        }
+    }
+private void buscarPorCodPack() {
+
+        try {
+            String id = (jTCodPack.getText().trim());
+            modelo.setRowCount(0);
+
+            if (id.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un codPack para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            modelo.setRowCount(0);
+
+            diadespa = diadespadata.buscarDiaDeSpa(Integer.parseInt(id));
+            String activo;
+            if (diadespa != null) {
+
+                if (diadespa.isEstado()) {
+                    activo = "Activo";
+                } else {
+                    activo = "Inactivo";
+                }
+                 modelo.addRow(new Object[]{diadespa.getCodPack(),diadespa.getFechaYHora(),diadespa.getPreferencias(),diadespa.getCliente().getCodCli(),activo,diadespa.getSesion().getCodSesion(),diadespa.getMonto()});
+
+                jTCodPack.setText("");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error al ingresar codPack", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+private void borrarDiaDeSpa() {
+        int fila = jTDiaDeSpa.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "seleccione un día de spa a eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
+        if (fila != -1) {
+            int conf = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Seguro que desea eliminar el dia de spa seleccionado?", "Advertencia", JOptionPane.YES_NO_OPTION);
+
+            if (conf == JOptionPane.YES_OPTION) {
+                try {
+                    int codPack = (int) jTDiaDeSpa.getValueAt(fila, 0);
+
+                    diadespadata.borrarDiaDeSpa(codPack);
+
+                    modelo.removeRow(fila);
+
+                    JOptionPane.showMessageDialog(this, "día de spa eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Error al eliminar el día de spa: " + e.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+ private void guardarCambiosDesdeTabla() {
+        int filaSeleccionada = jTDiaDeSpa.getSelectedRow();
+        
+
+        try {
+            // obtener datos de la fila seleccionada
+            int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
+            LocalDateTime fechaYHora = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
+            String preferencias = modelo.getValueAt(filaSeleccionada, 2).toString().trim();
+            int codCli = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString().trim());
+            String estadoStr = modelo.getValueAt(filaSeleccionada, 4).toString();
+            int codSesion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 5).toString().trim());
+            double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 3).toString().trim());
+            boolean estado = estadoStr.equals("Activo");
+
+            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.buscarSesion(codSesion));
+            diadespaactualizado.setCodPack(codPack);
+
+            diadespadata.actualizarDiaDeSpa(diadespaactualizado);
+
+            JOptionPane.showMessageDialog(this, "Día de spa actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            cargarDatos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar día de spa: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+ private void cambiarEstadoDiaDeSpa() {
+        int fila = jTDiaDeSpa.getSelectedRow();
+        DiaDeSpa aux = new DiaDeSpa();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un día de spa", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        aux.setCodPack((int) modelo.getValueAt(fila, 0));
+        aux.setFechaYHora((LocalDateTime) modelo.getValueAt(fila, 1));
+        aux.setPreferencias((String) modelo.getValueAt(fila, 2));
+        aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
+        aux.setSesion(sd.buscarSesion((int) modelo.getValueAt(fila, 5)));
+        aux.setMonto((double) modelo.getValueAt(fila, 6));
+
+        String nuevoEstado = (String) jCEstado.getSelectedItem();
+        boolean estadoBoolean = nuevoEstado.equals("Activo");
+
+        try {
+            if (estadoBoolean) {
+
+                diadespadata.habilitarDiaDeSpa(aux);
+
+            } else {
+
+                diadespadata.deshabilitarDiaDeSpa(aux);
+
+            }
+            cargarDatos();
+
+            JOptionPane.showMessageDialog(this, "Estado del día de spa cambio a: " + nuevoEstado, "Exito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

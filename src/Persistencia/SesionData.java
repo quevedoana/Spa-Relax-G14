@@ -28,6 +28,7 @@ public class SesionData {
     public SesionData() {
         conexion = Conexion.getConexion();
     }
+    
     private TratamientoData tratamientodata = new TratamientoData();
     private ConsultorioData consultoriodata = new ConsultorioData();
     private EspecialistaData especialistadata = new EspecialistaData();
@@ -182,7 +183,7 @@ public class SesionData {
              
              ps.close();
              
-     }catch(SQLException e){
+     }  catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error al deshabilitar la sesión" + e.getMessage());
 }
      }
