@@ -18,14 +18,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VistaTratamiento extends javax.swing.JInternalFrame {
 
-    private TratamientoData tratamientoData;
+    private TratamientoData tratamientoData = new TratamientoData();
     private DefaultTableModel modeloTabla;
 
     public VistaTratamiento() {
         initComponents();
-        tratamientoData = new TratamientoData();
         inicializarTabla();
-        cargarTratamientos();
+        cargarTratamientosPorTipo(null);
 
         // Agrupar radio buttons para que sean exclusivos
         ButtonGroup grupoTipos = new ButtonGroup();
@@ -64,9 +63,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         tablaTratamientosFiltrados.setModel(modeloTabla);
     }
 
-    private void cargarTratamientos() {
-        cargarTratamientosPorTipo(null); // Carga todos
-    }
 
     private void cargarTratamientosPorTipo(String tipo) {
         modeloTabla.setRowCount(0);
@@ -92,19 +88,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             modeloTabla.addRow(fila);
         }
     }
-
-    private void btnCorporalActionPerformed(java.awt.event.ActionEvent evt) {
-        cargarTratamientosPorTipo("Corporal");
-    }
-
-    private void btnRelajacionActionPerformed(java.awt.event.ActionEvent evt) {
-        cargarTratamientosPorTipo("Relajacion");
-    }
-
-    private void btnEsteticoActionPerformed(java.awt.event.ActionEvent evt) {
-        cargarTratamientosPorTipo("Estetico");
-    }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -151,10 +134,25 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         });
 
         btnCorporal.setText("Corporal");
+        btnCorporal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCorporalActionPerformed(evt);
+            }
+        });
 
         btnRelajacion.setText("Relajacion");
+        btnRelajacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelajacionActionPerformed(evt);
+            }
+        });
 
         btnEstetico.setText("Estetico");
+        btnEstetico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEsteticoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 102));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -285,6 +283,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
     private void btnFacialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacialActionPerformed
         // TODO add your handling code here:
+        cargarTratamientosPorTipo("Facial");
     }//GEN-LAST:event_btnFacialActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
@@ -296,7 +295,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         int filaSeleccionada = tablaTratamientosFiltrados.getSelectedRow();
         
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Por favor seleccione un tratamiento para modificar");
+            JOptionPane.showMessageDialog(this, "Seleccione un tratamiento para modificar");
             return;
         }
 
@@ -342,19 +341,14 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
                 return;
             }
 
-            // Crear y actualizar tratamiento
-            Tratamiento tratamientoModificado = new Tratamiento(
-                    codTratam, nombre.trim(),
-                    detalle != null ? detalle.trim() : "",
-                    tipo != null ? tipo.trim() : "",
-                    duracion, costo, activo, producto
-            );
+           
+            Tratamiento tratamientoModificado = new Tratamiento(nombre,detalle,tipo,duracion,costo,activo,producto);
 
              
 
            if (tratamientoData.ModificarTratamiento(tratamientoModificado)) {
                 JOptionPane.showMessageDialog(this, "Tratamiento modificado correctamente");
-                cargarTratamientos(); // Recargar tabla
+                cargarTratamientosPorTipo(tipo); // Recargar tabla
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo modificar el tratamiento");
             }
@@ -368,7 +362,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         int filaSeleccionada = tablaTratamientosFiltrados.getSelectedRow();
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Por favor seleccione un tratamiento para eliminar");
+            JOptionPane.showMessageDialog(this, "Seleccione un tratamiento para eliminar");
             return;
         }
 
@@ -385,7 +379,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         if (confirmacion == JOptionPane.YES_OPTION) {
             if (tratamientoData.BajaTratamiento(codTratam)) {
                 JOptionPane.showMessageDialog(this, "Tratamiento eliminado correctamente");
-                cargarTratamientos(); // Recargar tabla
+                cargarTratamientosPorTipo(null);
             } else {
                 JOptionPane.showMessageDialog(this, "Error al eliminar el tratamiento");
             }
@@ -406,7 +400,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
     private void btnActualizarTablaTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarTablaTrataActionPerformed
         // TODO add your handling code here:
-         cargarTratamientos();
+         cargarTratamientosPorTipo(null);
         // Deseleccionar radio buttons
         btnFacial.setSelected(false);
         btnCorporal.setSelected(false);
@@ -414,6 +408,21 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         btnEstetico.setSelected(false);
         JOptionPane.showMessageDialog(this, "Tabla actualizada correctamente");
     }//GEN-LAST:event_btnActualizarTablaTrataActionPerformed
+
+    private void btnCorporalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCorporalActionPerformed
+        // TODO add your handling code here:
+        cargarTratamientosPorTipo("Corporal");
+    }//GEN-LAST:event_btnCorporalActionPerformed
+
+    private void btnRelajacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelajacionActionPerformed
+        // TODO add your handling code here:
+        cargarTratamientosPorTipo("Relajacion");
+    }//GEN-LAST:event_btnRelajacionActionPerformed
+
+    private void btnEsteticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEsteticoActionPerformed
+        // TODO add your handling code here:
+        cargarTratamientosPorTipo("Estetico");
+    }//GEN-LAST:event_btnEsteticoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

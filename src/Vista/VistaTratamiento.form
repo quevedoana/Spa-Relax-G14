@@ -156,16 +156,25 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Corporal"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCorporalActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="btnRelajacion">
           <Properties>
             <Property name="text" type="java.lang.String" value="Relajacion"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRelajacionActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="btnEstetico">
           <Properties>
             <Property name="text" type="java.lang.String" value="Estetico"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEsteticoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>

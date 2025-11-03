@@ -30,47 +30,43 @@ public class TratamientoData {
 
     //AGREGAR UN TRATAMIENTO
     public void AltaTratamiento(Tratamiento t) {
-    String query = "INSERT INTO tratamiento(codTratam, nombre, detalle, tipo, duracion, costo, activo, productos) VALUES (?,?,?,?,?,?,?,?)";
-    try {
-        PreparedStatement ps = conexion.prepareStatement(query);
-        ps.setInt(1, t.getCodTratam());
-        ps.setString(2, t.getNombre());
-        ps.setString(3, t.getDetalle());
-        ps.setString(4, t.getTipo());
-        ps.setInt(5, t.getDuracion());
-        ps.setDouble(6, t.getCosto());
-        ps.setBoolean(7, t.isActivo());
-        ps.setString(8, t.getProductos()); 
+        String query = "INSERT INTO tratamiento(nombre, detalle, tipo, duracion, costo, activo, productos) VALUES (?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, t.getNombre());
+            ps.setString(2, t.getDetalle());
+            ps.setString(3, t.getTipo());
+            ps.setInt(4, t.getDuracion());
+            ps.setDouble(5, t.getCosto());
+            ps.setBoolean(6, t.isActivo());
+            ps.setString(7, t.getProductos());
+            ps.executeUpdate();
 
-        int filasAfectadas = ps.executeUpdate();
-        
-        if (filasAfectadas > 0) {
-            System.out.println("Tratamiento agregado correctamente a la BD");
-        } else {
-            System.out.println("No se pudo agregar el tratamiento");
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                t.setCodTratam(rs.getInt(1));
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener el codigo del tratamiento");
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el Tratamiento: " + e.getMessage());
         }
-        
-        ps.close();
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al guardar el Tratamiento: " + e.getMessage());
-        
     }
-}
-    //buscar un tratamiento
-public Tratamiento buscarTratamiento(int codTratam) { 
+
+    //BUSCAR TRATAMIENTO
+    public Tratamiento buscarTratamiento(int codTratam) {
         String sql = "SELECT * FROM tratamiento WHERE codTratam = ? ";
         Tratamiento t = null;
-        
-        
+
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ps.setInt(1, codTratam);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
-                t = new Tratamiento(rs.getString("nombre"),rs.getString("detalle"),rs.getString("tipo"),rs.getInt("duracion"),rs.getDouble("costo"),rs.getBoolean("estado"),rs.getString("productos"));
-               t.setCodTratam(rs.getInt("codTratam"));
+                t = new Tratamiento(rs.getString("nombre"), rs.getString("detalle"), rs.getString("tipo"), rs.getInt("duracion"), rs.getDouble("costo"), rs.getBoolean("estado"), rs.getString("productos"));
+                t.setCodTratam(rs.getInt("codTratam"));
 
             } else {
                 System.out.println("No se encontro el tratamiento");
@@ -83,6 +79,7 @@ public Tratamiento buscarTratamiento(int codTratam) {
         }
         return t;
     }
+
     //ELIMAR UN TRATAMIENTO
     public boolean BajaTratamiento(int codTratam) {
 
@@ -97,41 +94,36 @@ public Tratamiento buscarTratamiento(int codTratam) {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println("Error al eliminar tratamiento: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al eliminar el tratamiento: " + ex.getMessage());
         }
         return false;
 
     }
+
     //PONER INACTIVO UN TRATAMIENTO
-    public boolean BajaLogicaTratamiento(int codTratam) {
+    public void BajaLogicaTratamiento(int codTratam) {
         String sql = "UPDATE tratamiento SET activo = false WHERE codTratam = ?";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, codTratam);
-
-            int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;
-
+            ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
-            System.out.println("Error al dar de baja tratamiento: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error en desactivar el tratamiento: " + ex.getMessage());
         }
-        return false;
     }
 
     //PONER ACTIVO UN TRTAMIENTO
-    public boolean AltaLogicaTratamiento(int codTratam) {
+    public void AltaLogicaTratamiento(int codTratam) {
         String sql = "UPDATE tratamiento SET activo = true WHERE codTratam = ?";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, codTratam);
-
-            int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;
-
+            ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
-            System.out.println("Error al dar de baja tratamiento: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error en activar el tratamiento: " + ex.getMessage());
         }
-        return false;
     }
 
     //MODIFICAR UN TRATAMIENTO
@@ -153,7 +145,7 @@ public Tratamiento buscarTratamiento(int codTratam) {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println("Error al actualizar tratamiento: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al editar tratamiento: " + ex.getMessage());
         }
         return false;
     }
@@ -161,56 +153,57 @@ public Tratamiento buscarTratamiento(int codTratam) {
     //LISTAR TRATAMIENTOS POR TIPO
     public List<Tratamiento> listarTratamientosPorTipo(String tipo) {
         List<Tratamiento> tratamientos = new ArrayList<>();
-        String sql = "SELECT * FROM tratamiento WHERE tipo = ? AND activo = true ORDER BY nombre";
+        String sql = "SELECT * FROM tratamiento WHERE tipo = ? AND activo = true";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, tipo);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Tratamiento tratamiento = crearTratamientoDesdeResultSet(rs);
+                 Tratamiento tratamiento = new Tratamiento();
+                tratamiento.setCodTratam(rs.getInt("codTratam"));
+                tratamiento.setNombre(rs.getString("nombre"));
+                tratamiento.setDetalle(rs.getString("detalle"));
+                tratamiento.setTipo(rs.getString("tipo"));
+                tratamiento.setDuracion(rs.getInt("duracion"));
+                tratamiento.setCosto(rs.getDouble("costo"));
+                tratamiento.setActivo(rs.getBoolean("activo"));
+                tratamiento.setProductos(rs.getString("productos"));
                 tratamientos.add(tratamiento);
             }
 
         } catch (SQLException ex) {
-            System.out.println("Error al listar tratamientos por tipo: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al listar los tratamientos por tipo: " + ex.getMessage());
         }
 
         return tratamientos;
     }
-    
+
     public List<Tratamiento> listarTodosTratamientos() {
         List<Tratamiento> tratamientos = new ArrayList<>();
-        String sql = "SELECT * FROM tratamiento WHERE activo = true ORDER BY nombre";
+        String sql = "SELECT * FROM tratamiento WHERE activo = true";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Tratamiento tratamiento = crearTratamientoDesdeResultSet(rs);
+                Tratamiento tratamiento = new Tratamiento();
+                tratamiento.setCodTratam(rs.getInt("codTratam"));
+                tratamiento.setNombre(rs.getString("nombre"));
+                tratamiento.setDetalle(rs.getString("detalle"));
+                tratamiento.setTipo(rs.getString("tipo"));
+                tratamiento.setDuracion(rs.getInt("duracion"));
+                tratamiento.setCosto(rs.getDouble("costo"));
+                tratamiento.setActivo(rs.getBoolean("activo"));
+                tratamiento.setProductos(rs.getString("productos"));
                 tratamientos.add(tratamiento);
             }
-
+            ps.close();
         } catch (SQLException ex) {
-            System.out.println("Error al listar todos los tratamientos: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al listar los tratamientos: " + ex.getMessage());
         }
 
         return tratamientos;
     }
-    
 
-    //METODO AUX
-    private Tratamiento crearTratamientoDesdeResultSet(ResultSet rs) throws SQLException {
-        Tratamiento tratamiento = new Tratamiento();
-        tratamiento.setCodTratam(rs.getInt("codTratam"));
-        tratamiento.setNombre(rs.getString("nombre"));
-        tratamiento.setDetalle(rs.getString("detalle"));
-        tratamiento.setTipo(rs.getString("tipo"));
-        tratamiento.setDuracion(rs.getInt("duracion"));
-        tratamiento.setCosto(rs.getDouble("costo"));
-        tratamiento.setActivo(rs.getBoolean("activo"));
-        tratamiento.setProductos(rs.getString("productos"));
-
-        return tratamiento;
-    }
 }
