@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  *
  * @author esteb
  */
-public class Sesion {
+public class Turno {
     private int codSesion;
     private LocalDateTime fechaYHoraDeInicio;
     private LocalDateTime fechaYHoraDeFin;
@@ -22,10 +22,10 @@ public class Sesion {
     private DiaDeSpa DiaDeSpa;
     private boolean estado;
 
-    public Sesion() {
+    public Turno() {
     }
 
-    public Sesion(LocalDateTime fechaYHoraDeInicio, LocalDateTime fechaYHoraDeFin, Tratamiento tratamiento, Consultorio Consultorio, Especialista especialista, Instalacion instalacion, DiaDeSpa DiaDeSpa, boolean estado) {
+    public Turno(LocalDateTime fechaYHoraDeInicio, LocalDateTime fechaYHoraDeFin, Tratamiento tratamiento, Consultorio Consultorio, Especialista especialista, Instalacion instalacion, DiaDeSpa DiaDeSpa, boolean estado) {
         this.fechaYHoraDeInicio = fechaYHoraDeInicio;
         this.fechaYHoraDeFin = fechaYHoraDeFin;
         this.tratamiento = tratamiento;

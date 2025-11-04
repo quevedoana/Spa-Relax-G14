@@ -6,7 +6,7 @@
 package Persistencia;
 
 import Modelo.Conexion;
-import Modelo.Sesion;
+import Modelo.Turno;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,11 +21,11 @@ import javax.swing.JOptionPane;
  *
  * @author esteb
  */
-public class SesionData {
+public class TurnoData {
 
     private Connection conexion = null;
 
-    public SesionData() {
+    public TurnoData() {
         conexion = Conexion.getConexion();
     }
     
@@ -35,7 +35,7 @@ public class SesionData {
     private InstalacionData instalaciondata = new InstalacionData();
     private DiaDeSpaData diadespadata = new DiaDeSpaData();
 
-    public void guardarSesion(Sesion s) {
+    public void guardarSesion(Turno s) {
 
         String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
         try {
@@ -66,9 +66,9 @@ public class SesionData {
         }
     }
 
-    public Sesion buscarSesion(int codSesion) {
+    public Turno buscarSesion(int codSesion) {
         String sql = "SELECT * FROM sesion WHERE codSesion = ? ";
-        Sesion s = null;
+        Turno s = null;
 
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -78,7 +78,7 @@ public class SesionData {
                 Timestamp ts = rs.getTimestamp("fechaYHoraInicio");
                 Timestamp ts1 = rs.getTimestamp("fechaYHoraFin");
 
-                s = new Sesion(ts.toLocalDateTime(), ts1.toLocalDateTime(), tratamientodata.buscarTratamiento(rs.getInt("codTratamiento")), consultoriodata.buscarConsultorio(rs.getInt("nroConsultorio")),
+                s = new Turno(ts.toLocalDateTime(), ts1.toLocalDateTime(), tratamientodata.buscarTratamiento(rs.getInt("codTratamiento")), consultoriodata.buscarConsultorio(rs.getInt("nroConsultorio")),
                         especialistadata.buscarEspecialista(rs.getString("matriculaMasajista")), instalaciondata.buscarInstalacion(rs.getInt("codInstalacion")), diadespadata.buscarDiaDeSpa(rs.getInt("codPack")),
                         rs.getBoolean("estado"));
                 s.setCodSesion(rs.getInt("codSesion"));
@@ -95,10 +95,10 @@ public class SesionData {
         return s;
     }
 
-    public List<Sesion> listarSesiones() {
+    public List<Turno> listarSesiones() {
         String sql = "SELECT * FROM sesion WHERE 1";
-        Sesion s = null;
-        List<Sesion> sesiones = new ArrayList();
+        Turno s = null;
+        List<Turno> sesiones = new ArrayList();
 
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -108,7 +108,7 @@ public class SesionData {
                 Timestamp ts = rs.getTimestamp("fechaYHoraInicio");
                 Timestamp ts1 = rs.getTimestamp("fechaYHoraFin");
 
-                s = new Sesion(ts.toLocalDateTime(), ts1.toLocalDateTime(), tratamientodata.buscarTratamiento(rs.getInt("codTratamiento")), consultoriodata.buscarConsultorio(rs.getInt("nroConsultorio")),
+                s = new Turno(ts.toLocalDateTime(), ts1.toLocalDateTime(), tratamientodata.buscarTratamiento(rs.getInt("codTratamiento")), consultoriodata.buscarConsultorio(rs.getInt("nroConsultorio")),
                         especialistadata.buscarEspecialista(rs.getString("matriculaMasajista")), instalaciondata.buscarInstalacion(rs.getInt("codInstalacion")), diadespadata.buscarDiaDeSpa(rs.getInt("codPack")),
                         rs.getBoolean("estado"));
                 s.setCodSesion(rs.getInt("codSesion"));
@@ -125,7 +125,7 @@ public class SesionData {
         }
         return sesiones;
     }
-     public void actualizarSesion(Sesion s){
+     public void actualizarSesion(Turno s){
         String sql = "UPDATE sesion SET fechaYHoraInicio = ?, fechaYHoraFin = ?, codTratamiento = ?, nroConsultorio = ?, matriculaMasajista = ?, codInstalacion = ?, codPack = ?, estado = ? WHERE codSesion = ? ";
         try{
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -159,7 +159,7 @@ public class SesionData {
             JOptionPane.showMessageDialog(null, "Error al borrar la sesión" + e.getMessage());
         }    
 }
-       public void habilitarSesion(Sesion s){
+       public void habilitarSesion(Turno s){
          String sql = "UPDATE sesion SET estado = 1 WHERE codSesion = ? AND estado = 0 ";
          try{
              PreparedStatement ps = conexion.prepareStatement(sql);
@@ -173,7 +173,7 @@ public class SesionData {
             JOptionPane.showMessageDialog(null, "Error al habilitar la sesión" + e.getMessage());
 }
      }
-       public void deshabilitarSesion(Sesion s){
+       public void deshabilitarSesion(Turno s){
          String sql = "UPDATE sesion SET estado = 0 WHERE codSesion = ? AND estado = 1 ";
          try{
              PreparedStatement ps = conexion.prepareStatement(sql);

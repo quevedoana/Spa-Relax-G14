@@ -7,7 +7,7 @@ package Vista;
 import Modelo.DiaDeSpa;
 import Persistencia.ClienteData;
 import Persistencia.DiaDeSpaData;
-import Persistencia.SesionData;
+import Persistencia.TurnoData;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,7 +20,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     private DiaDeSpa diadespa = null;
     private DiaDeSpaData diadespadata = new DiaDeSpaData();
     private ClienteData cd = new ClienteData();
-    private SesionData sd= new SesionData();
+    private TurnoData sd= new TurnoData();
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {

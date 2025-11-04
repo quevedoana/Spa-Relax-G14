@@ -7,7 +7,7 @@ package Persistencia;
 
 import Modelo.Conexion;
 import Modelo.DiaDeSpa;
-import Modelo.Sesion;
+import Modelo.Turno;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
@@ -63,7 +63,7 @@ public class DiaDeSpaData {
         String sql = "SELECT * FROM dia_de_spa WHERE codPack=?";
         DiaDeSpa dia = null;
         ClienteData cd = new ClienteData();
-        SesionData sd = new SesionData();
+        TurnoData sd = new TurnoData();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ps.setInt(1, codPack);
@@ -90,7 +90,7 @@ public class DiaDeSpaData {
         String sql = "SELECT * FROM dia_de_spa WHERE 1";
         DiaDeSpa dia = null;
         ClienteData cd = new ClienteData();
-        SesionData sd = new SesionData();
+        TurnoData sd = new TurnoData();
         List<DiaDeSpa> dias = new ArrayList();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);

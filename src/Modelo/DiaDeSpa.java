@@ -21,12 +21,12 @@ public class DiaDeSpa {
     private double monto;
     private boolean estado;
     private Cliente c;
-    private  Sesion sesion;
+    private  Turno sesion;
 
     public DiaDeSpa() {
     }
 
-    public DiaDeSpa(LocalDateTime fechaYHora, String preferencias, double monto, boolean estado, Cliente c, Sesion sesion) {
+    public DiaDeSpa(LocalDateTime fechaYHora, String preferencias, double monto, boolean estado, Cliente c, Turno sesion) {
         this.fechaYHora = fechaYHora;
         this.preferencias = preferencias;
         this.monto = monto;
@@ -78,11 +78,11 @@ public class DiaDeSpa {
         this.estado = estado;
     }
 
-    public Sesion getSesion() {
+    public Turno getSesion() {
         return sesion;
     }
 
-    public void setSesion(Sesion sesiones) {
+    public void setSesion(Turno sesiones) {
         this.sesion = sesion;
     }
 

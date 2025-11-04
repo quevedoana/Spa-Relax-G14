@@ -6,12 +6,12 @@
 package Vista;
 
 
-import Modelo.Sesion;
+import Modelo.Turno;
 import Persistencia.ConsultorioData;
 import Persistencia.DiaDeSpaData;
 import Persistencia.EspecialistaData;
 import Persistencia.InstalacionData;
-import Persistencia.SesionData;
+import Persistencia.TurnoData;
 import Persistencia.TratamientoData;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
@@ -21,9 +21,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author esteb
  */
-public class VistaSesion extends javax.swing.JInternalFrame {
-    private Sesion sesion = null;
-    private SesionData sesiondata = new SesionData();
+public class VistaTurno extends javax.swing.JInternalFrame {
+    private Turno sesion = null;
+    private TurnoData sesiondata = new TurnoData();
     private TratamientoData tratamientod = new TratamientoData();
     private ConsultorioData consultoriod = new ConsultorioData();
     private EspecialistaData especialistad = new EspecialistaData();
@@ -39,7 +39,7 @@ public class VistaSesion extends javax.swing.JInternalFrame {
     /**
      * Creates new form VistaSesion
      */
-    public VistaSesion() {
+    public VistaTurno() {
         initComponents();
         armarCabecera();
         cargarDatos();
@@ -257,7 +257,7 @@ private void armarCabecera() {
 private void cargarDatos() {
         String activo;
         modelo.setRowCount(0);
-        for (Sesion s : sesiondata.listarSesiones()) {
+        for (Turno s : sesiondata.listarSesiones()) {
 
             if (s.isEstado()) {
                 activo = "Activo";
@@ -345,7 +345,7 @@ private void borrarSesion() {
             String estadoStr = modelo.getValueAt(filaSeleccionada, 8).toString();
             boolean estado = estadoStr.equals("Activo");
 
-            Sesion sesionactualizada = new Sesion(fechaYHoraInicio, fechaYHoraFin, tratamientod.buscarTratamiento(codTratam),consultoriod.buscarConsultorio(nroConsultorio),especialistad.buscarEspecialista(matriculaMasajista), 
+            Turno sesionactualizada = new Turno(fechaYHoraInicio, fechaYHoraFin, tratamientod.buscarTratamiento(codTratam),consultoriod.buscarConsultorio(nroConsultorio),especialistad.buscarEspecialista(matriculaMasajista), 
             instalaciond.buscarInstalacion(codInstalacion),diadespad.buscarDiaDeSpa(codPack),estado);
             sesionactualizada.setCodSesion(codSesion);
 
@@ -361,7 +361,7 @@ private void borrarSesion() {
     }
  private void cambiarEstadoSesion() {
         int fila = jTSesiones.getSelectedRow();
-        Sesion aux = new Sesion();
+        Turno aux = new Turno();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar una sesión", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
