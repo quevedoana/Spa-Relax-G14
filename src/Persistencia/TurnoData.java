@@ -6,6 +6,10 @@
 package Persistencia;
 
 import Modelo.Conexion;
+import Modelo.Consultorio;
+import Modelo.Especialista;
+import Modelo.Instalacion;
+import Modelo.Tratamiento;
 import Modelo.Turno;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,14 +32,15 @@ public class TurnoData {
     public TurnoData() {
         conexion = Conexion.getConexion();
     }
-    
+
     private TratamientoData tratamientodata = new TratamientoData();
     private ConsultorioData consultoriodata = new ConsultorioData();
     private EspecialistaData especialistadata = new EspecialistaData();
     private InstalacionData instalaciondata = new InstalacionData();
     private DiaDeSpaData diadespadata = new DiaDeSpaData();
 
-    public void guardarSesion(Turno s) {
+    //AGREGAR TURNO
+    public void AltaTurno(Turno s) {
 
         String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
         try {
@@ -66,7 +71,20 @@ public class TurnoData {
         }
     }
 
-    public Turno buscarSesion(int codSesion) {
+    //BORRAR UN TURNO
+    public void BajaTurno(int codSesion) {
+        String sql = "DELETE FROM sesion WHERE codSesion = ? ";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, codSesion);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al borrar la sesión" + e.getMessage());
+        }
+    }
+
+    public Turno BuscarTurno(int codSesion) {
         String sql = "SELECT * FROM sesion WHERE codSesion = ? ";
         Turno s = null;
 
@@ -95,7 +113,7 @@ public class TurnoData {
         return s;
     }
 
-    public List<Turno> listarSesiones() {
+    public List<Turno> ListarTurnos() {
         String sql = "SELECT * FROM sesion WHERE 1";
         Turno s = null;
         List<Turno> sesiones = new ArrayList();
@@ -125,9 +143,10 @@ public class TurnoData {
         }
         return sesiones;
     }
-     public void actualizarSesion(Turno s){
+
+    public void ActualizarTurno(Turno s) {
         String sql = "UPDATE sesion SET fechaYHoraInicio = ?, fechaYHoraFin = ?, codTratamiento = ?, nroConsultorio = ?, matriculaMasajista = ?, codInstalacion = ?, codPack = ?, estado = ? WHERE codSesion = ? ";
-        try{
+        try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             Timestamp tm = Timestamp.valueOf(s.getFechaYHoraDeInicio());
             Timestamp tm2 = Timestamp.valueOf(s.getFechaYHoraDeFin());
@@ -141,52 +160,99 @@ public class TurnoData {
             ps.setBoolean(8, s.isEstado());
             ps.setInt(9, s.getCodSesion());
             ps.executeUpdate();
-            
+
             ps.close();
-            
-        }catch(SQLException e){
+
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al actualizar la sesión" + e.getMessage());
         }
-}
-      public void borrarSesion(int codSesion){
-            String sql = "DELETE FROM sesion WHERE codSesion = ? ";
-            try{
-                PreparedStatement ps = conexion.prepareStatement(sql);
-                ps.setInt(1, codSesion);
-                ps.executeUpdate();
-                ps.close();
-            }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al borrar la sesión" + e.getMessage());
-        }    
-}
-       public void habilitarSesion(Turno s){
-         String sql = "UPDATE sesion SET estado = 1 WHERE codSesion = ? AND estado = 0 ";
-         try{
-             PreparedStatement ps = conexion.prepareStatement(sql);
-             ps.setInt(1, s.getCodSesion());
-             ps.setBoolean(2, s.isEstado());
-             ps.executeUpdate();
-             
-             ps.close();
-             
-     }catch(SQLException e){
+    }
+
+    public void ActivarTurno(Turno s) {
+        String sql = "UPDATE sesion SET estado = 1 WHERE codSesion = ? AND estado = 0 ";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, s.getCodSesion());
+            ps.setBoolean(2, s.isEstado());
+            ps.executeUpdate();
+
+            ps.close();
+
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al habilitar la sesión" + e.getMessage());
-}
-     }
-       public void deshabilitarSesion(Turno s){
-         String sql = "UPDATE sesion SET estado = 0 WHERE codSesion = ? AND estado = 1 ";
-         try{
-             PreparedStatement ps = conexion.prepareStatement(sql);
-             ps.setInt(1, s.getCodSesion());
-             ps.setBoolean(2, s.isEstado());
-             ps.executeUpdate();
-             
-             ps.close();
-             
-     }  catch(SQLException e){
+
+        }
+    }
+
+    public void DesactivarTurno(Turno s) {
+        String sql = "UPDATE sesion SET estado = 0 WHERE codSesion = ? AND estado = 1 ";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, s.getCodSesion());
+            ps.setBoolean(2, s.isEstado());
+            ps.executeUpdate();
+
+            ps.close();
+
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al deshabilitar la sesión" + e.getMessage());
-}
-     }
-      
-      
+        }
+    }
+    
+    public Tratamiento BuscarTratamiento(int codTratam){
+        return tratamientodata.buscarTratamiento(codTratam);
+    }
+    
+    public List<Especialista> ListarEspecialistas(String tipo){
+        List<Especialista> especialistas = new ArrayList<>();
+        String sql = "SELECT * FROM especialista WHERE especialidad = ? AND estado = true";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, tipo);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Especialista e = new Especialista();
+                e.setMatricula(rs.getString("matricula"));
+                e.setNombreYApellido(rs.getString("Nombre Y Apellido"));
+                e.setTelefono(rs.getLong("telefono"));
+                e.setEspecialidad(rs.getString("especialidad"));
+                e.setEstado(rs.getBoolean("estado"));
+                especialistas.add(e);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al listar los especilistas por tipo: " + ex.getMessage());
+        }
+
+        return especialistas;
+    }
+    public List<Consultorio> ListarConsultorios(String tipo){
+        List<Consultorio> consultorios = new ArrayList<>();
+        String sql = "SELECT * FROM consultorio WHERE usos = ? AND apto = true";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, tipo);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Consultorio e = new Consultorio();
+                e.setNroConsultorio(rs.getInt("nroConsultorio"));
+                e.setUsos(rs.getString("usos"));
+                e.setEquipamiento(rs.getString("equipamiento"));
+                e.setApto(rs.getBoolean("apto"));
+                consultorios.add(e);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al listar los especilistas por tipo: " + ex.getMessage());
+        }
+
+        return consultorios;
+    }
+    
+    public List<Instalacion> ListaInstalaciones(){
+        return instalaciondata.ListarInstalacion();
+    }
+
 }
