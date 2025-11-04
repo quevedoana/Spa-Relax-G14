@@ -41,8 +41,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
      */
     public VistaTurno() {
         initComponents();
-        armarCabecera();
-        cargarDatos();
+      
     }
 
     /**
@@ -54,347 +53,233 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jTCodSesion = new javax.swing.JTextField();
-        jBBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTSesiones = new javax.swing.JTable();
-        jBBorrar = new javax.swing.JButton();
-        jBActualizar = new javax.swing.JButton();
-        jBRefrescar = new javax.swing.JButton();
+        jTree1 = new javax.swing.JTree();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaTratamientos = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        radioFacial = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
-        jCEstado = new javax.swing.JComboBox<>();
-        jBEstado = new javax.swing.JButton();
-        jBSalir = new javax.swing.JButton();
+        radioCorporal = new javax.swing.JRadioButton();
+        radioRelajacion = new javax.swing.JRadioButton();
+        radioEstetico = new javax.swing.JRadioButton();
+        btnReservar = new javax.swing.JButton();
+        btnContacto = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
-        jLabel1.setText("CodSesion:");
+        jScrollPane1.setViewportView(jTree1);
 
-        jBBuscar.setText("Buscar");
-        jBBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBBuscarMouseClicked(evt);
-            }
-        });
+        setTitle("Gestion de Turnos");
 
-        jTSesiones.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+
+        tablaTratamientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTSesiones);
+        tablaTratamientos.setToolTipText("");
+        jScrollPane2.setViewportView(tablaTratamientos);
 
-        jBBorrar.setText("Borrar");
-        jBBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBBorrarMouseClicked(evt);
-            }
-        });
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel3.setText("Servicios Disponibles");
 
-        jBActualizar.setText("Actualizar");
-        jBActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBActualizarMouseClicked(evt);
-            }
-        });
+        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel1.setText("(Seleccione el tratamiento de su interes para consultar o hacer una reserva)");
 
-        jBRefrescar.setText("Refrescar Tabla");
-        jBRefrescar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBRefrescarMouseClicked(evt);
-            }
-        });
-
-        jLabel2.setText("Estado:");
-
-        jCEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
-
-        jBEstado.setText("Editar Estado");
-        jBEstado.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBEstadoMouseClicked(evt);
-            }
-        });
-
-        jBSalir.setText("Salir");
-        jBSalir.addActionListener(new java.awt.event.ActionListener() {
+        radioFacial.setText("Facial");
+        radioFacial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBSalirActionPerformed(evt);
+                radioFacialActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("Tipo de Tratamiento:");
+
+        radioCorporal.setText("Corporal");
+
+        radioRelajacion.setText("Relajacion");
+        radioRelajacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioRelajacionActionPerformed(evt);
+            }
+        });
+
+        radioEstetico.setText("Estetico");
+        radioEstetico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioEsteticoActionPerformed(evt);
+            }
+        });
+
+        btnReservar.setBackground(new java.awt.Color(255, 102, 51));
+        btnReservar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnReservar.setForeground(new java.awt.Color(255, 255, 255));
+        btnReservar.setText("Reservar");
+        btnReservar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReservarActionPerformed(evt);
+            }
+        });
+
+        btnContacto.setBackground(new java.awt.Color(255, 102, 51));
+        btnContacto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnContacto.setForeground(new java.awt.Color(255, 255, 255));
+        btnContacto.setText("Contacto");
+        btnContacto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContactoActionPerformed(evt);
+            }
+        });
+
+        btnConsultar.setBackground(new java.awt.Color(255, 102, 51));
+        btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("Para Consultas o mas Informacion, contactanos!");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(229, 229, 229)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(168, 168, 168)
+                        .addComponent(btnReservar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)
+                        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(31, 31, 31)
+                                .addComponent(btnContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(radioFacial)
+                                .addGap(27, 27, 27)
+                                .addComponent(radioCorporal)
+                                .addGap(27, 27, 27)
+                                .addComponent(radioRelajacion)
+                                .addGap(18, 18, 18)
+                                .addComponent(radioEstetico)))))
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioFacial)
+                    .addComponent(jLabel2)
+                    .addComponent(radioCorporal)
+                    .addComponent(radioRelajacion)
+                    .addComponent(radioEstetico))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnReservar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(btnContacto))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(229, 229, 229)
-                            .addComponent(jBBorrar)
-                            .addGap(18, 18, 18)
-                            .addComponent(jBActualizar)
-                            .addGap(18, 18, 18)
-                            .addComponent(jBRefrescar))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(65, 65, 65)
-                            .addComponent(jLabel1)
-                            .addGap(120, 120, 120)
-                            .addComponent(jTCodSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(155, 155, 155)
-                            .addComponent(jBBuscar)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel2)
-                        .addGap(60, 60, 60)
-                        .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
-                        .addComponent(jBEstado))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(315, 315, 315)
-                        .addComponent(jBSalir)))
-                .addContainerGap(36, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(jTCodSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jBBuscar)))
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBBorrar)
-                    .addComponent(jBActualizar)
-                    .addComponent(jBRefrescar))
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBEstado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
-                .addComponent(jBSalir)
-                .addGap(30, 30, 30))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBuscarMouseClicked
+    private void radioFacialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFacialActionPerformed
         // TODO add your handling code here:
-        buscarPorCodSesion();
-    }//GEN-LAST:event_jBBuscarMouseClicked
+    }//GEN-LAST:event_radioFacialActionPerformed
 
-    private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
+    private void radioRelajacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioRelajacionActionPerformed
         // TODO add your handling code here:
-        borrarSesion();
-    }//GEN-LAST:event_jBBorrarMouseClicked
+    }//GEN-LAST:event_radioRelajacionActionPerformed
 
-    private void jBActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBActualizarMouseClicked
+    private void radioEsteticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioEsteticoActionPerformed
         // TODO add your handling code here:
-        guardarCambiosDesdeTabla();
-    }//GEN-LAST:event_jBActualizarMouseClicked
+    }//GEN-LAST:event_radioEsteticoActionPerformed
 
-    private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
-        // TODO add your handling code here
-        cargarDatos();
-    }//GEN-LAST:event_jBRefrescarMouseClicked
-
-    private void jBEstadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBEstadoMouseClicked
+    private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         // TODO add your handling code here:
-        cambiarEstadoSesion();
-    }//GEN-LAST:event_jBEstadoMouseClicked
+    }//GEN-LAST:event_btnReservarActionPerformed
 
-    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
+    private void btnContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContactoActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_jBSalirActionPerformed
+    }//GEN-LAST:event_btnContactoActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBActualizar;
-    private javax.swing.JButton jBBorrar;
-    private javax.swing.JButton jBBuscar;
-    private javax.swing.JButton jBEstado;
-    private javax.swing.JButton jBRefrescar;
-    private javax.swing.JButton jBSalir;
-    private javax.swing.JComboBox<String> jCEstado;
+    private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnContacto;
+    private javax.swing.JButton btnReservar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTCodSesion;
-    private javax.swing.JTable jTSesiones;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTree jTree1;
+    private javax.swing.JRadioButton radioCorporal;
+    private javax.swing.JRadioButton radioEstetico;
+    private javax.swing.JRadioButton radioFacial;
+    private javax.swing.JRadioButton radioRelajacion;
+    private javax.swing.JTable tablaTratamientos;
     // End of variables declaration//GEN-END:variables
-private void armarCabecera() {
 
-        modelo.addColumn("CodSesion");
-        modelo.addColumn("Fecha y Hora inicio");
-        modelo.addColumn("Fecha y Hora fin");
-        modelo.addColumn("código Tratamiento");
-        modelo.addColumn("número consultorio");
-        modelo.addColumn("matricula masajista");
-        modelo.addColumn("código instalación");
-        modelo.addColumn("código pack");
-        modelo.addColumn("Estado");
-
-        jTSesiones.setModel(modelo);
-
-    }
-private void cargarDatos() {
-        String activo;
-        modelo.setRowCount(0);
-        for (Turno s : sesiondata.listarSesiones()) {
-
-            if (s.isEstado()) {
-                activo = "Activo";
-            } else {
-                activo = "Inactivo";
-            }
-            modelo.addRow(new Object[]{s.getCodSesion(),s.getFechaYHoraDeInicio(),s.getFechaYHoraDeFin(),s.getTratamiento().getCodTratam(),s.getConsultorio().getNroConsultorio(),
-                s.getEspecialista().getMatricula(),s.getInstalacion().getCodInstal(),s.getDiaDeSpa().getCodPack(),activo});
-        }
-    }
-private void buscarPorCodSesion() {
-
-        try {
-            String codSesion = (jTCodSesion.getText().trim());
-            modelo.setRowCount(0);
-
-            if (codSesion.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un código de sesión para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            modelo.setRowCount(0);
-
-            sesion = sesiondata.buscarSesion(Integer.parseInt(codSesion));
-            String activo;
-            if (sesion != null) {
-
-                if (sesion.isEstado()) {
-                    activo = "Activo";
-                } else {
-                    activo = "Inactivo";
-                }
-                 modelo.addRow(new Object[]{sesion.getCodSesion(),sesion.getFechaYHoraDeInicio(),sesion.getFechaYHoraDeFin(),sesion.getTratamiento().getCodTratam(),sesion.getConsultorio().getNroConsultorio(),
-                sesion.getEspecialista().getMatricula(),sesion.getInstalacion().getCodInstal(),sesion.getDiaDeSpa().getCodPack(),activo});
-
-                jTCodSesion.setText("");
-            }
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error al ingresar el código de la sesión", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-private void borrarSesion() {
-        int fila = jTSesiones.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "seleccione una sesión a eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-
-        if (fila != -1) {
-            int conf = JOptionPane.showConfirmDialog(
-                    this,
-                    "¿Seguro que desea eliminar la sesión seleccionada?", "Advertencia", JOptionPane.YES_NO_OPTION);
-
-            if (conf == JOptionPane.YES_OPTION) {
-                try {
-                    int codSesion = (int) jTSesiones.getValueAt(fila, 0);
-
-                    sesiondata.borrarSesion(codSesion);
-
-                    modelo.removeRow(fila);
-
-                    JOptionPane.showMessageDialog(this, "Sesión eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this,
-                            "Error al eliminar la sesión: " + e.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }
- private void guardarCambiosDesdeTabla() {
-        int filaSeleccionada = jTSesiones.getSelectedRow();
-        
-
-        try {
-            // obtener datos de la fila seleccionada
-            int codSesion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
-            LocalDateTime fechaYHoraInicio = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
-            LocalDateTime fechaYHoraFin = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 2).toString().trim());
-            int codTratam = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString());
-            int nroConsultorio = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 4).toString());
-            String matriculaMasajista = modelo.getValueAt(filaSeleccionada, 5).toString();
-            int codInstalacion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 6).toString());
-            int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 7).toString());
-            String estadoStr = modelo.getValueAt(filaSeleccionada, 8).toString();
-            boolean estado = estadoStr.equals("Activo");
-
-            Turno sesionactualizada = new Turno(fechaYHoraInicio, fechaYHoraFin, tratamientod.buscarTratamiento(codTratam),consultoriod.buscarConsultorio(nroConsultorio),especialistad.buscarEspecialista(matriculaMasajista), 
-            instalaciond.buscarInstalacion(codInstalacion),diadespad.buscarDiaDeSpa(codPack),estado);
-            sesionactualizada.setCodSesion(codSesion);
-
-            sesiondata.actualizarSesion(sesionactualizada);
-
-            JOptionPane.showMessageDialog(this, "Sesión actualizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            cargarDatos();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar sesión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
- private void cambiarEstadoSesion() {
-        int fila = jTSesiones.getSelectedRow();
-        Turno aux = new Turno();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar una sesión", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        aux.setCodSesion((int) modelo.getValueAt(fila, 0));
-        aux.setFechaYHoraDeInicio((LocalDateTime) modelo.getValueAt(fila, 1));
-        aux.setFechaYHoraDeFin((LocalDateTime) modelo.getValueAt(fila, 2));
-        aux.setTratamiento(tratamientod.buscarTratamiento((int) modelo.getValueAt(fila, 3)));
-        aux.setConsultorio(consultoriod.buscarConsultorio((int) modelo.getValueAt(fila, 4)));
-        aux.setEspecialista(especialistad.buscarEspecialista((String) modelo.getValueAt(fila, 5)));
-        aux.setInstalacion(instalaciond.buscarInstalacion((int) modelo.getValueAt(fila, 6)));
-        aux.setDiaDeSpa(diadespad.buscarDiaDeSpa((int) modelo.getValueAt(fila, 7)));
-
-        String nuevoEstado = (String) jCEstado.getSelectedItem();
-        boolean estadoBoolean = nuevoEstado.equals("Activo");
-
-        try {
-            if (estadoBoolean) {
-
-                sesiondata.habilitarSesion(aux);
- 
-            } else {
-
-                sesiondata.deshabilitarSesion(aux);
-
-            }
-            cargarDatos();
-
-            JOptionPane.showMessageDialog(this, "Estado de la sesión cambio a: " + nuevoEstado, "Exito", JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 }
