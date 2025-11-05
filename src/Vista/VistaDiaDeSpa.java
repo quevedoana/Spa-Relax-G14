@@ -20,7 +20,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     private DiaDeSpa diadespa = null;
     private DiaDeSpaData diadespadata = new DiaDeSpaData();
     private ClienteData cd = new ClienteData();
-    private TurnoData sd= new TurnoData();
+    private TurnoData td= new TurnoData();
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
@@ -343,7 +343,7 @@ private void borrarDiaDeSpa() {
             double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
             boolean estado = estadoStr.equals("Activo");
 
-            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.buscarSesion(codSesion));
+            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), td.BuscarTurno(codSesion));
             diadespaactualizado.setCodPack(codPack);
 
             diadespadata.actualizarDiaDeSpa(diadespaactualizado);
@@ -368,7 +368,7 @@ private void borrarDiaDeSpa() {
         aux.setFechaYHora((LocalDateTime) modelo.getValueAt(fila, 1));
         aux.setPreferencias((String) modelo.getValueAt(fila, 2));
         aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
-        aux.setSesion(sd.buscarSesion((int) modelo.getValueAt(fila, 5)));
+        aux.setSesion(td.BuscarTurno((int) modelo.getValueAt(fila, 5)));
         aux.setMonto((double) modelo.getValueAt(fila, 6));
 
         String nuevoEstado = (String) jCEstado.getSelectedItem();

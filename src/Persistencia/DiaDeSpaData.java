@@ -63,7 +63,7 @@ public class DiaDeSpaData {
         String sql = "SELECT * FROM dia_de_spa WHERE codPack=?";
         DiaDeSpa dia = null;
         ClienteData cd = new ClienteData();
-        TurnoData sd = new TurnoData();
+        TurnoData td = new TurnoData();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ps.setInt(1, codPack);
@@ -71,7 +71,7 @@ public class DiaDeSpaData {
             if (rs.next()) {
                 Timestamp ts = rs.getTimestamp("fechaYHora");
 
-                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),sd.buscarSesion(rs.getInt("codSesion")));
+                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
                 dia.setCodPack(rs.getInt("codPack"));
 
             } else {
@@ -90,7 +90,7 @@ public class DiaDeSpaData {
         String sql = "SELECT * FROM dia_de_spa WHERE 1";
         DiaDeSpa dia = null;
         ClienteData cd = new ClienteData();
-        TurnoData sd = new TurnoData();
+        TurnoData td = new TurnoData();
         List<DiaDeSpa> dias = new ArrayList();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -98,7 +98,7 @@ public class DiaDeSpaData {
             while(rs.next()){
                 Timestamp ts = rs.getTimestamp("fechaYHora");
 
-                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),sd.buscarSesion(rs.getInt("codSesion")));
+                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
                 dia.setCodPack(rs.getInt("codPack"));
                 dias.add(dia);
 
