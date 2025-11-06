@@ -6,6 +6,7 @@
 package Vista;
 
 
+import Modelo.Tratamiento;
 import Modelo.Turno;
 import Persistencia.ConsultorioData;
 import Persistencia.DiaDeSpaData;
@@ -14,6 +15,7 @@ import Persistencia.InstalacionData;
 import Persistencia.TurnoData;
 import Persistencia.TratamientoData;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,13 +31,13 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private EspecialistaData especialistad = new EspecialistaData();
     private InstalacionData instalaciond = new InstalacionData();
     private DiaDeSpaData diadespad = new DiaDeSpaData();
-    private DefaultTableModel modelo = new DefaultTableModel() {
+    private DefaultTableModel modeloTabla = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
             return column ==1 || column == 2;
         }
     };
-
+    
     /**
      * Creates new form VistaSesion
      */
@@ -43,7 +45,38 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         initComponents();
       
     }
+    private void armarCabecera() {
+        modeloTabla.addColumn("Nombre");
+        modeloTabla.addColumn("Detalle");
+        modeloTabla.addColumn("Productos");
+        modeloTabla.addColumn("Duracion");
+        modeloTabla.addColumn("Costo");
+        modeloTabla.addColumn("Estado");
+        tablaTratamientos.setModel(modeloTabla);
+    }
+    private void cargarTratamientosPorTipo(String tipo) {
+        modeloTabla.setRowCount(0);
 
+        List<Tratamiento> tratamientos;
+        if (tipo == null || tipo.isEmpty()) {
+            tratamientos = tratamientod.listarTodosTratamientos(); 
+        } else {
+            tratamientos = tratamientod.listarTratamientosPorTipo(tipo);
+        }
+
+        for (Tratamiento t : tratamientos) {
+            Object[] fila = {
+                t.getNombre(),
+                t.getDetalle(),
+                t.getProductos(),
+                t.getDuracion(),
+                t.getCosto(),
+                t.isActivo() ? "Sí" : "No"
+            };
+            modeloTabla.addRow(fila);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,6 +141,11 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jLabel2.setText("Tipo de Tratamiento:");
 
         radioCorporal.setText("Corporal");
+        radioCorporal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioCorporalActionPerformed(evt);
+            }
+        });
 
         radioRelajacion.setText("Relajacion");
         radioRelajacion.addActionListener(new java.awt.event.ActionListener() {
@@ -240,14 +278,17 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
     private void radioFacialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFacialActionPerformed
         // TODO add your handling code here:
+        cargarTratamientosPorTipo("Facial");
     }//GEN-LAST:event_radioFacialActionPerformed
 
     private void radioRelajacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioRelajacionActionPerformed
         // TODO add your handling code here:
+        cargarTratamientosPorTipo("Relajacion");
     }//GEN-LAST:event_radioRelajacionActionPerformed
 
     private void radioEsteticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioEsteticoActionPerformed
         // TODO add your handling code here:
+        cargarTratamientosPorTipo("Estetico");
     }//GEN-LAST:event_radioEsteticoActionPerformed
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
@@ -261,6 +302,11 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void radioCorporalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCorporalActionPerformed
+        // TODO add your handling code here:
+        cargarTratamientosPorTipo("Corporal");
+    }//GEN-LAST:event_radioCorporalActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
