@@ -62,7 +62,11 @@ public class GestionSpa extends javax.swing.JFrame {
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< Updated upstream
             .addGap(0, 528, Short.MAX_VALUE)
+=======
+            .addGap(0, 749, Short.MAX_VALUE)
+>>>>>>> Stashed changes
         );
 
         jMenu1.setText(" Clientes");
