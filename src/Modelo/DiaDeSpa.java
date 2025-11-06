@@ -9,33 +9,31 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 /**
  *
  * @author esteb
  */
 public class DiaDeSpa {
+
     private int codPack;
     private LocalDateTime fechaYHora;
     private String preferencias;
     private double monto;
     private boolean estado;
     private Cliente c;
-    private  Turno sesion;
+    private List<Turno> sesiones;
 
     public DiaDeSpa() {
     }
 
-    public DiaDeSpa(LocalDateTime fechaYHora, String preferencias, double monto, boolean estado, Cliente c, Turno sesion) {
+    public DiaDeSpa(LocalDateTime fechaYHora, String preferencias, double monto, boolean estado, Cliente c, List<Turno> sesiones) {
         this.fechaYHora = fechaYHora;
         this.preferencias = preferencias;
         this.monto = monto;
         this.estado = estado;
         this.c = c;
-        this.sesion = sesion;
+        this.sesiones = sesiones;
     }
-
-   
 
     public int getCodPack() {
         return codPack;
@@ -53,7 +51,6 @@ public class DiaDeSpa {
         this.fechaYHora = fechaYHora;
     }
 
-  
     public String getPreferencias() {
         return preferencias;
     }
@@ -78,15 +75,17 @@ public class DiaDeSpa {
         this.estado = estado;
     }
 
-    public Turno getSesion() {
-        return sesion;
+    public List<Turno> getSesiones() {
+        return sesiones;
     }
 
-    public void setSesion(Turno sesiones) {
-        this.sesion = sesion;
+    public void setSesiones(List<Turno> sesiones) {
+        this.sesiones = sesiones;
     }
 
-
+    public void agregarSesion(Turno sesion) {
+        this.sesiones.add(sesion);
+    }
 
     public Cliente getCliente() {
         return c;
@@ -95,15 +94,5 @@ public class DiaDeSpa {
     public void setCliente(Cliente c) {
         this.c = c;
     }
-    
 
-   
-
-   
-    
-    
-    
-    
-    
-    
 }

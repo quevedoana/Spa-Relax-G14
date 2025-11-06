@@ -20,7 +20,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     private DiaDeSpa diadespa = null;
     private DiaDeSpaData diadespadata = new DiaDeSpaData();
     private ClienteData cd = new ClienteData();
-    private TurnoData sd= new TurnoData();
+    private TurnoData td= new TurnoData();
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
@@ -47,29 +47,19 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTCodPack = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jTBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTDiaDeSpa = new javax.swing.JTable();
         jBBorrar = new javax.swing.JButton();
         jBActualizar = new javax.swing.JButton();
         jBRefrescar = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jCEstado = new javax.swing.JComboBox<>();
-        jBEstado = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
         jBSalir = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jDDiaDeSpa = new com.toedter.calendar.JDateChooser();
+        jLabel3 = new javax.swing.JLabel();
 
-        jLabel1.setText("codPack:");
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        jTBuscar.setText("Buscar");
-        jTBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTBuscarMouseClicked(evt);
-            }
-        });
-
+        jTDiaDeSpa.setBackground(new java.awt.Color(255, 255, 255));
         jTDiaDeSpa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -104,19 +94,6 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setText("Estado:");
-
-        jCEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
-
-        jBEstado.setText("Editar Estado");
-        jBEstado.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBEstadoMouseClicked(evt);
-            }
-        });
-
-        jLabel3.setText("jLabel3");
-
         jBSalir.setText("Salir");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,83 +101,70 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel2.setText("Dia de Spa");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setText("Fecha:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(jLabel1)
-                .addGap(59, 59, 59)
-                .addComponent(jTCodPack, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-                .addComponent(jTBuscar)
-                .addGap(184, 184, 184))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(jBBorrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jBActualizar)
+                .addGap(132, 132, 132)
+                .addComponent(jBRefrescar)
+                .addGap(48, 48, 48))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(70, 70, 70)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(84, 84, 84)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel2)
-                                .addComponent(jBBorrar))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(127, 127, 127)
-                                    .addComponent(jBActualizar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jBRefrescar))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(66, 66, 66)
-                                    .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(61, 61, 61)
-                                    .addComponent(jBEstado)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel3))
+                        .addGap(323, 323, 323)
+                        .addComponent(jBSalir))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(290, 290, 290)
-                        .addComponent(jBSalir)))
+                        .addGap(283, 283, 283)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(182, 182, 182)
+                        .addComponent(jLabel3)
+                        .addGap(105, 105, 105)
+                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTCodPack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBBorrar)
-                    .addComponent(jBActualizar)
-                    .addComponent(jBRefrescar))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBEstado)
-                    .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(123, 123, 123)
-                .addComponent(jBSalir)
-                .addGap(24, 24, 24))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jBBorrar)
+                                .addComponent(jBActualizar))
+                            .addComponent(jBRefrescar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                        .addComponent(jBSalir))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTBuscarMouseClicked
-        // TODO add your handling code here:
-        buscarPorCodPack();
-    }//GEN-LAST:event_jTBuscarMouseClicked
 
     private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
         // TODO add your handling code here:
@@ -217,11 +181,6 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         cargarDatos();
     }//GEN-LAST:event_jBRefrescarMouseClicked
 
-    private void jBEstadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBEstadoMouseClicked
-        // TODO add your handling code here:
-        cambiarEstadoDiaDeSpa();
-    }//GEN-LAST:event_jBEstadoMouseClicked
-
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -231,16 +190,12 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBActualizar;
     private javax.swing.JButton jBBorrar;
-    private javax.swing.JButton jBEstado;
     private javax.swing.JButton jBRefrescar;
     private javax.swing.JButton jBSalir;
-    private javax.swing.JComboBox<String> jCEstado;
-    private javax.swing.JLabel jLabel1;
+    private com.toedter.calendar.JDateChooser jDDiaDeSpa;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jTBuscar;
-    private javax.swing.JTextField jTCodPack;
     private javax.swing.JTable jTDiaDeSpa;
     // End of variables declaration//GEN-END:variables
 private void armarCabecera() {
@@ -248,7 +203,7 @@ private void armarCabecera() {
         modelo.addColumn("CodPack");
         modelo.addColumn("Fecha y Hora");
         modelo.addColumn("Preferencias");
-        modelo.addColumn("codCli");
+        modelo.addColumn("Cliente");
         modelo.addColumn("Estado");
         modelo.addColumn("codSesion");
         modelo.addColumn("Monto");
@@ -257,19 +212,22 @@ private void armarCabecera() {
 
     }
 private void cargarDatos() {
-        String activo;
-        modelo.setRowCount(0);
+         modelo.setRowCount(0);
         for (DiaDeSpa d : diadespadata.listarDiasDeSpa()) {
-
-            if (d.isEstado()) {
-                activo = "Activo";
-            } else {
-                activo = "Inactivo";
-            }
-            modelo.addRow(new Object[]{d.getCodPack(),d.getFechaYHora(),d.getPreferencias(),d.getCliente().getCodCli(),activo,d.getSesion().getCodSesion(),d.getMonto()});
+            String estado = d.isEstado() ? "Activo" : "Inactivo";
+            int numSesiones = d.getSesiones() != null ? d.getSesiones().size() : 0;
+            
+            modelo.addRow(new Object[]{
+                d.getCodPack(),
+                d.getFechaYHora().toLocalDate().toString(), 
+                d.getCliente().getNombreCompleto(),
+                numSesiones,
+                d.getMonto(),
+                estado
+            });
         }
     }
-private void buscarPorCodPack() {
+/*private void buscarPorCodPack() {
 
         try {
             String id = (jTCodPack.getText().trim());
@@ -298,7 +256,7 @@ private void buscarPorCodPack() {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Error al ingresar codPack", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-    }
+    }*/
 private void borrarDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
         if (fila == -1) {
@@ -343,7 +301,7 @@ private void borrarDiaDeSpa() {
             double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
             boolean estado = estadoStr.equals("Activo");
 
-            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.buscarSesion(codSesion));
+            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), td.BuscarTurno(codSesion));
             diadespaactualizado.setCodPack(codPack);
 
             diadespadata.actualizarDiaDeSpa(diadespaactualizado);
@@ -356,7 +314,7 @@ private void borrarDiaDeSpa() {
             JOptionPane.showMessageDialog(this, "Error al actualizar día de spa: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
- private void cambiarEstadoDiaDeSpa() {
+ /*private void cambiarEstadoDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
         DiaDeSpa aux = new DiaDeSpa();
         if (fila == -1) {
@@ -368,7 +326,7 @@ private void borrarDiaDeSpa() {
         aux.setFechaYHora((LocalDateTime) modelo.getValueAt(fila, 1));
         aux.setPreferencias((String) modelo.getValueAt(fila, 2));
         aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
-        aux.setSesion(sd.buscarSesion((int) modelo.getValueAt(fila, 5)));
+        aux.setSesion(td.BuscarTurno((int) modelo.getValueAt(fila, 5)));
         aux.setMonto((double) modelo.getValueAt(fila, 6));
 
         String nuevoEstado = (String) jCEstado.getSelectedItem();
@@ -391,5 +349,5 @@ private void borrarDiaDeSpa() {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }*/
 }
