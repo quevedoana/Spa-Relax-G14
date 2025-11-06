@@ -20,7 +20,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     private DiaDeSpa diadespa = null;
     private DiaDeSpaData diadespadata = new DiaDeSpaData();
     private ClienteData cd = new ClienteData();
-    private TurnoData td= new TurnoData();
+    private TurnoData sd= new TurnoData();
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
@@ -212,19 +212,17 @@ private void armarCabecera() {
 
     }
 private void cargarDatos() {
-         modelo.setRowCount(0);
+        String activo;
+        modelo.setRowCount(0);
         for (DiaDeSpa d : diadespadata.listarDiasDeSpa()) {
-            String estado = d.isEstado() ? "Activo" : "Inactivo";
-            int numSesiones = d.getSesiones() != null ? d.getSesiones().size() : 0;
+
+            if (d.isEstado()) {
+                activo = "Activo";
+            } else {
+                activo = "Inactivo";
+            }
             
-            modelo.addRow(new Object[]{
-                d.getCodPack(),
-                d.getFechaYHora().toLocalDate().toString(), 
-                d.getCliente().getNombreCompleto(),
-                numSesiones,
-                d.getMonto(),
-                estado
-            });
+            modelo.addRow(new Object[]{d.getCodPack(),d.getSesion().getFechaYHoraDeInicio(),d.getPreferencias(),d.getCliente().getNombreCompleto(),activo,d.getSesion().getCodSesion(),d.getMonto()});
         }
     }
 /*private void buscarPorCodPack() {
@@ -301,7 +299,7 @@ private void borrarDiaDeSpa() {
             double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
             boolean estado = estadoStr.equals("Activo");
 
-            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), td.BuscarTurno(codSesion));
+            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.buscarSesion(codSesion));
             diadespaactualizado.setCodPack(codPack);
 
             diadespadata.actualizarDiaDeSpa(diadespaactualizado);
@@ -326,7 +324,7 @@ private void borrarDiaDeSpa() {
         aux.setFechaYHora((LocalDateTime) modelo.getValueAt(fila, 1));
         aux.setPreferencias((String) modelo.getValueAt(fila, 2));
         aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
-        aux.setSesion(td.BuscarTurno((int) modelo.getValueAt(fila, 5)));
+        aux.setSesion(sd.buscarSesion((int) modelo.getValueAt(fila, 5)));
         aux.setMonto((double) modelo.getValueAt(fila, 6));
 
         String nuevoEstado = (String) jCEstado.getSelectedItem();
