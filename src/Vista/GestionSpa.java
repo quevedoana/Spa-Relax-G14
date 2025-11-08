@@ -43,6 +43,8 @@ public class GestionSpa extends javax.swing.JFrame {
         btnVerTratamientos = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         btnGestionConsultorios = new javax.swing.JMenuItem();
+        menuTurno = new javax.swing.JMenu();
+        btnConsultarTurnos = new javax.swing.JCheckBoxMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -119,18 +121,33 @@ public class GestionSpa extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu8);
 
+        menuTurno.setText("Turnos");
+
+        btnConsultarTurnos.setSelected(true);
+        btnConsultarTurnos.setText("Consultar Turnos");
+        btnConsultarTurnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarTurnosActionPerformed(evt);
+            }
+        });
+        menuTurno.add(btnConsultarTurnos);
+
+        jMenuBar1.add(menuTurno);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, 831, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -210,6 +227,19 @@ public class GestionSpa extends javax.swing.JFrame {
         ve.setVisible(true);
     }//GEN-LAST:event_btnGestionConsultoriosActionPerformed
 
+    private void btnConsultarTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarTurnosActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaTurno ve = new VistaTurno();
+        ve.setLocation(
+                (escritorio.getWidth() - ve.getWidth()) / 2,
+                (escritorio.getHeight() - ve.getHeight()) / 2
+        );
+        escritorio.add(ve);
+        ve.setVisible(true);
+    }//GEN-LAST:event_btnConsultarTurnosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -246,6 +276,7 @@ public class GestionSpa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem btnConsultarTurnos;
     private javax.swing.JMenuItem btnGestionConsultorios;
     private javax.swing.JMenuItem btnVerTratamientos;
     private javax.swing.JDesktopPane escritorio;
@@ -262,5 +293,6 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenu menuTurno;
     // End of variables declaration//GEN-END:variables
 }

@@ -41,7 +41,7 @@ public class DiaDeSpaData {
             ps.setString(2, d.getPreferencias());
             ps.setInt(3, d.getCliente().getCodCli());
             ps.setBoolean(4, d.isEstado());
-            ps.setInt(5, d.getSesion().getCodSesion());
+            //ps.setInt(5, d.getSesion().getCodSesion());
             ps.setDouble(6, d.getMonto());
             
             ps.executeUpdate();
@@ -71,7 +71,7 @@ public class DiaDeSpaData {
             if (rs.next()) {
                 Timestamp ts = rs.getTimestamp("fechaYHora");
 
-                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
+               // dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
                 dia.setCodPack(rs.getInt("codPack"));
 
             } else {
@@ -98,7 +98,7 @@ public class DiaDeSpaData {
             while(rs.next()){
                 Timestamp ts = rs.getTimestamp("fechaYHora");
 
-                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
+                //dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
                 dia.setCodPack(rs.getInt("codPack"));
                 dias.add(dia);
 
@@ -121,7 +121,7 @@ public class DiaDeSpaData {
             ps.setString(2, d.getPreferencias());
             ps.setInt(3, d.getCliente().getCodCli());
             ps.setBoolean(4, d.isEstado());
-            ps.setInt(5,d.getSesion().getCodSesion());
+            //ps.setInt(5,d.getSesion().getCodSesion());
             ps.setDouble(6, d.getMonto());
             ps.setInt(7, d.getCodPack());
             ps.executeUpdate();

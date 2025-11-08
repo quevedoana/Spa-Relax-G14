@@ -173,7 +173,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void jBActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBActualizarMouseClicked
         // TODO add your handling code here:
-        guardarCambiosDesdeTabla();
+        //guardarCambiosDesdeTabla();
     }//GEN-LAST:event_jBActualizarMouseClicked
 
     private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
@@ -222,7 +222,7 @@ private void cargarDatos() {
                 activo = "Inactivo";
             }
             
-            modelo.addRow(new Object[]{d.getCodPack(),d.getSesion().getFechaYHoraDeInicio(),d.getPreferencias(),d.getCliente().getNombreCompleto(),activo,d.getSesion().getCodSesion(),d.getMonto()});
+           // modelo.addRow(new Object[]{d.getCodPack(),d.getSesion().getFechaYHoraDeInicio(),d.getPreferencias(),d.getCliente().getNombreCompleto(),activo,d.getSesion().getCodSesion(),d.getMonto()});
         }
     }
 /*private void buscarPorCodPack() {
@@ -284,7 +284,7 @@ private void borrarDiaDeSpa() {
             }
         }
     }
- private void guardarCambiosDesdeTabla() {
+ /* void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTDiaDeSpa.getSelectedRow();
         
 

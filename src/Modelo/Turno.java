@@ -26,14 +26,14 @@ public class Turno {
     public Turno() {
     }
 
-    public Turno(LocalDateTime fechaYHoraDeInicio, LocalDateTime fechaYHoraDeFin, Tratamiento tratamiento, Consultorio Consultorio, Especialista especialista, Instalacion instalacion, DiaDeSpa DiaDeSpa, boolean estado) {
+    public Turno(LocalDateTime fechaYHoraDeInicio, LocalDateTime fechaYHoraDeFin, Tratamiento tratamiento, Consultorio Consultorio, Especialista especialista, Instalacion instalacion, DiaDeSpa DiaDeSpa,boolean estado) {
         this.fechaYHoraDeInicio = fechaYHoraDeInicio;
         this.fechaYHoraDeFin = fechaYHoraDeFin;
         this.tratamiento = tratamiento;
         this.Consultorio = Consultorio;
         this.especialista = especialista;
         this.instalacion = instalacion;
-        this.DiaDeSpa = DiaDeSpa;
+        this.DiaDeSpa = null;
         this.estado = estado;
     }
 

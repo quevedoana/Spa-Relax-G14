@@ -13,9 +13,12 @@ import Persistencia.EspecialistaData;
 import Persistencia.InstalacionData;
 import Persistencia.TurnoData;
 import Persistencia.TratamientoData;
+import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -81,6 +84,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         }
     }
 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -106,6 +110,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         btnContacto = new javax.swing.JButton();
         btnConsultar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        btnSalir = new javax.swing.JButton();
 
         jScrollPane1.setViewportView(jTree1);
 
@@ -198,6 +203,13 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Para Consultas o mas Informacion, contactanos!");
 
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -222,10 +234,6 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                         .addGap(86, 86, 86)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(31, 31, 31)
-                                .addComponent(btnContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(radioFacial)
@@ -234,8 +242,14 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                                 .addGap(27, 27, 27)
                                 .addComponent(radioRelajacion)
                                 .addGap(18, 18, 18)
-                                .addComponent(radioEstetico)))))
-                .addContainerGap(37, Short.MAX_VALUE))
+                                .addComponent(radioEstetico))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(31, 31, 31)
+                                .addComponent(btnContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                                .addComponent(btnSalir)))))
+                .addGap(23, 23, 23))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,7 +274,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(btnContacto))
+                    .addComponent(btnContacto)
+                    .addComponent(btnSalir))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -318,11 +333,72 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void btnContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContactoActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here
+    String contacto = 
+        "SPA ENTRE DEDOS\n\n" +
+        "Dirección:\n" +
+        "Av. Siempre Viva 123. " +
+        "Centro Comercial 'El Descanso'\n" +
+        "Local 45, Planta Baja\n\n" +
+        "Teléfonos: " +
+        "(351) 422-7890  -  " +
+        "+54 9 351 512-3456\n\n" +
+        "Email:\n" +
+        "Para mas informacion: info@spaentrededos.com\n" +
+        "Para Reservas: reservas@spaentrededos.com\n\n" +
+        "Horarios de Atencion:\n" +
+        "Lun-Vie: 9:00-21:00 hs\n" +
+        "Sabados: 9:00-16:00 hs\n" +
+        "Domingos: Cerrado";
+    
+    JOptionPane.showMessageDialog(this, 
+        contacto, 
+        "Contacto - Spa Entre Dedos", 
+        JOptionPane.INFORMATION_MESSAGE);
+    this.dispose();
+
     }//GEN-LAST:event_btnContactoActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        // TODO add your handling code here:
+    int filaSeleccionada = tablaTratamientos.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Seleccione un tratamiento para consultar");
+        return;
+    }
+
+    try {
+        int codigoTratamiento = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+        Tratamiento tratamiento = tratamientod.buscarTratamiento(codigoTratamiento);
+        
+        if (tratamiento != null) {
+            // Mensaje simple con la información básica
+            String mensaje = 
+                "Tratamiento: " + tratamiento.getNombre() + "\n\n" +
+                "INFORMACIÓN:\n" +
+                "• Tipo: " + tratamiento.getTipo() + "\n" +
+                "• Duración: " + tratamiento.getDuracion() + " minutos\n" +
+                "• Precio: $" + String.format("%.2f", tratamiento.getCosto()) + "\n" +
+                "• Estado: " + (tratamiento.isActivo() ? "Disponible" : "No disponible") + "\n\n" +
+                "DETALLES:\n" +
+                tratamiento.getDetalle();
+            
+            if (tratamiento.getProductos() != null && !tratamiento.getProductos().trim().isEmpty()) {
+                mensaje += "\n\nPRODUCTOS:\n" + tratamiento.getProductos();
+            }
+            
+            JOptionPane.showMessageDialog(this, 
+                mensaje, 
+                "Consulta: " + tratamiento.getNombre(), 
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Error al consultar: " + e.getMessage(), 
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void radioCorporalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCorporalActionPerformed
@@ -330,11 +406,17 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         cargarTratamientosPorTipo("Corporal");
     }//GEN-LAST:event_radioCorporalActionPerformed
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnContacto;
     private javax.swing.JButton btnReservar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

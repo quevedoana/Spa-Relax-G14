@@ -4,14 +4,18 @@
  */
 package Vista;
 
+import Modelo.Consultorio;
 import Modelo.Especialista;
 import Modelo.Instalacion;
 import Modelo.Tratamiento;
 import Modelo.Turno;
+import Persistencia.ConsultorioData;
 import Persistencia.InstalacionData;
 import Persistencia.TurnoData;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,8 +24,13 @@ import java.util.List;
 public class ReservarSesion extends javax.swing.JInternalFrame {
 
     private Tratamiento tratamientoSeleccionado;
-    private TurnoData turnodata = new TurnoData();
+    private TurnoData turnoData = new TurnoData();
     private InstalacionData instalacionData = new InstalacionData();
+    private ConsultorioData consultorioData = new ConsultorioData();
+
+    private List<Especialista> especialistasDisponibles = new ArrayList<>();
+    private List<Consultorio> consultoriosDisponibles = new ArrayList<>();
+    private List<Instalacion> instalacionesDisponibles = new ArrayList<>();
 
     /**
      * Creates new form ReservarSesion
@@ -34,36 +43,69 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     }
 
     private void cargarDatosIniciales() {
-        // Cargar especialistas
-        List<Especialista> especialistas = turnodata.ListarEspecialistas(tratamientoSeleccionado.getTipo());
+        //CARGAR ESPECIALISTAS
         comboEspecialistas.removeAllItems();
-        for (Especialista esp : especialistas) {
-            comboEspecialistas.addItem(esp.getNombreYApellido() + " - " + esp.getMatricula());
+        especialistasDisponibles = turnoData.ListarEspecialistas(tratamientoSeleccionado.getTipo());
+
+        for (Especialista esp : especialistasDisponibles) {
+            comboEspecialistas.addItem(esp.getNombreYApellido());
         }
 
-        // Cargar instalaciones disponibles
-        List<Instalacion> instalaciones = turnodata.ListaInstalaciones();
+        if (especialistasDisponibles.isEmpty()) {
+            comboEspecialistas.addItem("No hay especialistas disponibles");
+        }
+
+        //CARGAR INSTALACIONES
         comboInstalaciones.removeAllItems();
-        comboInstalaciones.addItem("Ninguna"); // Opción sin instalación
-        for (Instalacion inst : instalaciones) {
+        instalacionesDisponibles = turnoData.ListaInstalaciones();
+
+        comboInstalaciones.addItem("Sin instalación adicional");
+        for (Instalacion inst : instalacionesDisponibles) {
             if (inst.isEstado()) {
-                comboInstalaciones.addItem(inst.getNombre() + " - $" + inst.getPrecio30m() + "/30min");
+                comboInstalaciones.addItem(inst.getNombre());
             }
         }
 
-        calcularTotal();
+        //CARGAR CONSULTORIOS
+        comboConsultorios.removeAllItems();
+        consultoriosDisponibles = turnoData.ListarConsultorios(tratamientoSeleccionado.getTipo());
+
+        for (Consultorio cons : consultoriosDisponibles) {
+            comboConsultorios.addItem("Consultorio " + cons.getNroConsultorio() + " - " + cons.getUsos());
+        }
+
+        if (consultoriosDisponibles.isEmpty()) {
+            comboConsultorios.addItem("No hay consultorios disponibles");
+        }
+
+        //CARGAR HORARIOS
+        comboHorarios.removeAllItems();
+
+        // Horarios de ejemplo
+        String[] horarios = {
+            "09:00", "10:00", "11:00", "12:00",
+            "14:00", "15:00", "16:00", "17:00", "18:00"
+        };
+
+        for (String horario : horarios) {
+            comboHorarios.addItem(horario);
+        }
     }
 
     private void calcularTotal() {
         double total = tratamientoSeleccionado.getCosto();
-        
+
         // Si seleccionó una instalación, agregar su costo
-        if (comboInstalaciones.getSelectedIndex() > 0) {
-            String seleccion = (String) comboInstalaciones.getSelectedItem();
-            // Extraer precio de la instalación seleccionada
-            // (aquí necesitarías mapear la selección a un objeto Instalacion real)
+        if (comboInstalaciones.getSelectedIndex() > 0 && !instalacionesDisponibles.isEmpty()) {
+            int index = comboInstalaciones.getSelectedIndex() - 1; // Restar 1 por "Sin instalación"
+            if (index >= 0 && index < instalacionesDisponibles.size()) {
+                Instalacion inst = instalacionesDisponibles.get(index);
+                // Calcular costo de instalación por la duración del tratamiento
+                double costoInstalacion = inst.getPrecio30m() * (tratamientoSeleccionado.getDuracion() / 30.0);
+                total += costoInstalacion;
+            }
         }
-        
+
         textTotal.setText(String.format("$%.2f", total));
     }
 
@@ -76,6 +118,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,7 +126,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         comboEspecialistas = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        comboConsultorios = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         comboHorarios = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
@@ -93,6 +136,9 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         textTotal = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         btnReservarTurno = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
+
+        jCheckBox1.setText("jCheckBox1");
 
         setResizable(true);
         setTitle("Reservar Turno");
@@ -114,10 +160,10 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
 
         comboEspecialistas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        comboConsultorios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboConsultorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                comboConsultoriosActionPerformed(evt);
             }
         });
 
@@ -160,6 +206,13 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
             }
         });
 
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -178,7 +231,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comboEspecialistas, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textTratamientoSeleccionado, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboConsultorios, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comboHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(btnReservarTurno)
@@ -195,11 +248,16 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(28, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVolver)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addComponent(btnVolver)
+                .addGap(2, 2, 2)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -210,7 +268,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(comboEspecialistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboConsultorios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(comboHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -248,36 +306,101 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void comboConsultoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboConsultoriosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_comboConsultoriosActionPerformed
 
     private void btnPreciosInstalacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreciosInstalacionesActionPerformed
         // TODO add your handling code here:
+        StringBuilder precios = new StringBuilder("Precios de Instalaciones:\n\n");
+        for (Instalacion inst : instalacionesDisponibles) {
+            if (inst.isEstado()) {
+                precios.append(inst.getNombre())
+                        .append(": $").append(inst.getPrecio30m())
+                        .append(" por 30 minutos\n");
+            }
+        }
+        JOptionPane.showMessageDialog(this, precios.toString(), "Precios de Instalaciones", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnPreciosInstalacionesActionPerformed
 
     private void btnReservarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarTurnoActionPerformed
-        // TODO add your handling code here:
-        // Crear el turno con UNA instalación
-        Instalacion instalacionSeleccionada = null;
-        if (comboInstalaciones.getSelectedIndex() > 0) {
-            // Obtener la instalación seleccionada real
-            // (necesitas mapear la selección del combo al objeto Instalacion)
+        // Validaciones
+        if (comboEspecialistas.getSelectedIndex() == -1
+                || comboConsultorios.getSelectedIndex() == -1
+                || comboHorarios.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos obligatorios");
+            return;
         }
 
-        // Crear el turno
-        Turno nuevoTurno = new Turno(
-                LocalDateTime.now(), // Aquí deberías usar el horario seleccionado
-                tratamientoSeleccionado,
-                consultorioSeleccionado, // Del combo de consultorios
-                especialistaSeleccionado, // Del combo de especialistas  
-                instalacionSeleccionada, // UNA instalación o null
-                diaDeSpa // Si ya tienes un DiaDeSpa creado
-        );
+        if (especialistasDisponibles.isEmpty() || consultoriosDisponibles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay disponibilidad para reservar");
+            return;
+        }
 
-        turnoData.AltaTurno(nuevoTurno);
-        JOptionPane.showMessageDialog(this, "Turno reservado exitosamente!");
-        this.dispose();
+        try {
+            // Obtener objetos seleccionados
+            Especialista especialistaSeleccionado = especialistasDisponibles.get(comboEspecialistas.getSelectedIndex());
+            Consultorio consultorioSeleccionado = consultoriosDisponibles.get(comboConsultorios.getSelectedIndex());
+
+            // Obtener instalación si se seleccionó
+            Instalacion instalacionSeleccionada = null;
+            int duracionTotal = tratamientoSeleccionado.getDuracion();
+
+            if (comboInstalaciones.getSelectedIndex() > 0) {
+                int index = comboInstalaciones.getSelectedIndex() - 1;
+                if (index >= 0 && index < instalacionesDisponibles.size()) {
+                    instalacionSeleccionada = instalacionesDisponibles.get(index);
+                    duracionTotal += 30;
+
+                }
+            }
+
+            // Crear fecha y hora (fecha actual)
+            String horario = (String) comboHorarios.getSelectedItem();
+            LocalDateTime fechaHoraInicio = LocalDateTime.now()
+                    .withHour(Integer.parseInt(horario.split(":")[0]))
+                    .withMinute(Integer.parseInt(horario.split(":")[1]))
+                    .withSecond(0)
+                    .withNano(0);
+
+            LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(duracionTotal);
+                    System.out.println("Duración tratamiento: " + tratamientoSeleccionado.getDuracion() + " min");
+        if (instalacionSeleccionada != null) {
+            System.out.println("Duración instalación: " + (duracionTotal - tratamientoSeleccionado.getDuracion()) + " min");
+        }
+        System.out.println("Duración total: " + duracionTotal + " min");
+        System.out.println("Horario: " + fechaHoraInicio + " a " + fechaHoraFin);
+
+
+            // Crear el turno
+            Turno nuevoTurno = new Turno(
+                    fechaHoraInicio,
+                    fechaHoraFin,
+                    tratamientoSeleccionado,
+                    consultorioSeleccionado,
+                    especialistaSeleccionado,
+                    instalacionSeleccionada,
+                    null,
+                    true
+            );
+
+            // Guardar en la base de datos
+            turnoData.AltaTurno(nuevoTurno);
+
+            JOptionPane.showMessageDialog(this,
+                    "¡Turno reservado exitosamente!\n"
+                    + "Tratamiento: " + tratamientoSeleccionado.getNombre() + "\n"
+                    + "Especialista: " + especialistaSeleccionado.getNombreYApellido() + "\n"
+                    + "Horario: " + horario + "\n"
+                    + "Total: " + textTotal.getText());
+
+            this.dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al reservar el turno: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
     }//GEN-LAST:event_btnReservarTurnoActionPerformed
 
@@ -287,14 +410,21 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_comboInstalacionesActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPreciosInstalaciones;
     private javax.swing.JButton btnReservarTurno;
+    private javax.swing.JButton btnVolver;
+    private javax.swing.JComboBox<String> comboConsultorios;
     private javax.swing.JComboBox<String> comboEspecialistas;
     private javax.swing.JComboBox<String> comboHorarios;
     private javax.swing.JComboBox<String> comboInstalaciones;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

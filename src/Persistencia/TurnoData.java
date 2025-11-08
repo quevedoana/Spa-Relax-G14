@@ -53,7 +53,7 @@ public class TurnoData {
             ps.setInt(4, s.getConsultorio().getNroConsultorio());
             ps.setString(5, s.getEspecialista().getMatricula());
             ps.setInt(6, s.getInstalacion().getCodInstal());
-            ps.setInt(7, s.getDiaDeSpa().getCodPack());
+            //ps.setInt(7, s.getDiaDeSpa().getCodPack());
             ps.setBoolean(8, s.isEstado());
 
             ps.executeUpdate();
@@ -214,7 +214,7 @@ public class TurnoData {
             while (rs.next()) {
                 Especialista e = new Especialista();
                 e.setMatricula(rs.getString("matricula"));
-                e.setNombreYApellido(rs.getString("Nombre Y Apellido"));
+                e.setNombreYApellido(rs.getString("NombreYApellido"));
                 e.setTelefono(rs.getLong("telefono"));
                 e.setEspecialidad(rs.getString("especialidad"));
                 e.setEstado(rs.getBoolean("estado"));

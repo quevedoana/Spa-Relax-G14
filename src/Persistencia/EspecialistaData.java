@@ -23,11 +23,12 @@ public class EspecialistaData {
     public EspecialistaData() {
         this.conexion = Conexion.getConexion();
     }
-    //Guardar Especialista
+    //Guardar Especialista}
+
     public void guardarEspecialista(Especialista e) {
         try {
             //Masajista: matricula, nombre y ape, teléfono, especialidad (facial, corporal, relajación, o estético), estado
-            String sql = "INSERT INTO especialista (matricula,NombreyApellido,telefono,especialidad,estado) VALUES (?,?,?,?,?);";
+            String sql = "INSERT INTO especialista (matricula,NombreYApellido,telefono,especialidad,estado) VALUES (?,?,?,?,?);";
             PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, e.getMatricula());
             ps.setString(2, e.getNombreYApellido());
@@ -56,8 +57,8 @@ public class EspecialistaData {
             ResultSet resultado = ps.executeQuery();
             if (resultado.next()) {
                    //Masajista: matricula, nombre y ape, teléfono, especialidad (facial, corporal, relajación, o estético), estado
-                esp = new Especialista(resultado.getString("Matricula"), resultado.getString("NombreyApellido"), resultado.getInt("Telefono"), resultado.getString("Especialidad"), resultado.getBoolean("Estado"));
-                esp.setMatricula(resultado.getString("Matricula"));
+                esp = new Especialista(resultado.getString("matricula"), resultado.getString("NombreYApellido"), resultado.getInt("telefono"), resultado.getString("especialidad"), resultado.getBoolean("estado"));
+                esp.setMatricula(resultado.getString("matricula"));
 
             } else {
                 System.out.println("No se encontro el Especialista");
@@ -79,7 +80,7 @@ public class EspecialistaData {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ResultSet resultado = ps.executeQuery();
             while (resultado.next()) {
-                Especialista esp = new Especialista(resultado.getString("Matricula"), resultado.getString("NombreyApellido"), resultado.getInt("Telefono"), resultado.getString("Especialidad"), resultado.getBoolean("Estado"));
+                Especialista esp = new Especialista(resultado.getString("matricula"), resultado.getString("NombreYApellido"), resultado.getInt("telefono"), resultado.getString("especialidad"), resultado.getBoolean("estado"));
                 especia.add(esp);
 
             }

@@ -65,7 +65,7 @@ public class TratamientoData {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
-                t = new Tratamiento(rs.getString("nombre"), rs.getString("detalle"), rs.getString("tipo"), rs.getInt("duracion"), rs.getDouble("costo"), rs.getBoolean("estado"), rs.getString("productos"));
+                t = new Tratamiento(rs.getString("nombre"), rs.getString("detalle"), rs.getString("tipo"), rs.getInt("duracion"), rs.getDouble("costo"), rs.getBoolean("activo"), rs.getString("productos"));
                 t.setCodTratam(rs.getInt("codTratam"));
 
             } else {
