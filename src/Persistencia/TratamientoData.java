@@ -206,4 +206,6 @@ public class TratamientoData {
         return tratamientos;
     }
 
+    //Buscar Tratamiento por nombre
+    
 }

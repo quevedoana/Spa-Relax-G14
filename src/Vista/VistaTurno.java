@@ -5,7 +5,6 @@
  */
 package Vista;
 
-
 import Modelo.Tratamiento;
 import Modelo.Turno;
 import Persistencia.ConsultorioData;
@@ -24,8 +23,9 @@ import javax.swing.table.DefaultTableModel;
  * @author esteb
  */
 public class VistaTurno extends javax.swing.JInternalFrame {
-    private Turno sesion = null;
-    private TurnoData sesiondata = new TurnoData();
+
+    private Turno turno = null;
+    private TurnoData turnodata = new TurnoData();
     private TratamientoData tratamientod = new TratamientoData();
     private ConsultorioData consultoriod = new ConsultorioData();
     private EspecialistaData especialistad = new EspecialistaData();
@@ -34,49 +34,53 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private DefaultTableModel modeloTabla = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
-            return column ==1 || column == 2;
+            return column == 1 || column == 2;
         }
     };
-    
+
     /**
      * Creates new form VistaSesion
      */
     public VistaTurno() {
         initComponents();
-      
+        armarCabecera();
+        cargarTratamientosPorTipo(null);
     }
+
     private void armarCabecera() {
+        modeloTabla.addColumn("Código");
         modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Detalle");
-        modeloTabla.addColumn("Productos");
-        modeloTabla.addColumn("Duracion");
-        modeloTabla.addColumn("Costo");
-        modeloTabla.addColumn("Estado");
+        modeloTabla.addColumn("Duración");
+        modeloTabla.addColumn("Precio");
         tablaTratamientos.setModel(modeloTabla);
+
+        tablaTratamientos.removeColumn(tablaTratamientos.getColumnModel().getColumn(0));
+
     }
+
     private void cargarTratamientosPorTipo(String tipo) {
         modeloTabla.setRowCount(0);
 
         List<Tratamiento> tratamientos;
         if (tipo == null || tipo.isEmpty()) {
-            tratamientos = tratamientod.listarTodosTratamientos(); 
+            tratamientos = tratamientod.listarTodosTratamientos();
         } else {
             tratamientos = tratamientod.listarTratamientosPorTipo(tipo);
         }
 
         for (Tratamiento t : tratamientos) {
             Object[] fila = {
+                t.getCodTratam(),
                 t.getNombre(),
                 t.getDetalle(),
-                t.getProductos(),
-                t.getDuracion(),
-                t.getCosto(),
-                t.isActivo() ? "Sí" : "No"
+                t.getDuracion() + " min",
+                "$" + String.format("%.2f", t.getCosto())
             };
             modeloTabla.addRow(fila);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -292,7 +296,25 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_radioEsteticoActionPerformed
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
-        // TODO add your handling code here:
+        int filaSeleccionada = tablaTratamientos.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un tratamiento para reservar");
+            return;
+        }
+
+        int codigoTratamiento = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+        Tratamiento tratamiento = tratamientod.buscarTratamiento(codigoTratamiento);
+
+        if (tratamiento != null) {
+            ReservarSesion reserva = new ReservarSesion(tratamiento);
+            reserva.setVisible(true);
+
+            javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+            desktop.add(reserva);
+            reserva.toFront();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
+        }
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void btnContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContactoActionPerformed

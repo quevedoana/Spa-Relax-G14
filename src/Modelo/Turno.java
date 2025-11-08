@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -112,12 +113,13 @@ public class Turno {
         this.estado = estado;
     }
     
-  
-    
-    
-    
-    
-
-    
+    public double calcularCostoTotal() {
+        double total = tratamiento.getCosto();
+        if (instalacion != null) {
+            long minutos = Duration.between(fechaYHoraDeInicio, fechaYHoraDeFin).toMinutes();
+            total += instalacion.getPrecio30m() * (minutos / 30.0);
+        }
+        return total;
+    }
     
 }
