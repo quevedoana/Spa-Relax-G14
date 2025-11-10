@@ -16,6 +16,7 @@ import Persistencia.TratamientoData;
 import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -48,8 +49,23 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         initComponents();
         armarCabecera();
         cargarTratamientosPorTipo(null);
+                
+        // Agrupar radio buttons para que sean exclusivos
+        ButtonGroup grupoTipos = new ButtonGroup();
+        grupoTipos.add(radioFacial);
+        grupoTipos.add(radioCorporal);
+        grupoTipos.add(radioEstetico);
+        grupoTipos.add(radioRelajacion);
+
+        // Agregar listeners a los radio buttons
+        radioFacial.addActionListener(this::radioFacialActionPerformed);
+        radioEstetico.addActionListener(this::radioEsteticoActionPerformed);
+        radioCorporal.addActionListener(this::radioCorporalActionPerformed);
+        radioRelajacion.addActionListener(this::radioRelajacionActionPerformed);
+
     }
 
+    
     private void armarCabecera() {
         modeloTabla.addColumn("Código");
         modeloTabla.addColumn("Nombre");
@@ -83,7 +99,6 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             modeloTabla.addRow(fila);
         }
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -326,7 +341,13 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
             javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
             desktop.add(reserva);
-            reserva.toFront();
+
+            java.awt.Dimension desktopSize = desktop.getSize();
+            java.awt.Dimension jifSize = reserva.getSize();
+            reserva.setLocation((desktopSize.width - jifSize.width) / 2,
+                    (desktopSize.height - jifSize.height) / 2);
+                    reserva.toFront();
+
         } else {
             JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
         }
@@ -334,70 +355,69 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
     private void btnContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContactoActionPerformed
         // TODO add your handling code here
-    String contacto = 
-        "SPA ENTRE DEDOS\n\n" +
-        "Dirección:\n" +
-        "Av. Siempre Viva 123. " +
-        "Centro Comercial 'El Descanso'\n" +
-        "Local 45, Planta Baja\n\n" +
-        "Teléfonos: " +
-        "(351) 422-7890  -  " +
-        "+54 9 351 512-3456\n\n" +
-        "Email:\n" +
-        "Para mas informacion: info@spaentrededos.com\n" +
-        "Para Reservas: reservas@spaentrededos.com\n\n" +
-        "Horarios de Atencion:\n" +
-        "Lun-Vie: 9:00-21:00 hs\n" +
-        "Sabados: 9:00-16:00 hs\n" +
-        "Domingos: Cerrado";
-    
-    JOptionPane.showMessageDialog(this, 
-        contacto, 
-        "Contacto - Spa Entre Dedos", 
-        JOptionPane.INFORMATION_MESSAGE);
-    this.dispose();
+        String contacto
+                = "SPA ENTRE DEDOS\n\n"
+                + "Dirección:\n"
+                + "Av. Siempre Viva 123. "
+                + "Centro Comercial 'El Descanso'\n"
+                + "Local 45, Planta Baja\n\n"
+                + "Teléfonos: "
+                + "(351) 422-7890  -  "
+                + "+54 9 351 512-3456\n\n"
+                + "Email:\n"
+                + "Para mas informacion: info@spaentrededos.com\n"
+                + "Para Reservas: reservas@spaentrededos.com\n\n"
+                + "Horarios de Atencion:\n"
+                + "Lun-Vie: 9:00-21:00 hs\n"
+                + "Sabados: 9:00-16:00 hs\n"
+                + "Domingos: Cerrado";
+
+        JOptionPane.showMessageDialog(this,
+                contacto,
+                "Contacto - Spa Entre Dedos",
+                JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
 
     }//GEN-LAST:event_btnContactoActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-    int filaSeleccionada = tablaTratamientos.getSelectedRow();
-    if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(this, "Seleccione un tratamiento para consultar");
-        return;
-    }
-
-    try {
-        int codigoTratamiento = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
-        Tratamiento tratamiento = tratamientod.buscarTratamiento(codigoTratamiento);
-        
-        if (tratamiento != null) {
-            // Mensaje simple con la información básica
-            String mensaje = 
-                "Tratamiento: " + tratamiento.getNombre() + "\n\n" +
-                "INFORMACIÓN:\n" +
-                "• Tipo: " + tratamiento.getTipo() + "\n" +
-                "• Duración: " + tratamiento.getDuracion() + " minutos\n" +
-                "• Precio: $" + String.format("%.2f", tratamiento.getCosto()) + "\n" +
-                "• Estado: " + (tratamiento.isActivo() ? "Disponible" : "No disponible") + "\n\n" +
-                "DETALLES:\n" +
-                tratamiento.getDetalle();
-            
-            if (tratamiento.getProductos() != null && !tratamiento.getProductos().trim().isEmpty()) {
-                mensaje += "\n\nPRODUCTOS:\n" + tratamiento.getProductos();
-            }
-            
-            JOptionPane.showMessageDialog(this, 
-                mensaje, 
-                "Consulta: " + tratamiento.getNombre(), 
-                JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
+        int filaSeleccionada = tablaTratamientos.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un tratamiento para consultar");
+            return;
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, 
-            "Error al consultar: " + e.getMessage(), 
-            "Error", JOptionPane.ERROR_MESSAGE);
-    }
+
+        try {
+            int codigoTratamiento = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+            Tratamiento tratamiento = tratamientod.buscarTratamiento(codigoTratamiento);
+
+            if (tratamiento != null) {
+                String mensaje
+                        = "Tratamiento: " + tratamiento.getNombre() + "\n\n"
+                        + "INFORMACION:\n"
+                        + "• Tipo: " + tratamiento.getTipo() + "\n"
+                        + "• Duración: " + tratamiento.getDuracion() + " minutos\n"
+                        + "• Precio: $" + String.format("%.2f", tratamiento.getCosto()) + "\n"
+                        + "• Estado: " + (tratamiento.isActivo() ? "Disponible" : "No disponible") + "\n\n"
+                        + "DETALLES:\n"
+                        + tratamiento.getDetalle();
+
+                if (tratamiento.getProductos() != null && !tratamiento.getProductos().trim().isEmpty()) {
+                    mensaje += "\n\nPRODUCTOS:\n" + tratamiento.getProductos();
+                }
+
+                JOptionPane.showMessageDialog(this,
+                        mensaje,
+                        "Consulta: " + tratamiento.getNombre(),
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al consultar: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
     }//GEN-LAST:event_btnConsultarActionPerformed
 

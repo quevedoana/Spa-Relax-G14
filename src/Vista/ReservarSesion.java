@@ -95,12 +95,12 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     private void calcularTotal() {
         double total = tratamientoSeleccionado.getCosto();
 
-        // Si seleccionó una instalación, agregar su costo
+        
         if (comboInstalaciones.getSelectedIndex() > 0 && !instalacionesDisponibles.isEmpty()) {
-            int index = comboInstalaciones.getSelectedIndex() - 1; // Restar 1 por "Sin instalación"
+            int index = comboInstalaciones.getSelectedIndex() - 1;
             if (index >= 0 && index < instalacionesDisponibles.size()) {
                 Instalacion inst = instalacionesDisponibles.get(index);
-                // Calcular costo de instalación por la duración del tratamiento
+                
                 double costoInstalacion = inst.getPrecio30m() * (tratamientoSeleccionado.getDuracion() / 30.0);
                 total += costoInstalacion;
             }
@@ -325,6 +325,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
 
     private void btnReservarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarTurnoActionPerformed
         // Validaciones
+        boolean pago = true;
         if (comboEspecialistas.getSelectedIndex() == -1
                 || comboConsultorios.getSelectedIndex() == -1
                 || comboHorarios.getSelectedIndex() == -1) {
@@ -364,13 +365,15 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                     .withNano(0);
 
             LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(duracionTotal);
-                    System.out.println("Duración tratamiento: " + tratamientoSeleccionado.getDuracion() + " min");
-        if (instalacionSeleccionada != null) {
-            System.out.println("Duración instalación: " + (duracionTotal - tratamientoSeleccionado.getDuracion()) + " min");
-        }
-        System.out.println("Duración total: " + duracionTotal + " min");
-        System.out.println("Horario: " + fechaHoraInicio + " a " + fechaHoraFin);
-
+            
+            PagoTarjeta pagado = new PagoTarjeta((java.awt.Frame) this.getTopLevelAncestor(), 
+            pago);
+            pagado.setVisible(true);
+            
+            if(!pagado.pagoEfectuado()){
+                 JOptionPane.showMessageDialog(this, "El pago fue cancelado o falló. La reserva no se completó.");
+            return;
+            }
 
             // Crear el turno
             Turno nuevoTurno = new Turno(

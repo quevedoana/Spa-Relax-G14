@@ -343,6 +343,8 @@ public class AgregarTratamiento extends javax.swing.JInternalFrame {
             int duracion = Integer.parseInt(textDuracionTratam.getText().trim());
             double costo = Double.parseDouble(textCostoTratam.getText().trim());
             String producto = (String) comboProductos.getSelectedItem();
+            
+            
 
             
             Tratamiento nuevoTratamiento = new Tratamiento(

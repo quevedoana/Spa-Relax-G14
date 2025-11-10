@@ -390,12 +390,14 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
          AgregarTratamiento agregarTratamiento = new AgregarTratamiento();
         agregarTratamiento.setVisible(true);
-        agregarTratamiento.setLocation(
-                (getWidth() - agregarTratamiento.getWidth()) / 2,
-                (getHeight() - agregarTratamiento.getHeight()) / 2
-        );
-        this.getParent().add(agregarTratamiento);
-        agregarTratamiento.toFront();
+        javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+            desktop.add(agregarTratamiento);
+
+            java.awt.Dimension desktopSize = desktop.getSize();
+            java.awt.Dimension jifSize = agregarTratamiento.getSize();
+            agregarTratamiento.setLocation((desktopSize.width - jifSize.width) / 2,
+                    (desktopSize.height - jifSize.height) / 2);
+                    agregarTratamiento.toFront();
     }//GEN-LAST:event_btnAgregarTratamActionPerformed
 
     private void btnActualizarTablaTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarTablaTrataActionPerformed
