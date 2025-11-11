@@ -340,7 +340,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             reserva.setVisible(true);
 
             javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
-            desktop.add(reserva);
+            desktop.add(reserva);  
 
             java.awt.Dimension desktopSize = desktop.getSize();
             java.awt.Dimension jifSize = reserva.getSize();

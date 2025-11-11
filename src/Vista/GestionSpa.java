@@ -45,6 +45,8 @@ public class GestionSpa extends javax.swing.JFrame {
         btnGestionConsultorios = new javax.swing.JMenuItem();
         menuTurno = new javax.swing.JMenu();
         btnConsultarTurnos = new javax.swing.JCheckBoxMenuItem();
+        jMenu10 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -133,6 +135,23 @@ public class GestionSpa extends javax.swing.JFrame {
         menuTurno.add(btnConsultarTurnos);
 
         jMenuBar1.add(menuTurno);
+
+        jMenu10.setText("Spa");
+        jMenu10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu10ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem4.setText("Gestionar spa");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu10.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu10);
 
         setJMenuBar(jMenuBar1);
 
@@ -240,6 +259,28 @@ public class GestionSpa extends javax.swing.JFrame {
         ve.setVisible(true);
     }//GEN-LAST:event_btnConsultarTurnosActionPerformed
 
+    private void jMenu10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu10ActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+        
+    }//GEN-LAST:event_jMenu10ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaDiaDeSpa vc = new VistaDiaDeSpa();
+        vc.setLocation(
+                (escritorio.getWidth() - vc.getWidth()) / 2,
+                (escritorio.getHeight() - vc.getHeight()) / 2
+        );
+        escritorio.add(vc);
+   
+        vc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -282,6 +323,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuItem jMCliente;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -293,6 +335,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu menuTurno;
     // End of variables declaration//GEN-END:variables
 }

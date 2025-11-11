@@ -8,7 +8,10 @@ import Modelo.DiaDeSpa;
 import Persistencia.ClienteData;
 import Persistencia.DiaDeSpaData;
 import Persistencia.TurnoData;
+import static java.awt.SystemColor.desktop;
+import java.sql.Date;
 import java.time.LocalDateTime;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,14 +30,15 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
             return column == 1 || column == 2 || column == 6;
         }
     };
+    
 
     /**
      * Creates new form VistaDiaDeSpa
      */
     public VistaDiaDeSpa() {
         initComponents();
-        armarCabecera();
-        cargarDatos();
+       // armarCabecera();
+      //  cargarDatos();
         
     }
 
@@ -56,10 +60,11 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jDDiaDeSpa = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
+        jBFecha = new javax.swing.JButton();
+        jBAgregarTurno = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jTDiaDeSpa.setBackground(new java.awt.Color(255, 255, 255));
         jTDiaDeSpa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -107,60 +112,88 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Fecha:");
 
+        jBFecha.setText("Buscar");
+        jBFecha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBFechaMouseClicked(evt);
+            }
+        });
+
+        jBAgregarTurno.setText("Agregar Turno");
+        jBAgregarTurno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBAgregarTurnoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(jBBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jBActualizar)
-                .addGap(132, 132, 132)
-                .addComponent(jBRefrescar)
-                .addGap(48, 48, 48))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(323, 323, 323)
-                        .addComponent(jBSalir))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(283, 283, 283)
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(182, 182, 182)
                         .addComponent(jLabel3)
-                        .addGap(105, 105, 105)
-                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(46, 46, 46)
+                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(106, 106, 106)
+                        .addComponent(jBFecha)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(jBBorrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jBActualizar)
+                .addGap(126, 126, 126)
+                .addComponent(jBRefrescar)
+                .addGap(44, 44, 44))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jBSalir)
+                        .addGap(303, 303, 303))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jBAgregarTurno)
+                        .addGap(277, 277, 277))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jBBorrar)
-                                .addComponent(jBActualizar))
-                            .addComponent(jBRefrescar, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(jBSalir))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabel3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(85, 85, 85)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jBFecha))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jBBorrar)
+                            .addComponent(jBActualizar)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(228, 228, 228)
+                        .addComponent(jBRefrescar)))
+                .addGap(42, 42, 42)
+                .addComponent(jBAgregarTurno)
+                .addGap(49, 49, 49)
+                .addComponent(jBSalir)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
@@ -173,7 +206,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void jBActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBActualizarMouseClicked
         // TODO add your handling code here:
-        //guardarCambiosDesdeTabla();
+        guardarCambiosDesdeTabla();
     }//GEN-LAST:event_jBActualizarMouseClicked
 
     private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
@@ -186,10 +219,43 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jBSalirActionPerformed
 
+    private void jBFechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBFechaMouseClicked
+        // TODO add your handling code here:
+        buscarPorFecha();
+    }//GEN-LAST:event_jBFechaMouseClicked
+
+    private void jBAgregarTurnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAgregarTurnoMouseClicked
+        // TODO add your handling code here:
+          this.dispose();
+    VistaTurno reserva = new VistaTurno();
+    reserva.setVisible(true);
+
+    java.awt.Container parent = this.getParent();
+    if (parent instanceof javax.swing.JDesktopPane) {
+        parent.add(reserva);
+
+        java.awt.Dimension desktopSize = parent.getSize();
+        java.awt.Dimension jifSize = reserva.getSize();
+        reserva.setLocation((desktopSize.width - jifSize.width) / 2,
+                            (desktopSize.height - jifSize.height) / 2);
+        reserva.toFront();
+    } else {
+        // Si no hay desktop, abrimos la vista en una ventana separada
+        javax.swing.JFrame frame = new javax.swing.JFrame("Turno");
+        frame.setContentPane(reserva.getContentPane());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+        
+    }//GEN-LAST:event_jBAgregarTurnoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBActualizar;
+    private javax.swing.JButton jBAgregarTurno;
     private javax.swing.JButton jBBorrar;
+    private javax.swing.JButton jBFecha;
     private javax.swing.JButton jBRefrescar;
     private javax.swing.JButton jBSalir;
     private com.toedter.calendar.JDateChooser jDDiaDeSpa;
@@ -205,7 +271,7 @@ private void armarCabecera() {
         modelo.addColumn("Preferencias");
         modelo.addColumn("Cliente");
         modelo.addColumn("Estado");
-        modelo.addColumn("codSesion");
+       
         modelo.addColumn("Monto");
 
         jTDiaDeSpa.setModel(modelo);
@@ -222,22 +288,21 @@ private void cargarDatos() {
                 activo = "Inactivo";
             }
             
-           // modelo.addRow(new Object[]{d.getCodPack(),d.getSesion().getFechaYHoraDeInicio(),d.getPreferencias(),d.getCliente().getNombreCompleto(),activo,d.getSesion().getCodSesion(),d.getMonto()});
+            modelo.addRow(new Object[]{d.getCodPack(),d.getFechaYHora(),d.getPreferencias(),d.getCliente().getNombreCompleto(),activo,d.getMonto()});
         }
     }
-/*private void buscarPorCodPack() {
+private void buscarPorFecha() {
 
         try {
-            String id = (jTCodPack.getText().trim());
+            Date fecha = (Date) (jDDiaDeSpa.getDate());
+            modelo.setRowCount(0);
+if (fecha == null) {
+     JOptionPane.showMessageDialog(this, "Debe ingresar la fecha", "Advertencia", JOptionPane.WARNING_MESSAGE);
+}
+           
             modelo.setRowCount(0);
 
-            if (id.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un codPack para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            modelo.setRowCount(0);
-
-            diadespa = diadespadata.buscarDiaDeSpa(Integer.parseInt(id));
+            diadespa = diadespadata.buscarDiaDeSpaPorFecha(fecha);
             String activo;
             if (diadespa != null) {
 
@@ -246,15 +311,15 @@ private void cargarDatos() {
                 } else {
                     activo = "Inactivo";
                 }
-                 modelo.addRow(new Object[]{diadespa.getCodPack(),diadespa.getFechaYHora(),diadespa.getPreferencias(),diadespa.getCliente().getCodCli(),activo,diadespa.getSesion().getCodSesion(),diadespa.getMonto()});
+                modelo.addRow(new Object[]{diadespa.getCodPack(),diadespa.getFechaYHora(),diadespa.getPreferencias(),diadespa.getCliente().getNombreCompleto(),activo,diadespa.getMonto()});
 
-                jTCodPack.setText("");
+                jDDiaDeSpa.setDate(null);
             }
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error al ingresar codPack", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al ingresar la fecha", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-    }*/
+    }
 private void borrarDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
         if (fila == -1) {
@@ -284,7 +349,7 @@ private void borrarDiaDeSpa() {
             }
         }
     }
- /* void guardarCambiosDesdeTabla() {
+  void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTDiaDeSpa.getSelectedRow();
         
 
@@ -299,7 +364,7 @@ private void borrarDiaDeSpa() {
             double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
             boolean estado = estadoStr.equals("Activo");
 
-            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.buscarSesion(codSesion));
+            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.ListarTurnos());
             diadespaactualizado.setCodPack(codPack);
 
             diadespadata.actualizarDiaDeSpa(diadespaactualizado);
