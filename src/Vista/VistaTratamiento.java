@@ -289,9 +289,19 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_SalirActionPerformed
-
+    private boolean validarLetra(String nombre) {
+    if (nombre == null || nombre.trim().isEmpty()) {
+        return false;
+    }
+    // Expresión regular que acepta letras mayúsculas/minúsculas, vocales con tilde, ñ/Ñ, y espacios.
+    String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+";
+    return nombre.matches(regex);
+}
     private void btnModificarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarTrataActionPerformed
         // TODO add your handling code here:
+        if (tablaTratamientosFiltrados.isEditing()) {
+        tablaTratamientosFiltrados.getCellEditor().stopCellEditing();
+        }
         int filaSeleccionada = tablaTratamientosFiltrados.getSelectedRow();
         
         if (filaSeleccionada == -1) {
@@ -307,7 +317,21 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
             // Obtener datos modificables
             String nombre = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
+            if (!validarLetra(nombre)) {
+    JOptionPane.showMessageDialog(this,
+        "El nombre debe contener solo letras y espacios.",
+        "Advertencia",
+        JOptionPane.WARNING_MESSAGE);
+    return;
+}
             String tipo = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
+            if (!validarLetra(tipo)) {
+    JOptionPane.showMessageDialog(this,
+        "El nombre debe contener solo letras y espacios.",
+        "Advertencia",
+        JOptionPane.WARNING_MESSAGE);
+    return;
+}
             String detalle = (String) modeloTabla.getValueAt(filaSeleccionada, 3);
 
             // Convertir datos numericos
@@ -343,6 +367,8 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
            
             Tratamiento tratamientoModificado = new Tratamiento(nombre,detalle,tipo,duracion,costo,activo,producto);
+            //tratamientoModificado.setCodTratam(codTratam);
+            tratamientoModificado.setCodTratam(codTratam);
 
              
 
