@@ -9,8 +9,11 @@ import Modelo.Tratamiento;
 import Persistencia.TratamientoData;
 import java.util.*;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -25,6 +28,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         initComponents();
         inicializarTabla();
         cargarTratamientosPorTipo(null);
+        inicializarEditorEspecialidadEnTabla();
 
         // Agrupar radio buttons para que sean exclusivos
         ButtonGroup grupoTipos = new ButtonGroup();
@@ -87,6 +91,15 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             };
             modeloTabla.addRow(fila);
         }
+    }
+    
+    
+    //prueba tabla inicializarEditorEspecialidadEnTabla()columna especialidad
+    private void inicializarEditorEspecialidadEnTabla() {
+        String[] opciones = { "Facial", "Corporal", "Relajación", "Estético" };
+        TableColumn columnaEspecialidad = tablaTratamientosFiltrados.getColumnModel().getColumn(2);
+        JComboBox<String> comboEditor = new JComboBox<>(opciones);
+        columnaEspecialidad.setCellEditor(new DefaultCellEditor(comboEditor));
     }
 
     @SuppressWarnings("unchecked")
@@ -324,14 +337,8 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         JOptionPane.WARNING_MESSAGE);
     return;
 }
-            String tipo = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
-            if (!validarLetra(tipo)) {
-    JOptionPane.showMessageDialog(this,
-        "El nombre debe contener solo letras y espacios.",
-        "Advertencia",
-        JOptionPane.WARNING_MESSAGE);
-    return;
-}
+            //String tip = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
+            String tipo = modeloTabla.getValueAt(filaSeleccionada, 2).toString().trim();
             String detalle = (String) modeloTabla.getValueAt(filaSeleccionada, 3);
 
             // Convertir datos numericos
