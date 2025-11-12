@@ -312,7 +312,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         jLabel2.setText("Nro de Consultorio:");
 
         jBbuscar.setBackground(new java.awt.Color(255, 153, 102));
-        jBbuscar.setForeground(new java.awt.Color(255, 255, 255));
+        jBbuscar.setForeground(new java.awt.Color(0, 0, 0));
         jBbuscar.setText("Buscar");
         jBbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -321,7 +321,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         btnBorrar.setBackground(new java.awt.Color(255, 153, 102));
-        btnBorrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnBorrar.setForeground(new java.awt.Color(0, 0, 0));
         btnBorrar.setText("Borrar");
         btnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,7 +330,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         btnActualizar.setBackground(new java.awt.Color(255, 153, 102));
-        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setForeground(new java.awt.Color(0, 0, 0));
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -339,7 +339,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         btnRefrescar.setBackground(new java.awt.Color(255, 153, 102));
-        btnRefrescar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRefrescar.setForeground(new java.awt.Color(0, 0, 0));
         btnRefrescar.setText("Refrescar Tabla");
         btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -358,7 +358,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         btnCambiarApto.setBackground(new java.awt.Color(255, 153, 102));
-        btnCambiarApto.setForeground(new java.awt.Color(255, 255, 255));
+        btnCambiarApto.setForeground(new java.awt.Color(0, 0, 0));
         btnCambiarApto.setText("Aceptar");
         btnCambiarApto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -373,7 +373,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         jLabel6.setText("Equipamiento:");
 
         btnSalir.setBackground(new java.awt.Color(255, 153, 102));
-        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -382,7 +382,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setBackground(new java.awt.Color(255, 153, 102));
-        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setForeground(new java.awt.Color(0, 0, 0));
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

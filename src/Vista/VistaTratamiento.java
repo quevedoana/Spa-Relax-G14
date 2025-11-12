@@ -170,8 +170,10 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         jLabel1.setBackground(new java.awt.Color(255, 153, 102));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 153, 102));
-        jLabel1.setText("TRATAMIENTOS");
+        jLabel1.setText("<html><u>TRATAMIENTOS</u></html>");
 
+        btnEliminarTrata.setBackground(new java.awt.Color(255, 153, 102));
+        btnEliminarTrata.setForeground(new java.awt.Color(0, 0, 0));
         btnEliminarTrata.setText("Eliminar");
         btnEliminarTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,6 +181,8 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
+        btnModificarTrata.setBackground(new java.awt.Color(255, 153, 102));
+        btnModificarTrata.setForeground(new java.awt.Color(0, 0, 0));
         btnModificarTrata.setText("Modificar");
         btnModificarTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,6 +190,8 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
+        btnActualizarTablaTrata.setBackground(new java.awt.Color(255, 153, 102));
+        btnActualizarTablaTrata.setForeground(new java.awt.Color(0, 0, 0));
         btnActualizarTablaTrata.setText("Actualizar");
         btnActualizarTablaTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,7 +201,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
         btnAgregarTratam.setBackground(new java.awt.Color(255, 153, 102));
         btnAgregarTratam.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnAgregarTratam.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarTratam.setForeground(new java.awt.Color(0, 0, 0));
         btnAgregarTratam.setText("Agregar Tratamiento");
         btnAgregarTratam.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         btnAgregarTratam.addActionListener(new java.awt.event.ActionListener() {
@@ -226,7 +232,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(135, 135, 135)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnFacial)
                         .addGap(18, 18, 18)
@@ -258,7 +264,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jLabel1))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(Salir)))
