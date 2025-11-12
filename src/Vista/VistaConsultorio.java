@@ -171,6 +171,15 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         }
     }
 
+    private boolean validarTexto(String texto) {
+        if (texto == null || texto.trim().isEmpty()){
+            return false;
+        }
+        
+        String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ, ]+";
+        return texto.matches(regex);
+    }
+
     private void guardarCambiosDesdeTabla() {
         if (jTConsultorio.isEditing()) {
             jTConsultorio.getCellEditor().stopCellEditing();
@@ -191,6 +200,12 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             String equipamiento = modelo.getValueAt(filaSeleccionada, 2).toString();
             String aptoStr = modelo.getValueAt(filaSeleccionada, 3).toString();
             boolean apto = aptoStr.equals("Si");
+            
+            if (!validarTexto(equipamiento)) {
+                JOptionPane.showMessageDialog(this, "El campo Equipamiento solo debe contener letras y espacios.",
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
             Consultorio consultorioActualizado = new Consultorio(usos,equipamiento,apto);
             consultorioActualizado.setNroConsultorio(nro);
@@ -287,11 +302,17 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
 
         setTitle("Consultorio");
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        jLabel1.setText("Consultorio");
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setBackground(new java.awt.Color(255, 153, 102));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel1.setText("<html><u>Consultorio</u></html>");
 
         jLabel2.setText("Nro de Consultorio:");
 
+        jBbuscar.setBackground(new java.awt.Color(255, 153, 102));
+        jBbuscar.setForeground(new java.awt.Color(255, 255, 255));
         jBbuscar.setText("Buscar");
         jBbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,6 +320,8 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
+        btnBorrar.setBackground(new java.awt.Color(255, 153, 102));
+        btnBorrar.setForeground(new java.awt.Color(255, 255, 255));
         btnBorrar.setText("Borrar");
         btnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -306,6 +329,8 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
+        btnActualizar.setBackground(new java.awt.Color(255, 153, 102));
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -313,6 +338,8 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
+        btnRefrescar.setBackground(new java.awt.Color(255, 153, 102));
+        btnRefrescar.setForeground(new java.awt.Color(255, 255, 255));
         btnRefrescar.setText("Refrescar Tabla");
         btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,7 +347,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Apto:");
 
         jCBapto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Si", "No" }));
@@ -330,6 +357,8 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCambiarApto.setBackground(new java.awt.Color(255, 153, 102));
+        btnCambiarApto.setForeground(new java.awt.Color(255, 255, 255));
         btnCambiarApto.setText("Aceptar");
         btnCambiarApto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -337,11 +366,14 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setText("Agregar Consultorio");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel4.setText("<html><u>Agregar Consultorio</u></html>");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Equipamiento:");
 
+        btnSalir.setBackground(new java.awt.Color(255, 153, 102));
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -349,6 +381,8 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
+        btnGuardar.setBackground(new java.awt.Color(255, 153, 102));
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -356,6 +390,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Usos");
 
         jCBusos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Facial", "Corporal", "Masajes", "Depilacion" }));
@@ -394,14 +429,9 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(126, 126, 126)
-                                        .addComponent(jLabel1))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(61, 61, 61)
-                                        .addComponent(jLabel4)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(61, 61, 61)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 302, Short.MAX_VALUE)))
                         .addGap(23, 23, 23))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
@@ -424,9 +454,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel6)))
                         .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtEquipamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtEquipamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCBusos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(46, 46, 46)
                         .addComponent(btnGuardar)
@@ -440,14 +468,19 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
                 .addComponent(btnCambiarApto)
                 .addGap(53, 53, 53))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(233, 233, 233)
-                .addComponent(btnSalir)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(233, 233, 233)
+                        .addComponent(btnSalir))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(188, 188, 188)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -470,7 +503,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCBusos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
