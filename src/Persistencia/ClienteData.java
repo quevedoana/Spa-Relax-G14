@@ -63,6 +63,37 @@ public class ClienteData {
             ResultSet resultado = ps.executeQuery();
             if (resultado.next()) {
 
+                cli = new Cliente(
+                        resultado.getInt("DNI"), 
+                        resultado.getString("NombreCompleto"), 
+                        resultado.getLong("Telefono"),
+                        resultado.getInt("Edad"), 
+                        resultado.getString("Afecciones"),
+                        resultado.getBoolean("Estado")
+                );
+                
+                cli.setCodCli(resultado.getInt("codCli"));
+
+            } else {
+                System.out.println("No se encontro el Cliente");
+            }
+            ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar el Cliente" + e.getMessage());
+
+        }
+        return cli;
+    }
+   public Cliente buscarClientePorDni(int DNI) { //select 1 alumno
+        String sql = "SELECT * FROM cliente WHERE DNI = ? " ;
+        Cliente cli = null;
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, DNI);
+            ResultSet resultado = ps.executeQuery();
+            if (resultado.next()) {
+
                 cli = new Cliente(resultado.getInt("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
                 cli.setCodCli(resultado.getInt("CodCli"));
 
@@ -86,8 +117,15 @@ public class ClienteData {
             ResultSet resultado = ps.executeQuery();
             while (resultado.next()) {
 
-                Cliente cli = new Cliente(resultado.getInt("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
-                cli.setCodCli(resultado.getInt("CodCli"));
+                Cliente cli = new Cliente(
+                        resultado.getInt("DNI"),
+                        resultado.getString("NombreCompleto"),
+                        resultado.getLong("Telefono"),
+                        resultado.getInt("Edad"),
+                        resultado.getString("Afecciones"),
+                        resultado.getBoolean("Estado")
+                );
+                cli.setCodCli(resultado.getInt("codCli"));
                 cliente.add(cli);
             }
             ps.close();

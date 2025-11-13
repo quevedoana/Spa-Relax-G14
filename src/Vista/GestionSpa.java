@@ -45,6 +45,8 @@ public class GestionSpa extends javax.swing.JFrame {
         btnGestionConsultorios = new javax.swing.JMenuItem();
         menuTurno = new javax.swing.JMenu();
         btnConsultarTurnos = new javax.swing.JCheckBoxMenuItem();
+        jMenu9 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -133,6 +135,18 @@ public class GestionSpa extends javax.swing.JFrame {
         menuTurno.add(btnConsultarTurnos);
 
         jMenuBar1.add(menuTurno);
+
+        jMenu9.setText("Dia de Spa");
+
+        jMenuItem3.setText("Gestión dia de spa");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu9);
 
         setJMenuBar(jMenuBar1);
 
@@ -240,6 +254,19 @@ public class GestionSpa extends javax.swing.JFrame {
         ve.setVisible(true);
     }//GEN-LAST:event_btnConsultarTurnosActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        AgregarDiaDeSpa ve = new AgregarDiaDeSpa();
+        ve.setLocation(
+                (escritorio.getWidth() - ve.getWidth()) / 2,
+                (escritorio.getHeight() - ve.getHeight()) / 2
+        );
+        escritorio.add(ve);
+        ve.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -289,10 +316,12 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu menuTurno;
     // End of variables declaration//GEN-END:variables
 }

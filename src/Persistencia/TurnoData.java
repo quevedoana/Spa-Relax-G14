@@ -37,39 +37,106 @@ public class TurnoData {
     private ConsultorioData consultoriodata = new ConsultorioData();
     private EspecialistaData especialistadata = new EspecialistaData();
     private InstalacionData instalaciondata = new InstalacionData();
-    private DiaDeSpaData diadespadata = new DiaDeSpaData();
 
     //AGREGAR TURNO
-    public void AltaTurno(Turno s) {
-
-        String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
+    public void AltaTurno(Turno sesion) {
+        String query = "INSERT INTO sesion(fechaHoraInicio, fechaHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, estado) VALUES (?,?,?,?,?,?,?)";
+        
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            Timestamp tm = Timestamp.valueOf(s.getFechaYHoraDeInicio());
-            Timestamp tm2 = Timestamp.valueOf(s.getFechaYHoraDeFin());
-            ps.setTimestamp(1, tm);
-            ps.setTimestamp(2, tm2);
-            ps.setInt(3, s.getTratamiento().getCodTratam());
-            ps.setInt(4, s.getConsultorio().getNroConsultorio());
-            ps.setString(5, s.getEspecialista().getMatricula());
-            ps.setInt(6, s.getInstalacion().getCodInstal());
-            //ps.setInt(7, s.getDiaDeSpa().getCodPack());
-            ps.setBoolean(8, s.isEstado());
+            ps.setTimestamp(1, Timestamp.valueOf(sesion.getFechaYHoraDeInicio()));
+            ps.setTimestamp(2, Timestamp.valueOf(sesion.getFechaYHoraDeFin()));
+            ps.setInt(3, sesion.getTratamiento().getCodTratam());
+            
+            if (sesion.getConsultorio() != null) {
+                ps.setInt(4, sesion.getConsultorio().getNroConsultorio());
+            } else {
+                ps.setNull(4, java.sql.Types.INTEGER);
+            }
+            
+            ps.setString(5, sesion.getEspecialista().getMatricula());
+            
+            if (sesion.getInstalacion() != null) {
+                ps.setInt(6, sesion.getInstalacion().getCodInstal());
+            } else {
+                ps.setNull(6, java.sql.Types.INTEGER);
+            }
+            
+            ps.setBoolean(7, sesion.isEstado());
 
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                s.setCodSesion(rs.getInt(1));
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo obtener el codSesion de la sesión");
-                ps.close();
+                sesion.setCodSesion(rs.getInt(1)); // Asignar el ID generado directamente al objeto
             }
             ps.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al guardar la sesión" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al guardar la sesión: " + e.getMessage());
         }
     }
+
+    public void guardarSesionConPack(Turno sesion, int codPack) {
+        String query = "INSERT INTO sesion(fechaHoraInicio, fechaHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
+        
+        try {
+            PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setTimestamp(1, Timestamp.valueOf(sesion.getFechaYHoraDeInicio()));
+            ps.setTimestamp(2, Timestamp.valueOf(sesion.getFechaYHoraDeFin()));
+            ps.setInt(3, sesion.getTratamiento().getCodTratam());
+            
+            if (sesion.getConsultorio() != null) {
+                ps.setInt(4, sesion.getConsultorio().getNroConsultorio());
+            } else {
+                ps.setNull(4, java.sql.Types.INTEGER);
+            }
+            
+            ps.setString(5, sesion.getEspecialista().getMatricula());
+            
+            if (sesion.getInstalacion() != null) {
+                ps.setInt(6, sesion.getInstalacion().getCodInstal());
+            } else {
+                ps.setNull(6, java.sql.Types.INTEGER);
+            }
+            
+            ps.setInt(7, codPack); 
+            ps.setBoolean(8, sesion.isEstado());
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                sesion.setCodSesion(rs.getInt(1));
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar la sesión: " + e.getMessage());
+        }
+    }
+    public List<Turno> buscarSesionesPorDiaSpa(int codPack) {
+        String sql = "SELECT * FROM sesion WHERE codPack = ?";
+        List<Turno> sesiones = new ArrayList<>();
+        
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, codPack);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Turno sesion = new Turno();
+                sesion.setCodSesion(rs.getInt("codSesion"));
+                sesion.setFechaYHoraDeInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
+                sesion.setFechaYHoraDeFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
+                sesion.setTratamiento(tratamientodata.buscarTratamiento(rs.getInt("codTratamiento")));
+                sesiones.add(sesion);
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar sesiones: " + e.getMessage());
+        }
+        return sesiones;
+    }
+
 
     //BORRAR UN TURNO
     public void BajaTurno(int codSesion) {
@@ -253,6 +320,18 @@ public class TurnoData {
     
     public List<Instalacion> ListaInstalaciones(){
         return instalaciondata.ListarInstalacion();
+    }
+    public void eliminarSesionesPorDiaSpa(int codPack) {
+        String sql = "DELETE FROM sesion WHERE codPack = ?";
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, codPack);
+            int filasEliminadas = ps.executeUpdate();
+            System.out.println("Se eliminaron " + filasEliminadas + " sesiones del día de spa: " + codPack);
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar sesiones del día de spa: " + e.getMessage());
+        }
     }
 
 }
