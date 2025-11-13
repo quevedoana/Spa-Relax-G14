@@ -55,7 +55,7 @@ public class ClienteData {
     }
     
     public Cliente buscarCliente(int CodCli) { //select 1 alumno
-        String sql = "SELECT * FROM cliente WHERE codCli=?";
+        String sql = "SELECT * FROM cliente WHERE codCli = ? ";
         Cliente cli = null;
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -108,9 +108,33 @@ public class ClienteData {
         }
         return cli;
     }
+    //para validar duplicados de dni
+     public Cliente buscarClientePorDni(int DNI) { //select 1 alumno
+        String sql = "SELECT * FROM cliente WHERE DNI = ? " ;
+        Cliente cli = null;
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, DNI);
+            ResultSet resultado = ps.executeQuery();
+            if (resultado.next()) {
+
+                cli = new Cliente(resultado.getInt("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
+                cli.setCodCli(resultado.getInt("CodCli"));
+
+            } else {
+                System.out.println("No se encontro el Cliente");
+            }
+            ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar el Cliente" + e.getMessage());
+
+        }
+        return cli;
+    }
     
     public List<Cliente> ListarCliente() { //select 1 alumno
-        String sql = "SELECT * FROM cliente";
+        String sql = "SELECT * FROM cliente WHERE 1";
         List<Cliente> cliente = new ArrayList ();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
