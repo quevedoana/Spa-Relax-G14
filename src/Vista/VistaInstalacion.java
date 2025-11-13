@@ -298,11 +298,8 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         txtBuscaPorCod = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 153, 102));
-        jLabel1.setText("<html><u>Gestión de instalaciones</u></html>");
+        jLabel1.setText("Gestión de instalaciones");
 
         jTInstalacion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -322,8 +319,6 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTInstalacion);
 
-        btnBorrarInstalacion.setBackground(new java.awt.Color(255, 153, 102));
-        btnBorrarInstalacion.setForeground(new java.awt.Color(0, 0, 0));
         btnBorrarInstalacion.setText("Borrar");
         btnBorrarInstalacion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -334,8 +329,6 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnRefrescar.setBackground(new java.awt.Color(255, 153, 102));
-        btnRefrescar.setForeground(new java.awt.Color(0, 0, 0));
         btnRefrescar.setText("Refrescar Tabla");
         btnRefrescar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -343,8 +336,6 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnActualizarInstalacion.setBackground(new java.awt.Color(255, 153, 102));
-        btnActualizarInstalacion.setForeground(new java.awt.Color(0, 0, 0));
         btnActualizarInstalacion.setText("Actualizar");
         btnActualizarInstalacion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -355,8 +346,6 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAltaBajaLogica.setBackground(new java.awt.Color(255, 153, 102));
-        btnAltaBajaLogica.setForeground(new java.awt.Color(0, 0, 0));
         btnAltaBajaLogica.setText("Editar Estado");
         btnAltaBajaLogica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -384,8 +373,6 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Detalle de uso: ");
 
-        BtnAgregarAlumno.setBackground(new java.awt.Color(255, 153, 102));
-        BtnAgregarAlumno.setForeground(new java.awt.Color(0, 0, 0));
         BtnAgregarAlumno.setText("Agregar");
         BtnAgregarAlumno.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -407,7 +394,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 497, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(174, 174, 174)
@@ -454,8 +441,6 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
-        jBSalir.setBackground(new java.awt.Color(255, 153, 102));
-        jBSalir.setForeground(new java.awt.Color(0, 0, 0));
         jBSalir.setText("Salir");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -463,7 +448,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Estado:");
 
         comboEstadoInstalacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activa", "Inactiva" }));
@@ -476,8 +461,6 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnBuscar.setBackground(new java.awt.Color(255, 153, 102));
-        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -500,8 +483,11 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(219, 219, 219)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(121, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(519, 519, 519)
+                        .addComponent(btnAltaBajaLogica)))
+                .addContainerGap(107, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -515,9 +501,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(comboEstadoInstalacion, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(107, 107, 107)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRefrescar)
-                    .addComponent(btnAltaBajaLogica))
+                .addComponent(btnRefrescar)
                 .addGap(91, 91, 91))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()

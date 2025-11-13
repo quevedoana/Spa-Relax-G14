@@ -9,11 +9,8 @@ import Modelo.Tratamiento;
 import Persistencia.TratamientoData;
 import java.util.*;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
@@ -28,7 +25,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         initComponents();
         inicializarTabla();
         cargarTratamientosPorTipo(null);
-        inicializarEditorEspecialidadEnTabla();
 
         // Agrupar radio buttons para que sean exclusivos
         ButtonGroup grupoTipos = new ButtonGroup();
@@ -91,15 +87,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             };
             modeloTabla.addRow(fila);
         }
-    }
-    
-    
-    //prueba tabla inicializarEditorEspecialidadEnTabla()columna especialidad
-    private void inicializarEditorEspecialidadEnTabla() {
-        String[] opciones = { "Facial", "Corporal", "Relajación", "Estético" };
-        TableColumn columnaEspecialidad = tablaTratamientosFiltrados.getColumnModel().getColumn(2);
-        JComboBox<String> comboEditor = new JComboBox<>(opciones);
-        columnaEspecialidad.setCellEditor(new DefaultCellEditor(comboEditor));
     }
 
     @SuppressWarnings("unchecked")
@@ -170,10 +157,8 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         jLabel1.setBackground(new java.awt.Color(255, 153, 102));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 153, 102));
-        jLabel1.setText("<html><u>TRATAMIENTOS</u></html>");
+        jLabel1.setText("TRATAMIENTOS");
 
-        btnEliminarTrata.setBackground(new java.awt.Color(255, 153, 102));
-        btnEliminarTrata.setForeground(new java.awt.Color(0, 0, 0));
         btnEliminarTrata.setText("Eliminar");
         btnEliminarTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,8 +166,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        btnModificarTrata.setBackground(new java.awt.Color(255, 153, 102));
-        btnModificarTrata.setForeground(new java.awt.Color(0, 0, 0));
         btnModificarTrata.setText("Modificar");
         btnModificarTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,8 +173,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        btnActualizarTablaTrata.setBackground(new java.awt.Color(255, 153, 102));
-        btnActualizarTablaTrata.setForeground(new java.awt.Color(0, 0, 0));
         btnActualizarTablaTrata.setText("Actualizar");
         btnActualizarTablaTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,7 +182,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
         btnAgregarTratam.setBackground(new java.awt.Color(255, 153, 102));
         btnAgregarTratam.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnAgregarTratam.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgregarTratam.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarTratam.setText("Agregar Tratamiento");
         btnAgregarTratam.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         btnAgregarTratam.addActionListener(new java.awt.event.ActionListener() {
@@ -232,7 +213,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(135, 135, 135)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnFacial)
                         .addGap(18, 18, 18)
@@ -264,7 +245,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(Salir)))
@@ -308,19 +289,9 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_SalirActionPerformed
-    private boolean validarLetra(String nombre) {
-    if (nombre == null || nombre.trim().isEmpty()) {
-        return false;
-    }
-    // Expresión regular que acepta letras mayúsculas/minúsculas, vocales con tilde, ñ/Ñ, y espacios.
-    String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+";
-    return nombre.matches(regex);
-}
+
     private void btnModificarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarTrataActionPerformed
         // TODO add your handling code here:
-        if (tablaTratamientosFiltrados.isEditing()) {
-        tablaTratamientosFiltrados.getCellEditor().stopCellEditing();
-        }
         int filaSeleccionada = tablaTratamientosFiltrados.getSelectedRow();
         
         if (filaSeleccionada == -1) {
@@ -336,15 +307,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
             // Obtener datos modificables
             String nombre = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
-            if (!validarLetra(nombre)) {
-    JOptionPane.showMessageDialog(this,
-        "El nombre debe contener solo letras y espacios.",
-        "Advertencia",
-        JOptionPane.WARNING_MESSAGE);
-    return;
-}
-            //String tip = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
-            String tipo = modeloTabla.getValueAt(filaSeleccionada, 2).toString().trim();
+            String tipo = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
             String detalle = (String) modeloTabla.getValueAt(filaSeleccionada, 3);
 
             // Convertir datos numericos
@@ -380,8 +343,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
            
             Tratamiento tratamientoModificado = new Tratamiento(nombre,detalle,tipo,duracion,costo,activo,producto);
-            //tratamientoModificado.setCodTratam(codTratam);
-            tratamientoModificado.setCodTratam(codTratam);
 
              
 

@@ -325,7 +325,7 @@ public class VistaCliente extends javax.swing.JInternalFrame {
 
     private void jBRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRefrescarActionPerformed
         // TODO add your handling code here:
-        cargarDatos();
+     cargarDatos();
     }//GEN-LAST:event_jBRefrescarActionPerformed
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
@@ -463,11 +463,6 @@ private void armarCabecera() {
             modelo.setRowCount(0);
 
             clienteAc = clientedata.buscarCliente(Integer.parseInt(id));
-
-            if (clienteAc == null) {
-                JOptionPane.showMessageDialog(this, "No se encontró ningún cliente con ese ID.", "Información", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
             String activo;
             if (clienteAc != null) {
 
@@ -482,7 +477,7 @@ private void armarCabecera() {
             }
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El ID debe ser un número", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al ingresar ID", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -490,13 +485,6 @@ private void armarCabecera() {
         int fila = jTCliente.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "seleccione un cliente a eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-        //validar que el cliente exista
-        int codcli = (int) jTCliente.getValueAt(fila, 0);
-        Cliente cliente = clientedata.buscarCliente(codcli);
-        if (cliente == null) {
-            JOptionPane.showMessageDialog(this, "El cliente no existe o ya fue eliminado.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
         }
 
         if (fila != -1) {
@@ -506,6 +494,7 @@ private void armarCabecera() {
 
             if (conf == JOptionPane.YES_OPTION) {
                 try {
+                    int codcli = (int) jTCliente.getValueAt(fila, 0);
 
                     clientedata.BorrarCliente(codcli);
 
@@ -523,56 +512,22 @@ private void armarCabecera() {
     }
 
     private void agregarCliente() {
-        try {
-            // Validar campos vacíos
-            if (jTDni.getText().trim().isEmpty()
-                    || jTNombreC.getText().trim().isEmpty()
-                    || jTTelefono.getText().trim().isEmpty()
-                    || jTEdad.getText().trim().isEmpty()) {
+        try{
+            
+        
+        int dni = Integer.parseInt(jTDni.getText().trim());
+        String nombreCompleto = jTNombreC.getText().trim();
+        long teléfono = Long.parseLong(jTTelefono.getText().trim());
+        int edad = Integer.parseInt(jTEdad.getText().trim());
+        String afecciones = jTAfecciones.getText().trim();
 
-                JOptionPane.showMessageDialog(this, "Todos los campos obligatorios deben completarse.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // validar formato numerico 
-            int dni = Integer.parseInt(jTDni.getText().trim());
-            String nombreCompleto = jTNombreC.getText().trim();
-            long telefono = Long.parseLong(jTTelefono.getText().trim());
-            int edad = Integer.parseInt(jTEdad.getText().trim());
-            String afecciones = jTAfecciones.getText().trim();
-
-            // Validar rangos y longitudes
-            if (dni < 1000000 || dni > 99999999) {
-                JOptionPane.showMessageDialog(this, "El DNI debe tener entre 7 y 8 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (edad <= 0 || edad > 120) {
-                JOptionPane.showMessageDialog(this, "La edad debe estar entre 1 y 120.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (String.valueOf(telefono).length() < 10 || String.valueOf(telefono).length() > 15) {
-                JOptionPane.showMessageDialog(this, "Número de teléfono no válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Validar nombre (solo letras y espacios)
-            if (!nombreCompleto.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
-                JOptionPane.showMessageDialog(this, "El nombre solo debe contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Verificar duplicado por DNI
-            if (clientedata.buscarClientePorDni(dni) != null) {
-                JOptionPane.showMessageDialog(this, "Ya existe un cliente con ese DNI.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Cliente c = new Cliente(dni, nombreCompleto, telefono, edad, afecciones, true);
-            clientedata.guardarCliente(c);
-            JOptionPane.showMessageDialog(this, "Cliente agregado correctamente.");
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos en DNI, teléfono y edad.");
-        }
+        Cliente c = new Cliente(dni, nombreCompleto, teléfono, edad, afecciones, true);
+        clientedata.guardarCliente(c);
+        JOptionPane.showMessageDialog(this, "Cliente agregado correctamente.");
+        
+    }catch(NumberFormatException e){
+    JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos en DNI, teléfono y edad.");
+    }
     }
 
     private void limpiarCampos() {
@@ -586,10 +541,6 @@ private void armarCabecera() {
 
     private void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTCliente.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar una fila para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
 
         try {
             // obtener datos de la fila seleccionada
@@ -601,30 +552,6 @@ private void armarCabecera() {
             String afecciones = modelo.getValueAt(filaSeleccionada, 5).toString().trim();
             String estadoStr = modelo.getValueAt(filaSeleccionada, 6).toString();
             boolean estado = estadoStr.equals("Activo");
-            // Validar rangos y longitudes
-            if (dni < 1000000 || dni > 99999999) {
-                JOptionPane.showMessageDialog(this, "El DNI debe tener entre 7 y 8 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (edad <= 0 || edad > 120) {
-                JOptionPane.showMessageDialog(this, "La edad debe estar entre 1 y 120.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (String.valueOf(telefono).length() < 10 || String.valueOf(telefono).length() > 15) {
-                JOptionPane.showMessageDialog(this, "Número de teléfono no válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Validar nombre (solo letras y espacios)
-            if (!nombreCompleto.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
-                JOptionPane.showMessageDialog(this, "El nombre solo debe contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Verificar duplicado por DNI
-            if (clientedata.buscarClientePorDni(dni) != null) {
-                JOptionPane.showMessageDialog(this, "Ya existe un cliente con ese DNI.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
 
             Cliente clienteActualizado = new Cliente(codcli, nombreCompleto, telefono, edad, afecciones, estado);
             clienteActualizado.setCodCli(codcli);
@@ -635,8 +562,6 @@ private void armarCabecera() {
 
             cargarDatos();
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Revise los valores numéricos (DNI, teléfono, edad).", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al actualizar cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -656,15 +581,9 @@ private void armarCabecera() {
         aux.setTelefono((long) modelo.getValueAt(fila, 3));
         aux.setEdad((int) modelo.getValueAt(fila, 4));
         aux.setAfecciones((String) modelo.getValueAt(fila, 5));
-        
-        String estadoActual = modelo.getValueAt(fila, 6).toString();
+
         String nuevoEstado = (String) jCEstado.getSelectedItem();
         boolean estadoBoolean = nuevoEstado.equals("Activo");
-        //validar que el estado no sea el mismo 
-         if (estadoActual.equalsIgnoreCase(nuevoEstado)) {
-        JOptionPane.showMessageDialog(this, "El cliente ya está en ese estado.", "Información", JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
 
         try {
             if (estadoBoolean) {
