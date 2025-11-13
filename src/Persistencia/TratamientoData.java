@@ -140,8 +140,13 @@ public class TratamientoData {
             ps.setString(7, t.getProductos());
             ps.setInt(8, t.getCodTratam());
 
-            ps.executeUpdate();
-            ps.close();
+             int filasAfectadas = ps.executeUpdate();  // ejecuta la actualización
+
+        if (filasAfectadas == 0) {
+            // No se modificó ninguna fila: puede que codTratam no exista
+            JOptionPane.showMessageDialog(null, "No se modificó ningún tratamiento. Verifique el código.");
+            return false;
+        }
             return true;
 
         } catch (SQLException ex) {

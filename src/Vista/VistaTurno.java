@@ -149,8 +149,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(tablaTratamientos);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 102, 51));
-        jLabel3.setText("Servicios Disponibles");
+        jLabel3.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel3.setText("<html><u>Servicios Disponibles</u></html>");
 
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("(Seleccione el tratamiento de su interes para consultar o hacer una reserva)");
@@ -185,9 +185,9 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         });
 
-        btnReservar.setBackground(new java.awt.Color(255, 102, 51));
+        btnReservar.setBackground(new java.awt.Color(255, 153, 102));
         btnReservar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnReservar.setForeground(new java.awt.Color(255, 255, 255));
+        btnReservar.setForeground(new java.awt.Color(0, 0, 0));
         btnReservar.setText("Reservar");
         btnReservar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,9 +195,9 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         });
 
-        btnContacto.setBackground(new java.awt.Color(255, 102, 51));
+        btnContacto.setBackground(new java.awt.Color(255, 153, 102));
         btnContacto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnContacto.setForeground(new java.awt.Color(255, 255, 255));
+        btnContacto.setForeground(new java.awt.Color(0, 0, 0));
         btnContacto.setText("Contacto");
         btnContacto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,9 +205,9 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         });
 
-        btnConsultar.setBackground(new java.awt.Color(255, 102, 51));
+        btnConsultar.setBackground(new java.awt.Color(255, 153, 102));
         btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultar.setForeground(new java.awt.Color(0, 0, 0));
         btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,6 +218,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Para Consultas o mas Informacion, contactanos!");
 
+        btnSalir.setBackground(new java.awt.Color(255, 153, 102));
+        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -236,7 +238,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(229, 229, 229)
-                        .addComponent(jLabel3))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(168, 168, 168)
                         .addComponent(btnReservar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,7 +264,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel4)
                                 .addGap(31, 31, 31)
                                 .addComponent(btnContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnSalir)))))
                 .addGap(23, 23, 23))
         );
@@ -270,7 +272,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel3)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -340,7 +342,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             reserva.setVisible(true);
 
             javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
-            desktop.add(reserva);
+            desktop.add(reserva);  
 
             java.awt.Dimension desktopSize = desktop.getSize();
             java.awt.Dimension jifSize = reserva.getSize();

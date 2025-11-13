@@ -1,4 +1,4 @@
-/*
+wwwwwwww1|2/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,6 +10,7 @@ import Modelo.Conexion;
 import Modelo.DiaDeSpa;
 import Modelo.Turno;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -121,6 +122,33 @@ public class DiaDeSpaData {
         return diaDeSpa;
     }
 
+    public DiaDeSpa buscarDiaDeSpaPorFecha(Date fecha) { 
+        String sql = "SELECT * FROM dia_de_spa WHERE DATE(fechaYHora) = ? ";
+        DiaDeSpa dia = null;
+        ClienteData cd = new ClienteData();
+        TurnoData td = new TurnoData();
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setDate(1, fecha);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Timestamp ts = rs.getTimestamp("fechaYHora");
+
+                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.ListarTurnos());
+                dia.setCodPack(rs.getInt("codPack"));
+
+            } else {
+                System.out.println("No se encontro el día de spa");
+            }
+            ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar el día de spa" + e.getMessage());
+
+        }
+        return dia;
+    }
+    
     public List<DiaDeSpa> listarDiasDeSpa() { 
         String sql = "SELECT * FROM dia_de_spa";
         List<DiaDeSpa> diasDeSpa = new ArrayList<>();
@@ -128,6 +156,13 @@ public class DiaDeSpaData {
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Timestamp ts = rs.getTimestamp("fechaYHora");
+
+                dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.ListarTurnos());
+                dia.setCodPack(rs.getInt("codPack"));
+                dias.add(dia);
+
             
             while(rs.next()) {
                 int codPack = rs.getInt("codPack");
