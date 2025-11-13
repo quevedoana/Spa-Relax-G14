@@ -59,6 +59,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
+        jTDiaDeSpa.setBackground(new java.awt.Color(255, 255, 255));
         jTDiaDeSpa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -165,25 +166,25 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
+    private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
         // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_jBSalirActionPerformed
-
-    private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
-        // TODO add your handling code here:
-        cargarDatos();
-    }//GEN-LAST:event_jBRefrescarMouseClicked
+        borrarDiaDeSpa();
+    }//GEN-LAST:event_jBBorrarMouseClicked
 
     private void jBActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBActualizarMouseClicked
         // TODO add your handling code here:
         //guardarCambiosDesdeTabla();
     }//GEN-LAST:event_jBActualizarMouseClicked
 
-    private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
+    private void jBRefrescarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBRefrescarMouseClicked
         // TODO add your handling code here:
-        borrarDiaDeSpa();
-    }//GEN-LAST:event_jBBorrarMouseClicked
+        cargarDatos();
+    }//GEN-LAST:event_jBRefrescarMouseClicked
+
+    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jBSalirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -199,11 +200,152 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 private void armarCabecera() {
 
-        modelo.addColumn("Codigo");
+        modelo.addColumn("CodPack");
         modelo.addColumn("Fecha y Hora");
+        modelo.addColumn("Preferencias");
+        modelo.addColumn("Cliente");
         modelo.addColumn("Estado");
+        modelo.addColumn("codSesion");
+        modelo.addColumn("Monto");
 
         jTDiaDeSpa.setModel(modelo);
 
     }
+private void cargarDatos() {
+        String activo;
+        modelo.setRowCount(0);
+        for (DiaDeSpa d : diadespadata.listarDiasDeSpa()) {
+
+            if (d.isEstado()) {
+                activo = "Activo";
+            } else {
+                activo = "Inactivo";
+            }
+            
+           // modelo.addRow(new Object[]{d.getCodPack(),d.getSesion().getFechaYHoraDeInicio(),d.getPreferencias(),d.getCliente().getNombreCompleto(),activo,d.getSesion().getCodSesion(),d.getMonto()});
+        }
+    }
+/*private void buscarPorCodPack() {
+
+        try {
+            String id = (jTCodPack.getText().trim());
+            modelo.setRowCount(0);
+
+            if (id.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un codPack para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            modelo.setRowCount(0);
+
+            diadespa = diadespadata.buscarDiaDeSpa(Integer.parseInt(id));
+            String activo;
+            if (diadespa != null) {
+
+                if (diadespa.isEstado()) {
+                    activo = "Activo";
+                } else {
+                    activo = "Inactivo";
+                }
+                 modelo.addRow(new Object[]{diadespa.getCodPack(),diadespa.getFechaYHora(),diadespa.getPreferencias(),diadespa.getCliente().getCodCli(),activo,diadespa.getSesion().getCodSesion(),diadespa.getMonto()});
+
+                jTCodPack.setText("");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error al ingresar codPack", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }*/
+private void borrarDiaDeSpa() {
+        int fila = jTDiaDeSpa.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "seleccione un día de spa a eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
+        if (fila != -1) {
+            int conf = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Seguro que desea eliminar el dia de spa seleccionado?", "Advertencia", JOptionPane.YES_NO_OPTION);
+
+            if (conf == JOptionPane.YES_OPTION) {
+                try {
+                    int codPack = (int) jTDiaDeSpa.getValueAt(fila, 0);
+
+                    diadespadata.borrarDiaDeSpa(codPack);
+
+                    modelo.removeRow(fila);
+
+                    JOptionPane.showMessageDialog(this, "día de spa eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Error al eliminar el día de spa: " + e.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+ /* void guardarCambiosDesdeTabla() {
+        int filaSeleccionada = jTDiaDeSpa.getSelectedRow();
+        
+
+        try {
+            // obtener datos de la fila seleccionada
+            int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
+            LocalDateTime fechaYHora = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
+            String preferencias = modelo.getValueAt(filaSeleccionada, 2).toString().trim();
+            int codCli = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString());
+            String estadoStr = modelo.getValueAt(filaSeleccionada, 4).toString();
+            int codSesion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 5).toString());
+            double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
+            boolean estado = estadoStr.equals("Activo");
+
+            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.buscarSesion(codSesion));
+            diadespaactualizado.setCodPack(codPack);
+
+            diadespadata.actualizarDiaDeSpa(diadespaactualizado);
+
+            JOptionPane.showMessageDialog(this, "Día de spa actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            cargarDatos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar día de spa: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+ /*private void cambiarEstadoDiaDeSpa() {
+        int fila = jTDiaDeSpa.getSelectedRow();
+        DiaDeSpa aux = new DiaDeSpa();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un día de spa", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        aux.setCodPack((int) modelo.getValueAt(fila, 0));
+        aux.setFechaYHora((LocalDateTime) modelo.getValueAt(fila, 1));
+        aux.setPreferencias((String) modelo.getValueAt(fila, 2));
+        aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
+        aux.setSesion(sd.buscarSesion((int) modelo.getValueAt(fila, 5)));
+        aux.setMonto((double) modelo.getValueAt(fila, 6));
+
+        String nuevoEstado = (String) jCEstado.getSelectedItem();
+        boolean estadoBoolean = nuevoEstado.equals("Activo");
+
+        try {
+            if (estadoBoolean) {
+
+                diadespadata.habilitarDiaDeSpa(aux);
+
+            } else {
+
+                diadespadata.deshabilitarDiaDeSpa(aux);
+
+            }
+            cargarDatos();
+
+            JOptionPane.showMessageDialog(this, "Estado del día de spa cambio a: " + nuevoEstado, "Exito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }*/
 }

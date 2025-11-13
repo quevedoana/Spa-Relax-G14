@@ -5,7 +5,6 @@
  */
 package Persistencia;
 
-import Modelo.Cliente;
 import Modelo.Conexion;
 import Modelo.DiaDeSpa;
 import Modelo.Turno;
@@ -19,338 +18,163 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
+
 /**
  *
  * @author esteb
  */
 public class DiaDeSpaData {
-
-    private Connection conexion = null;
-    private ClienteData clienteData;
-    private TurnoData turnoData;
+    
+     private Connection conexion = null;
 
     public DiaDeSpaData() {
         conexion = Conexion.getConexion();
-        this.clienteData = new ClienteData();
-        this.turnoData = new TurnoData();
     }
-
-
-    public void guardarDiaDeSpa(DiaDeSpa diaDeSpa) {
+    //Métodos 
+    public void guardarDiaDeSpa(DiaDeSpa d){
+       
         String query = "INSERT INTO dia_de_spa(fechaYHora, preferencias, codCli, estado, codSesion, monto) VALUES (?,?,?,?,?,?)";
-        
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setTimestamp(1, Timestamp.valueOf(diaDeSpa.getFechaYHora()));
-            ps.setString(2, diaDeSpa.getPreferencias());
-            ps.setInt(3, diaDeSpa.getCliente().getCodCli());
-            ps.setBoolean(4, diaDeSpa.isEstado());
-            
-       
-            if (diaDeSpa.getSesiones() != null && !diaDeSpa.getSesiones().isEmpty()) {
-                Turno primeraSesion = diaDeSpa.getSesiones().get(0);
-                if (primeraSesion.getCodSesion() == 0) {
-                    
-                    turnoData.AltaTurno(primeraSesion);
-                }
-                ps.setInt(5, primeraSesion.getCodSesion());
-            } else {
-                ps.setNull(5, java.sql.Types.INTEGER);
-            }
-            
-            ps.setDouble(6, diaDeSpa.getMonto());
+            Timestamp tm = Timestamp.valueOf(d.getFechaYHora());
+            ps.setTimestamp(1, tm);
+            ps.setString(2, d.getPreferencias());
+            ps.setInt(3, d.getCliente().getCodCli());
+            ps.setBoolean(4, d.isEstado());
+            //ps.setInt(5, d.getSesion().getCodSesion());
+            ps.setDouble(6, d.getMonto());
             
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                int codPackGenerado = rs.getInt(1);
-                diaDeSpa.setCodPack(codPackGenerado);
-                
-                
-                if (diaDeSpa.getSesiones() != null) {
-                    for (Turno sesion : diaDeSpa.getSesiones()) {
-                        turnoData.guardarSesionConPack(sesion, codPackGenerado);
-                    }
-                }
+                d.setCodPack(rs.getInt(1));
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener el codPack del Día de spa");
+                ps.close();
             }
             ps.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al guardar el Día de spa: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al guardar el Día de spa" + e.getMessage());
         }
+
     }
-
-
-  
     public DiaDeSpa buscarDiaDeSpa(int codPack) { 
-        String sql = "SELECT * FROM dia_de_spa WHERE codPack = ?";
-        DiaDeSpa diaDeSpa = null;
-        
+        String sql = "SELECT * FROM dia_de_spa WHERE codPack=?";
+        DiaDeSpa dia = null;
+        ClienteData cd = new ClienteData();
+        TurnoData td = new TurnoData();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ps.setInt(1, codPack);
             ResultSet rs = ps.executeQuery();
-            
             if (rs.next()) {
-                Timestamp fechaHora = rs.getTimestamp("fechaYHora");
-                String preferencias = rs.getString("preferencias");
-                double monto = rs.getDouble("monto");
-                boolean estado = rs.getBoolean("estado");
-                int codCli = rs.getInt("codCli");
-                
-                Cliente cliente = clienteData.buscarCliente(codCli);
-                
-                List<Turno> sesiones = turnoData.buscarSesionesPorDiaSpa(codPack);
-                
-                diaDeSpa = new DiaDeSpa(
-                    fechaHora.toLocalDateTime(), 
-                    preferencias, 
-                    monto, 
-                    estado, 
-                    cliente, 
-                    sesiones
-                );
-                diaDeSpa.setCodPack(codPack);
+                Timestamp ts = rs.getTimestamp("fechaYHora");
+
+               // dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
+                dia.setCodPack(rs.getInt("codPack"));
+
             } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el día de spa con código: " + codPack);
+                System.out.println("No se encontro el día de spa");
             }
             ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al buscar el día de spa: " + e.getMessage());
-        }
-        return diaDeSpa;
-    }
 
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar el día de spa" + e.getMessage());
+
+        }
+        return dia;
+    }
+    
     public List<DiaDeSpa> listarDiasDeSpa() { 
-        String sql = "SELECT * FROM dia_de_spa";
-        List<DiaDeSpa> diasDeSpa = new ArrayList<>();
-        
+        String sql = "SELECT * FROM dia_de_spa WHERE 1";
+        DiaDeSpa dia = null;
+        ClienteData cd = new ClienteData();
+        TurnoData td = new TurnoData();
+        List<DiaDeSpa> dias = new ArrayList();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            
-            while(rs.next()) {
-                int codPack = rs.getInt("codPack");
-                Timestamp fechaHora = rs.getTimestamp("fechaYHora");
-                String preferencias = rs.getString("preferencias");
-                double monto = rs.getDouble("monto");
-                boolean estado = rs.getBoolean("estado");
-                int codCli = rs.getInt("codCli");
-                
-                Cliente cliente = clienteData.buscarCliente(codCli);
-                List<Turno> sesiones = turnoData.buscarSesionesPorDiaSpa(codPack);
-                
-                DiaDeSpa diaDeSpa = new DiaDeSpa(
-                    fechaHora.toLocalDateTime(),
-                    preferencias,
-                    monto,
-                    estado,
-                    cliente,
-                    sesiones
-                );
-                diaDeSpa.setCodPack(codPack);
-                diasDeSpa.add(diaDeSpa);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al listar los días de spa: " + e.getMessage());
-        }
-        return diasDeSpa;
-    }
+            while(rs.next()){
+                Timestamp ts = rs.getTimestamp("fechaYHora");
 
-    public void actualizarDiaDeSpa(DiaDeSpa diaDeSpa) {
-        String sql = "UPDATE dia_de_spa SET fechaYHora = ?, preferencias = ?, codCli = ?, estado = ?, codSesion = ?, monto = ? WHERE codPack = ?";
+                //dia = new DiaDeSpa(ts.toLocalDateTime(),rs.getString("preferencias"),rs.getDouble("monto"),rs.getBoolean("estado"),cd.buscarCliente(rs.getInt("codCli")),td.BuscarTurno(rs.getInt("codSesion")));
+                dia.setCodPack(rs.getInt("codPack"));
+                dias.add(dia);
+
+            
+
+        }
+            ps.close();
+        }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al listar los días de spa" + e.getMessage());
+
+        }
+        return dias;
+    }
+    public void actualizarDiaDeSpa(DiaDeSpa d){
+        String sql = "UPDATE dia_de_spa SET fechaYHora = ?, preferencias = ?, codCli = ?, estado = ?, codSesion = ?, monto = ? WHERE codPack = ? ";
+        try{
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            Timestamp tm = Timestamp.valueOf(d.getFechaYHora());
+            ps.setTimestamp(1, tm);
+            ps.setString(2, d.getPreferencias());
+            ps.setInt(3, d.getCliente().getCodCli());
+            ps.setBoolean(4, d.isEstado());
+            //ps.setInt(5,d.getSesion().getCodSesion());
+            ps.setDouble(6, d.getMonto());
+            ps.setInt(7, d.getCodPack());
+            ps.executeUpdate();
+            
+            ps.close();
+            
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al actualizar el día de spa" + e.getMessage());
+        }
         
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setTimestamp(1, Timestamp.valueOf(diaDeSpa.getFechaYHora()));
-            ps.setString(2, diaDeSpa.getPreferencias());
-            ps.setInt(3, diaDeSpa.getCliente().getCodCli());
-            ps.setBoolean(4, diaDeSpa.isEstado());
-            
-      
-            if (diaDeSpa.getSesiones() != null && !diaDeSpa.getSesiones().isEmpty()) {
-                ps.setInt(5, diaDeSpa.getSesiones().get(0).getCodSesion());
-            } else {
-                ps.setNull(5, java.sql.Types.INTEGER);
-            }
-            
-            ps.setDouble(6, diaDeSpa.getMonto());
-            ps.setInt(7, diaDeSpa.getCodPack());
-            
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas > 0) {
-              
-                actualizarSesionesDelDia(diaDeSpa);
-                JOptionPane.showMessageDialog(null, "Día de spa actualizado exitosamente");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el día de spa a actualizar");
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al actualizar el día de spa: " + e.getMessage());
-        }
+       
     }
-
-    private void actualizarSesionesDelDia(DiaDeSpa diaDeSpa) {
-        try {
-
-            List<Turno> sesionesActuales = turnoData.buscarSesionesPorDiaSpa(diaDeSpa.getCodPack());
-            for (Turno sesionAntigua : sesionesActuales) {
-                boolean existeEnNuevaLista = diaDeSpa.getSesiones().stream()
-                    .anyMatch(s -> s.getCodSesion() == sesionAntigua.getCodSesion());
-                
-                if (!existeEnNuevaLista) {
-                    turnoData.BajaTurno(sesionAntigua.getCodSesion());
-                }
-            }
-            
-            for (Turno sesion : diaDeSpa.getSesiones()) {
-                if (sesion.getCodSesion() > 0) {
-                    // Sesión existente - actualizar
-                    turnoData.ActualizarTurno(sesion);
-                } else {
-                    // Nueva sesión - guardar
-                    turnoData.guardarSesionConPack(sesion, diaDeSpa.getCodPack());
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al actualizar sesiones: " + e.getMessage());
+     public void borrarDiaDeSpa(int codPack){
+            String sql = "DELETE FROM dia_de_spa WHERE codPack = ? ";
+            try{
+                PreparedStatement ps = conexion.prepareStatement(sql);
+                ps.setInt(1, codPack);
+                ps.executeUpdate();
+                ps.close();
+            }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al borrar el día de spa" + e.getMessage());
         }
-    }
-
-    public void eliminarDiaDeSpa(int codPack) {
-        String sql = "DELETE FROM dia_de_spa WHERE codPack = ?";
-        try {
-            
-            turnoData.eliminarSesionesPorDiaSpa(codPack);
-            
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setInt(1, codPack);
-            int filasAfectadas = ps.executeUpdate();
-            
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Día de spa eliminado exitosamente");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró el día de spa a eliminar");
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar el día de spa: " + e.getMessage());
-        }
-    }
-
-    public void cambiarEstadoDiaDeSpa(int codPack, boolean estado) {
-        String sql = "UPDATE dia_de_spa SET estado = ? WHERE codPack = ?";
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setBoolean(1, estado);
-            ps.setInt(2, codPack);
-            
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas > 0) {
-                String estadoStr = estado ? "activado" : "desactivado";
-                JOptionPane.showMessageDialog(null, "Día de spa " + estadoStr + " exitosamente");
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al cambiar estado del día de spa: " + e.getMessage());
-        }
-    }
-
-    public List<DiaDeSpa> buscarDiasDeSpaPorCliente(int codCli) {
-        String sql = "SELECT * FROM dia_de_spa WHERE codCli = ?";
-        List<DiaDeSpa> diasDeSpa = new ArrayList<>();
         
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setInt(1, codCli);
-            ResultSet rs = ps.executeQuery();
-            
-            while(rs.next()) {
-                int codPack = rs.getInt("codPack");
-                Timestamp fechaHora = rs.getTimestamp("fechaYHora");
-                String preferencias = rs.getString("preferencias");
-                double monto = rs.getDouble("monto");
-                boolean estado = rs.getBoolean("estado");
-                
-                Cliente cliente = clienteData.buscarCliente(codCli);
-                List<Turno> sesiones = turnoData.buscarSesionesPorDiaSpa(codPack);
-                
-                DiaDeSpa diaDeSpa = new DiaDeSpa(
-                    fechaHora.toLocalDateTime(),
-                    preferencias,
-                    monto,
-                    estado,
-                    cliente,
-                    sesiones
-                );
-                diaDeSpa.setCodPack(codPack);
-                diasDeSpa.add(diaDeSpa);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al buscar días de spa por cliente: " + e.getMessage());
-        }
-        return diasDeSpa;
     }
-
-    public List<DiaDeSpa> buscarDiasDeSpaPorFecha(java.sql.Date fecha) {
-        String sql = "SELECT * FROM dia_de_spa WHERE DATE(fechaYHora) = ?";
-        List<DiaDeSpa> diasDeSpa = new ArrayList<>();
-        
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setDate(1, fecha);
-            ResultSet rs = ps.executeQuery();
-            
-            while(rs.next()) {
-                int codPack = rs.getInt("codPack");
-                Timestamp fechaHora = rs.getTimestamp("fechaYHora");
-                String preferencias = rs.getString("preferencias");
-                double monto = rs.getDouble("monto");
-                boolean estado = rs.getBoolean("estado");
-                int codCli = rs.getInt("codCli");
-                
-                Cliente cliente = clienteData.buscarCliente(codCli);
-                List<Turno> sesiones = turnoData.buscarSesionesPorDiaSpa(codPack);
-                
-                DiaDeSpa diaDeSpa = new DiaDeSpa(
-                    fechaHora.toLocalDateTime(),
-                    preferencias,
-                    monto,
-                    estado,
-                    cliente,
-                    sesiones
-                );
-                diaDeSpa.setCodPack(codPack);
-                diasDeSpa.add(diaDeSpa);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al buscar días de spa por fecha: " + e.getMessage());
-        }
-        return diasDeSpa;
-    }
-
-    public double calcularMontoTotal(int codPack) {
-        String sql = "SELECT SUM(t.costo) as total FROM sesion s " +
-                    "JOIN tratamiento t ON s.codTratamiento = t.codTratam " +
-                    "WHERE s.codPack = ?";
-        double total = 0.0;
-        
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setInt(1, codPack);
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                total = rs.getDouble("total");
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al calcular monto total: " + e.getMessage());
-        }
-        return total;
-    }
+     public void habilitarDiaDeSpa(DiaDeSpa d){
+         String sql = "UPDATE dia_de_spa SET estado = 1 WHERE codPack = ? AND estado = 0 ";
+         try{
+             PreparedStatement ps = conexion.prepareStatement(sql);
+             ps.setInt(1, d.getCodPack());
+             ps.setBoolean(2, d.isEstado());
+             ps.executeUpdate();
+             
+             ps.close();
+             
+     }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al habilitar el día de spa" + e.getMessage());
 }
+     }
+     public void deshabilitarDiaDeSpa(DiaDeSpa d){
+         String sql = "UPDATE dia_de_spa SET estado = 0 WHERE codPack = ? AND estado = 1 ";
+         try{
+             PreparedStatement ps = conexion.prepareStatement(sql);
+             ps.setInt(1, d.getCodPack());
+             ps.setBoolean(2, d.isEstado());
+             ps.executeUpdate();
+             
+             ps.close();
+             
+     }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al deshabilitar el día de spa" + e.getMessage());
+}
+     }
+}
+
+    
+
