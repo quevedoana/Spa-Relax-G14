@@ -9,7 +9,7 @@ import Modelo.Cliente;
 import Modelo.DiaDeSpa;
 import Persistencia.ClienteData;
 import Persistencia.DiaDeSpaData;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -52,19 +52,19 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     }
     private LocalDateTime obtenerFechaHoraDesdeUI() {
     try {
-        Date fecha = (Date) jDFecha.getDate();
+        java.util.Date fecha = jDFecha.getDate();
         if (fecha == null) {
             JOptionPane.showMessageDialog(this, "Seleccione una fecha válida");
             return null;
         }
         
-        Date horaCompleta = (Date) jSHora.getValue();
+        java.util.Date horaCompleta = (java.util.Date) jSHora.getValue();
         if (horaCompleta == null) {
             JOptionPane.showMessageDialog(this, "Seleccione una hora válida");
             return null;
         }
         
-        // Convertir a LocalDate y LocalTime
+        
         LocalDate fechaLocal = fecha.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
@@ -75,7 +75,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
                 .withSecond(0)
                 .withNano(0);
         
-        // Combinar
+        
         return LocalDateTime.of(fechaLocal, horaLocal);
         
     } catch (Exception e) {
@@ -89,7 +89,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
             return null;
         }
         
-        int indexCliente = jCCliente.getSelectedIndex() - 1;
+        int indexCliente = jCCliente.getSelectedIndex();
         if (indexCliente >= 0 && indexCliente < listaClientes.size()) {
             return listaClientes.get(indexCliente);
         }

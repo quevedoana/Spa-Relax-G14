@@ -1,4 +1,4 @@
-wwwwwwww1|2/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -38,7 +38,7 @@ public class DiaDeSpaData {
 
 
     public void guardarDiaDeSpa(DiaDeSpa diaDeSpa) {
-        String query = "INSERT INTO dia_de_spa(fechaYHora, preferencias, codCli, estado, codSesion, monto) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO dia_de_spa(fechaYHora, preferencias, codCli, estado, sesiones, monto) VALUES (?,?,?,?,?,?)";
         
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -150,9 +150,11 @@ public class DiaDeSpaData {
     }
     
     public List<DiaDeSpa> listarDiasDeSpa() { 
-        String sql = "SELECT * FROM dia_de_spa";
-        List<DiaDeSpa> diasDeSpa = new ArrayList<>();
-        
+        String sql = "SELECT * FROM dia_de_spa WHERE 1";
+        DiaDeSpa dia = null;
+        ClienteData cd = new ClienteData();
+        TurnoData td = new TurnoData();
+        List<DiaDeSpa> dias = new ArrayList();
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -163,34 +165,15 @@ public class DiaDeSpaData {
                 dia.setCodPack(rs.getInt("codPack"));
                 dias.add(dia);
 
-            
-            while(rs.next()) {
-                int codPack = rs.getInt("codPack");
-                Timestamp fechaHora = rs.getTimestamp("fechaYHora");
-                String preferencias = rs.getString("preferencias");
-                double monto = rs.getDouble("monto");
-                boolean estado = rs.getBoolean("estado");
-                int codCli = rs.getInt("codCli");
-                
-                Cliente cliente = clienteData.buscarCliente(codCli);
-                List<Turno> sesiones = turnoData.buscarSesionesPorDiaSpa(codPack);
-                
-                DiaDeSpa diaDeSpa = new DiaDeSpa(
-                    fechaHora.toLocalDateTime(),
-                    preferencias,
-                    monto,
-                    estado,
-                    cliente,
-                    sesiones
-                );
-                diaDeSpa.setCodPack(codPack);
-                diasDeSpa.add(diaDeSpa);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al listar los días de spa: " + e.getMessage());
+
+
         }
-        return diasDeSpa;
+            ps.close();
+        }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al listar los días de spa" + e.getMessage());
+
+        }
+        return dias;
     }
 
     public void actualizarDiaDeSpa(DiaDeSpa diaDeSpa) {

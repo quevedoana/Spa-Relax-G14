@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 package Vista;
+
 import Modelo.DiaDeSpa;
 import Persistencia.ClienteData;
 import Persistencia.DiaDeSpaData;
 import Persistencia.TurnoData;
 import static java.awt.SystemColor.desktop;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDateTime;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
@@ -20,26 +21,26 @@ import javax.swing.table.DefaultTableModel;
  * @author esteb
  */
 public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
+
     private DiaDeSpa diadespa = null;
     private DiaDeSpaData diadespadata = new DiaDeSpaData();
     private ClienteData cd = new ClienteData();
-    private TurnoData sd= new TurnoData();
+    private TurnoData sd = new TurnoData();
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
             return column == 1 || column == 2 || column == 6;
         }
     };
-    
 
     /**
      * Creates new form VistaDiaDeSpa
      */
     public VistaDiaDeSpa() {
         initComponents();
-       // armarCabecera();
-      //  cargarDatos();
-        
+        armarCabecera();
+        cargarDatos();
+
     }
 
     /**
@@ -62,6 +63,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jBFecha = new javax.swing.JButton();
         jBAgregarTurno = new javax.swing.JButton();
+        btnAgregaDia = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -126,23 +128,17 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
             }
         });
 
+        btnAgregaDia.setText("Agregar Dia de Spa");
+        btnAgregaDia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregaDiaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(283, 283, 283)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(jLabel3)
-                        .addGap(46, 46, 46)
-                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(106, 106, 106)
-                        .addComponent(jBFecha)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(128, 128, 128)
                 .addComponent(jBBorrar)
@@ -159,10 +155,25 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                         .addGap(33, 33, 33))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jBSalir)
-                        .addGap(303, 303, 303))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(303, 303, 303))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(283, 283, 283)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(182, 182, 182)
+                        .addComponent(jLabel3)
+                        .addGap(46, 46, 46)
+                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(106, 106, 106)
+                        .addComponent(jBFecha))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(163, 163, 163)
                         .addComponent(jBAgregarTurno)
-                        .addGap(277, 277, 277))))
+                        .addGap(141, 141, 141)
+                        .addComponent(btnAgregaDia)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,9 +200,11 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(228, 228, 228)
                         .addComponent(jBRefrescar)))
-                .addGap(42, 42, 42)
-                .addComponent(jBAgregarTurno)
-                .addGap(49, 49, 49)
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBAgregarTurno)
+                    .addComponent(btnAgregaDia))
+                .addGap(47, 47, 47)
                 .addComponent(jBSalir)
                 .addContainerGap(37, Short.MAX_VALUE))
         );
@@ -199,7 +212,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
+    private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
         // TODO add your handling code here:
         borrarDiaDeSpa();
     }//GEN-LAST:event_jBBorrarMouseClicked
@@ -214,15 +227,10 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         cargarDatos();
     }//GEN-LAST:event_jBRefrescarMouseClicked
 
-    private void jBActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBActualizarMouseClicked
+    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
         // TODO add your handling code here:
-        //guardarCambiosDesdeTabla();
-    }//GEN-LAST:event_jBActualizarMouseClicked
-
-    private void jBBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBBorrarMouseClicked
-        // TODO add your handling code here:
-        borrarDiaDeSpa();
-    }//GEN-LAST:event_jBBorrarMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jBSalirActionPerformed
 
     private void jBFechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBFechaMouseClicked
         // TODO add your handling code here:
@@ -231,32 +239,57 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void jBAgregarTurnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAgregarTurnoMouseClicked
         // TODO add your handling code here:
-          this.dispose();
-    VistaTurno reserva = new VistaTurno();
-    reserva.setVisible(true);
+        this.dispose();
+        VistaTurno reserva = new VistaTurno();
+        reserva.setVisible(true);
 
-    java.awt.Container parent = this.getParent();
-    if (parent instanceof javax.swing.JDesktopPane) {
-        parent.add(reserva);
+        java.awt.Container parent = this.getParent();
+        if (parent instanceof javax.swing.JDesktopPane) {
+            parent.add(reserva);
 
-        java.awt.Dimension desktopSize = parent.getSize();
-        java.awt.Dimension jifSize = reserva.getSize();
-        reserva.setLocation((desktopSize.width - jifSize.width) / 2,
-                            (desktopSize.height - jifSize.height) / 2);
-        reserva.toFront();
-    } else {
-        // Si no hay desktop, abrimos la vista en una ventana separada
-        javax.swing.JFrame frame = new javax.swing.JFrame("Turno");
-        frame.setContentPane(reserva.getContentPane());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-        
+            java.awt.Dimension desktopSize = parent.getSize();
+            java.awt.Dimension jifSize = reserva.getSize();
+            reserva.setLocation((desktopSize.width - jifSize.width) / 2,
+                    (desktopSize.height - jifSize.height) / 2);
+            reserva.toFront();
+        } else {
+            // Si no hay desktop, abrimos la vista en una ventana separada
+            javax.swing.JFrame frame = new javax.swing.JFrame("Turno");
+            frame.setContentPane(reserva.getContentPane());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
+
     }//GEN-LAST:event_jBAgregarTurnoMouseClicked
+
+    private void btnAgregaDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregaDiaActionPerformed
+        // TODO add your handling code here:
+        AgregarDiaDeSpa dia = new AgregarDiaDeSpa();
+        dia.setVisible(true);
+
+        java.awt.Container parent = this.getParent();
+        if (parent instanceof javax.swing.JDesktopPane) {
+            parent.add(dia);
+
+            java.awt.Dimension desktopSize = parent.getSize();
+            java.awt.Dimension jifSize = dia.getSize();
+            dia.setLocation((desktopSize.width - jifSize.width) / 2,
+                    (desktopSize.height - jifSize.height) / 2);
+            dia.toFront();
+        } else {
+
+            javax.swing.JFrame frame = new javax.swing.JFrame("Agregar Dia de Spa");
+            frame.setContentPane(dia.getContentPane());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
+    }//GEN-LAST:event_btnAgregaDiaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregaDia;
     private javax.swing.JButton jBActualizar;
     private javax.swing.JButton jBAgregarTurno;
     private javax.swing.JButton jBBorrar;
@@ -271,16 +304,19 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 private void armarCabecera() {
 
-        modelo.addColumn("Codigo");
+        modelo.addColumn("CodPack");
         modelo.addColumn("Fecha y Hora");
+        modelo.addColumn("Preferencias");
+        modelo.addColumn("Cliente");
         modelo.addColumn("Estado");
-       
+
         modelo.addColumn("Monto");
 
         jTDiaDeSpa.setModel(modelo);
 
     }
-private void cargarDatos() {
+
+    private void cargarDatos() {
         String activo;
         modelo.setRowCount(0);
         for (DiaDeSpa d : diadespadata.listarDiasDeSpa()) {
@@ -290,22 +326,23 @@ private void cargarDatos() {
             } else {
                 activo = "Inactivo";
             }
-            
-            modelo.addRow(new Object[]{d.getCodPack(),d.getFechaYHora(),d.getPreferencias(),d.getCliente().getNombreCompleto(),activo,d.getMonto()});
+
+            modelo.addRow(new Object[]{d.getCodPack(), d.getFechaYHora(), d.getPreferencias(), d.getCliente().getNombreCompleto(), activo, d.getMonto()});
         }
     }
-private void buscarPorFecha() {
+
+    private void buscarPorFecha() {
 
         try {
-            Date fecha = (Date) (jDDiaDeSpa.getDate());
+            java.util.Date fecha = jDDiaDeSpa.getDate();
             modelo.setRowCount(0);
-if (fecha == null) {
-     JOptionPane.showMessageDialog(this, "Debe ingresar la fecha", "Advertencia", JOptionPane.WARNING_MESSAGE);
-}
-           
-            modelo.setRowCount(0);
-
-            diadespa = diadespadata.buscarDiaDeSpaPorFecha(fecha);
+        
+            if (fecha == null) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la fecha", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+            java.sql.Date fechaSQL = new java.sql.Date(fecha.getTime());
+            diadespa = diadespadata.buscarDiaDeSpaPorFecha(fechaSQL);
             String activo;
             if (diadespa != null) {
 
@@ -314,7 +351,7 @@ if (fecha == null) {
                 } else {
                     activo = "Inactivo";
                 }
-                modelo.addRow(new Object[]{diadespa.getCodPack(),diadespa.getFechaYHora(),diadespa.getPreferencias(),diadespa.getCliente().getNombreCompleto(),activo,diadespa.getMonto()});
+                modelo.addRow(new Object[]{diadespa.getCodPack(), diadespa.getFechaYHora(), diadespa.getPreferencias(), diadespa.getCliente().getNombreCompleto(), activo, diadespa.getMonto()});
 
                 jDDiaDeSpa.setDate(null);
             }
@@ -323,7 +360,8 @@ if (fecha == null) {
             JOptionPane.showMessageDialog(this, "Error al ingresar la fecha", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
-private void borrarDiaDeSpa() {
+
+    private void borrarDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "seleccione un día de spa a eliminar", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -338,7 +376,7 @@ private void borrarDiaDeSpa() {
                 try {
                     int codPack = (int) jTDiaDeSpa.getValueAt(fila, 0);
 
-                    diadespadata.borrarDiaDeSpa(codPack);
+                    diadespadata.eliminarDiaDeSpa(codPack);
 
                     modelo.removeRow(fila);
 
@@ -352,9 +390,9 @@ private void borrarDiaDeSpa() {
             }
         }
     }
-  void guardarCambiosDesdeTabla() {
+
+    void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTDiaDeSpa.getSelectedRow();
-        
 
         try {
             // obtener datos de la fila seleccionada
@@ -380,7 +418,7 @@ private void borrarDiaDeSpa() {
             JOptionPane.showMessageDialog(this, "Error al actualizar día de spa: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
- /*private void cambiarEstadoDiaDeSpa() {
+    /*private void cambiarEstadoDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
         DiaDeSpa aux = new DiaDeSpa();
         if (fila == -1) {
