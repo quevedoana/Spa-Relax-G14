@@ -152,6 +152,8 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Tratamiento Seleccionado:");
 
+        textTratamientoSeleccionado.setBackground(new java.awt.Color(255, 204, 179));
+
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Especialistas:");
 
@@ -193,6 +195,8 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                 comboInstalacionesActionPerformed(evt);
             }
         });
+
+        textTotal.setBackground(new java.awt.Color(255, 204, 179));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Total:   $");

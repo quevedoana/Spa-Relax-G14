@@ -149,7 +149,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(tablaTratamientos);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel3.setForeground(new java.awt.Color(255, 102, 51));
         jLabel3.setText("<html><u>Servicios Disponibles</u></html>");
 
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));

@@ -301,7 +301,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
         jLabel1.setText("<html><u>Gestión de instalaciones</u></html>");
 
         jTInstalacion.setModel(new javax.swing.table.DefaultTableModel(
@@ -464,6 +464,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 102, 51));
         jLabel2.setText("Estado:");
 
         comboEstadoInstalacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activa", "Inactiva" }));

@@ -170,19 +170,27 @@ public class PagoTarjeta extends javax.swing.JDialog {
 
         dialogoPago.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Seleccione el medio de pago");
+        jLabel1.setBackground(new java.awt.Color(255, 102, 51));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel1.setText("<html><u>Seleccione el medio de pago</u></html>");
 
+        radioTrajeta.setForeground(new java.awt.Color(255, 102, 51));
         radioTrajeta.setText("Tarjeta Credito/Debito");
 
+        radioTrasferencia.setForeground(new java.awt.Color(255, 102, 51));
         radioTrasferencia.setText("Transferencia");
 
+        jLabel2.setForeground(new java.awt.Color(255, 102, 51));
         jLabel2.setText("Nº de la tarjeta:");
 
+        jLabel3.setForeground(new java.awt.Color(255, 102, 51));
         jLabel3.setText("Nombre Titular:");
 
+        jLabel4.setForeground(new java.awt.Color(255, 102, 51));
         jLabel4.setText("Fecha de Vencimiento:");
 
+        jLabel5.setForeground(new java.awt.Color(255, 102, 51));
         jLabel5.setText("Cod. de Seg:");
 
         btnPagar.setText("Pagar");
@@ -192,18 +200,53 @@ public class PagoTarjeta extends javax.swing.JDialog {
             }
         });
 
+        jLabel6.setForeground(new java.awt.Color(255, 102, 51));
         jLabel6.setText("Nombre y Apellido:");
 
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setText("Enviar comprobante de pago al 2664863827");
 
         labelcvu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelcvu.setForeground(new java.awt.Color(255, 102, 51));
         labelcvu.setText("CBU: 0000044550357739302920");
 
         javax.swing.GroupLayout dialogoPagoLayout = new javax.swing.GroupLayout(dialogoPago);
         dialogoPago.setLayout(dialogoPagoLayout);
         dialogoPagoLayout.setHorizontalGroup(
             dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogoPagoLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogoPagoLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogoPagoLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(48, Short.MAX_VALUE))
+                            .addGroup(dialogoPagoLayout.createSequentialGroup()
+                                .addComponent(radioTrajeta)
+                                .addGap(43, 43, 43)
+                                .addComponent(radioTrasferencia))))
+                    .addGroup(dialogoPagoLayout.createSequentialGroup()
+                        .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dialogoPagoLayout.createSequentialGroup()
+                                .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fechaVencimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(dialogoPagoLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(textTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(dialogoPagoLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
             .addGroup(dialogoPagoLayout.createSequentialGroup()
                 .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dialogoPagoLayout.createSequentialGroup()
@@ -223,45 +266,14 @@ public class PagoTarjeta extends javax.swing.JDialog {
                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(dialogoPagoLayout.createSequentialGroup()
                         .addGap(131, 131, 131)
-                        .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(dialogoPagoLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dialogoPagoLayout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(textTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(dialogoPagoLayout.createSequentialGroup()
-                                    .addGap(2, 2, 2)
-                                    .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogoPagoLayout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel1)
-                                            .addGap(10, 10, 10))
-                                        .addGroup(dialogoPagoLayout.createSequentialGroup()
-                                            .addComponent(radioTrajeta)
-                                            .addGap(43, 43, 43)
-                                            .addComponent(radioTrasferencia)))))
-                            .addGroup(dialogoPagoLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(dialogoPagoLayout.createSequentialGroup()
-                                .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fechaVencimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textCodigo))))))
+                        .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         dialogoPagoLayout.setVerticalGroup(
             dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dialogoPagoLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jLabel1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(dialogoPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(radioTrajeta)

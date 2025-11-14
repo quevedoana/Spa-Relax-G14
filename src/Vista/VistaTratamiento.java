@@ -167,9 +167,9 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setBackground(new java.awt.Color(255, 153, 102));
+        jLabel1.setBackground(new java.awt.Color(255, 102, 51));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
         jLabel1.setText("<html><u>TRATAMIENTOS</u></html>");
 
         btnEliminarTrata.setBackground(new java.awt.Color(255, 153, 102));
@@ -210,6 +210,8 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
+        Salir.setBackground(new java.awt.Color(255, 153, 102));
+        Salir.setForeground(new java.awt.Color(0, 0, 0));
         Salir.setText("X");
         Salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

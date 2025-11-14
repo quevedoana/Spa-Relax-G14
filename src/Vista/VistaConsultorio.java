@@ -306,9 +306,10 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 102));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
         jLabel1.setText("<html><u>Consultorio</u></html>");
 
+        jLabel2.setForeground(new java.awt.Color(255, 102, 51));
         jLabel2.setText("Nro de Consultorio:");
 
         jBbuscar.setBackground(new java.awt.Color(255, 153, 102));
@@ -348,6 +349,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 102, 51));
         jLabel3.setText("Apto:");
 
         jCBapto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Si", "No" }));
@@ -367,9 +369,11 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 102, 51));
         jLabel4.setText("<html><u>Agregar Consultorio</u></html>");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 102, 51));
         jLabel6.setText("Equipamiento:");
 
         btnSalir.setBackground(new java.awt.Color(255, 153, 102));
@@ -391,6 +395,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
         });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 102, 51));
         jLabel7.setText("Usos");
 
         jCBusos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Facial", "Corporal", "Masajes", "Depilacion" }));
@@ -407,6 +412,8 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
             }
         ));
         jScrollPane2.setViewportView(jTConsultorio);
+
+        txtEquipamiento.setBackground(new java.awt.Color(255, 204, 179));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
