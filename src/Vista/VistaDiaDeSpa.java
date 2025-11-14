@@ -52,20 +52,33 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jBBorrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTDiaDeSpa = new javax.swing.JTable();
-        jBBorrar = new javax.swing.JButton();
         jBActualizar = new javax.swing.JButton();
-        jBRefrescar = new javax.swing.JButton();
         jBSalir = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jDDiaDeSpa = new com.toedter.calendar.JDateChooser();
+        jBRefrescar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jBFecha = new javax.swing.JButton();
-        jBAgregarTurno = new javax.swing.JButton();
         btnAgregaDia = new javax.swing.JButton();
+        jBFecha = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setTitle("Dia de Spa");
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jBBorrar.setBackground(new java.awt.Color(255, 153, 102));
+        jBBorrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBBorrar.setForeground(new java.awt.Color(255, 255, 255));
+        jBBorrar.setText("Borrar");
+        jBBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBBorrarMouseClicked(evt);
+            }
+        });
 
         jTDiaDeSpa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -80,28 +93,19 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTDiaDeSpa);
 
-        jBBorrar.setText("Borrar");
-        jBBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBBorrarMouseClicked(evt);
-            }
-        });
-
-        jBActualizar.setText("Actualizar");
+        jBActualizar.setBackground(new java.awt.Color(255, 153, 102));
+        jBActualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        jBActualizar.setText("Modificar");
         jBActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jBActualizarMouseClicked(evt);
             }
         });
 
-        jBRefrescar.setText("Refrescar Tabla");
-        jBRefrescar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBRefrescarMouseClicked(evt);
-            }
-        });
-
-        jBSalir.setText("Salir");
+        jBSalir.setBackground(new java.awt.Color(255, 153, 102));
+        jBSalir.setForeground(new java.awt.Color(255, 255, 255));
+        jBSalir.setText("X");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBSalirActionPerformed(evt);
@@ -109,104 +113,133 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 153, 102));
         jLabel2.setText("Dia de Spa");
 
+        jDDiaDeSpa.setForeground(new java.awt.Color(255, 102, 51));
+
+        jBRefrescar.setBackground(new java.awt.Color(255, 153, 102));
+        jBRefrescar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBRefrescar.setForeground(new java.awt.Color(255, 255, 255));
+        jBRefrescar.setText("Refrescar Tabla");
+        jBRefrescar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBRefrescarMouseClicked(evt);
+            }
+        });
+
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 153, 102));
         jLabel3.setText("Fecha:");
 
-        jBFecha.setText("Buscar");
-        jBFecha.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBFechaMouseClicked(evt);
-            }
-        });
-
-        jBAgregarTurno.setText("Agregar Turno");
-        jBAgregarTurno.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBAgregarTurnoMouseClicked(evt);
-            }
-        });
-
-        btnAgregaDia.setText("Agregar Dia de Spa");
+        btnAgregaDia.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAgregaDia.setForeground(new java.awt.Color(255, 153, 102));
+        btnAgregaDia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/pngtree-lovely-girl-spa-massage-concept-illustration-png-image_6938773 (1).png"))); // NOI18N
+        btnAgregaDia.setText("Contratar Dia de Spa");
         btnAgregaDia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregaDiaActionPerformed(evt);
             }
         });
 
+        jBFecha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icone-loupe-orange (1) (1) (1).png"))); // NOI18N
+        jBFecha.setText("Buscar");
+        jBFecha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBFechaMouseClicked(evt);
+            }
+        });
+        jBFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBFechaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBSalir))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(jBBorrar)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addGap(27, 27, 27)
+                                .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(jBFecha)
+                                .addGap(124, 124, 124))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(147, 147, 147)
+                                .addComponent(jBActualizar)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(282, 282, 282)
+                        .addComponent(jLabel2)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jBRefrescar)
+                        .addGap(59, 59, 59))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAgregaDia)
+                        .addGap(257, 257, 257))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jBSalir)
+                        .addGap(41, 41, 41)
+                        .addComponent(jBFecha))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBBorrar)
+                    .addComponent(jBActualizar)
+                    .addComponent(jBRefrescar))
+                .addGap(31, 31, 31)
+                .addComponent(btnAgregaDia)
+                .addGap(26, 26, 26))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jBBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jBActualizar)
-                .addGap(126, 126, 126)
-                .addComponent(jBRefrescar)
-                .addGap(44, 44, 44))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jBSalir)
-                        .addGap(303, 303, 303))))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(283, 283, 283)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(jLabel3)
-                        .addGap(46, 46, 46)
-                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(106, 106, 106)
-                        .addComponent(jBFecha))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(jBAgregarTurno)
-                        .addGap(141, 141, 141)
-                        .addComponent(btnAgregaDia)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(42, 42, 42)
-                                .addComponent(jLabel3))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(85, 85, 85)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jBFecha))
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jBBorrar)
-                            .addComponent(jBActualizar)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(228, 228, 228)
-                        .addComponent(jBRefrescar)))
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBAgregarTurno)
-                    .addComponent(btnAgregaDia))
-                .addGap(47, 47, 47)
-                .addComponent(jBSalir)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -237,32 +270,6 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         buscarPorFecha();
     }//GEN-LAST:event_jBFechaMouseClicked
 
-    private void jBAgregarTurnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAgregarTurnoMouseClicked
-        // TODO add your handling code here:
-        this.dispose();
-        VistaTurno reserva = new VistaTurno();
-        reserva.setVisible(true);
-
-        java.awt.Container parent = this.getParent();
-        if (parent instanceof javax.swing.JDesktopPane) {
-            parent.add(reserva);
-
-            java.awt.Dimension desktopSize = parent.getSize();
-            java.awt.Dimension jifSize = reserva.getSize();
-            reserva.setLocation((desktopSize.width - jifSize.width) / 2,
-                    (desktopSize.height - jifSize.height) / 2);
-            reserva.toFront();
-        } else {
-            // Si no hay desktop, abrimos la vista en una ventana separada
-            javax.swing.JFrame frame = new javax.swing.JFrame("Turno");
-            frame.setContentPane(reserva.getContentPane());
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        }
-
-    }//GEN-LAST:event_jBAgregarTurnoMouseClicked
-
     private void btnAgregaDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregaDiaActionPerformed
         // TODO add your handling code here:
         AgregarDiaDeSpa dia = new AgregarDiaDeSpa();
@@ -287,11 +294,14 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnAgregaDiaActionPerformed
 
+    private void jBFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBFechaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregaDia;
     private javax.swing.JButton jBActualizar;
-    private javax.swing.JButton jBAgregarTurno;
     private javax.swing.JButton jBBorrar;
     private javax.swing.JButton jBFecha;
     private javax.swing.JButton jBRefrescar;
@@ -299,6 +309,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser jDDiaDeSpa;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTDiaDeSpa;
     // End of variables declaration//GEN-END:variables
