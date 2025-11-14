@@ -63,8 +63,16 @@ public class ClienteData {
             ResultSet resultado = ps.executeQuery();
             if (resultado.next()) {
 
-                cli = new Cliente(resultado.getInt("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
-                cli.setCodCli(resultado.getInt("CodCli"));
+                cli = new Cliente(
+                        resultado.getInt("DNI"), 
+                        resultado.getString("NombreCompleto"), 
+                        resultado.getLong("Telefono"),
+                        resultado.getInt("Edad"), 
+                        resultado.getString("Afecciones"),
+                        resultado.getBoolean("Estado")
+                );
+                
+                cli.setCodCli(resultado.getInt("codCli"));
 
             } else {
                 System.out.println("No se encontro el Cliente");
@@ -110,8 +118,15 @@ public class ClienteData {
             ResultSet resultado = ps.executeQuery();
             while (resultado.next()) {
 
-                Cliente cli = new Cliente(resultado.getInt("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
-                cli.setCodCli(resultado.getInt("CodCli"));
+                Cliente cli = new Cliente(
+                        resultado.getInt("DNI"),
+                        resultado.getString("NombreCompleto"),
+                        resultado.getLong("Telefono"),
+                        resultado.getInt("Edad"),
+                        resultado.getString("Afecciones"),
+                        resultado.getBoolean("Estado")
+                );
+                cli.setCodCli(resultado.getInt("codCli"));
                 cliente.add(cli);
             }
             ps.close();
