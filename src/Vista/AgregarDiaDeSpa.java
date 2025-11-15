@@ -25,137 +25,169 @@ import javax.swing.JSpinner;
  * @author Anitabonita
  */
 public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
+
     ClienteData clienteData = new ClienteData();
     DiaDeSpaData diaSpaData = new DiaDeSpaData();
-    private List<Cliente> listaClientes=new ArrayList<>();;
+    private List<Cliente> listaClientes = new ArrayList<>();
+    private VistaTurno vistaTurnoPadre;
+
+    ;
 
     /**
      * Creates new form AgregarDiaDeSpa
      */
-    public AgregarDiaDeSpa() {
+      public AgregarDiaDeSpa() {
+        this(null);
+    }
+    public AgregarDiaDeSpa(VistaTurno vistaTurnoPadre) {
         initComponents();
+        this.vistaTurnoPadre = vistaTurnoPadre;
         jSHora.setModel(new javax.swing.SpinnerDateModel());
         JSpinner.DateEditor editor = new JSpinner.DateEditor(jSHora, "HH:mm");
         jSHora.setEditor(editor);
         cargarClientes();
+        
+        setTitle("Crear Dia de Spa - Paso 1 de 2");
+        
+        btnCrear.setText("Crear Dia de Spa y Continuar con Reserva");
     }
-    
-    public void cargarClientes(){
+
+    public void cargarClientes() {
         jCCliente.removeAllItems();
         jCCliente.removeAllItems();
-        
-        listaClientes = clienteData.ListarCliente(); 
-        
+
+        listaClientes = clienteData.ListarCliente();
+
         for (Cliente cliente : listaClientes) {
             jCCliente.addItem(cliente.getNombreCompleto() + " - DNI: " + cliente.getDni());
         }
     }
+
     private LocalDateTime obtenerFechaHoraDesdeUI() {
-    try {
-        java.util.Date fecha = jDFecha.getDate();
-        if (fecha == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fecha válida");
+        try {
+            java.util.Date fecha = jDFecha.getDate();
+            if (fecha == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione una fecha válida");
+                return null;
+            }
+
+            java.util.Date horaCompleta = (java.util.Date) jSHora.getValue();
+            if (horaCompleta == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione una hora válida");
+                return null;
+            }
+
+            LocalDate fechaLocal = fecha.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            LocalTime horaLocal = horaCompleta.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+                    .withSecond(0)
+                    .withNano(0);
+
+            return LocalDateTime.of(fechaLocal, horaLocal);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener fecha y hora: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
-        
-        java.util.Date horaCompleta = (java.util.Date) jSHora.getValue();
-        if (horaCompleta == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione una hora válida");
-            return null;
-        }
-        
-        
-        LocalDate fechaLocal = fecha.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        
-        LocalTime horaLocal = horaCompleta.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalTime()
-                .withSecond(0)
-                .withNano(0);
-        
-        
-        return LocalDateTime.of(fechaLocal, horaLocal);
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al obtener fecha y hora: " + e.getMessage());
-        e.printStackTrace();
-        return null;
     }
-}
+
     private Cliente obtenerClienteSeleccionado() {
         if (jCCliente.getSelectedIndex() == 0) {
             return null;
         }
-        
+
         int indexCliente = jCCliente.getSelectedIndex();
         if (indexCliente >= 0 && indexCliente < listaClientes.size()) {
             return listaClientes.get(indexCliente);
         }
         return null;
     }
-    
-    private void crearDiaDeSpa(){
+
+    private void crearDiaDeSpa() {
         try {
             // Validaciones
             if (jCCliente.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(this, "Seleccione un cliente");
                 return;
             }
-            
+
             Cliente cliente = obtenerClienteSeleccionado();
             if (cliente == null) {
-                JOptionPane.showMessageDialog(this, "Cliente no válido");
+                JOptionPane.showMessageDialog(this, "Cliente no valido");
                 return;
             }
-            
+
             if (txtPreferencias.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese las preferencias del cliente");
                 return;
             }
-            
+
             LocalDateTime fechaHora = obtenerFechaHoraDesdeUI();
             if (fechaHora == null) {
                 return;
             }
-            
+
             // Validar que la fecha no sea anterior a hoy
             if (fechaHora.isBefore(LocalDateTime.now())) {
                 JOptionPane.showMessageDialog(this, "No puede seleccionar una fecha y hora pasadas");
                 return;
             }
-            
-            // Crear nuevo día de spa
+
+            // Crear nuevo dia de spa
             DiaDeSpa nuevoDia = new DiaDeSpa();
             nuevoDia.setFechaYHora(fechaHora);
             nuevoDia.setPreferencias(txtPreferencias.getText().trim());
             nuevoDia.setCliente(cliente);
             nuevoDia.setEstado(true);
-            nuevoDia.setMonto(0.0); // Se calculará después con las sesiones
-            nuevoDia.setSesiones(new ArrayList<>()); // Lista vacía inicial de sesiones
-            
+            nuevoDia.setMonto(0.0); //despues con los turnoa
+            nuevoDia.setSesiones(new ArrayList<>()); 
+
             // Guardar en base de datos
             diaSpaData.guardarDiaDeSpa(nuevoDia);
-            
-            JOptionPane.showMessageDialog(this, 
-                "Día de spa creado exitosamente");
-            
-            limpiarCampos();
-            
+
+            if (vistaTurnoPadre != null) {
+                vistaTurnoPadre.diaDeSpaCreado(nuevoDia);
+            } else {
+                // Si no hay VistaTurno padre 
+                JOptionPane.showMessageDialog(this,
+                    "Dia de spa creado exitosamente. Ahora puede proceder con las reservas desde el menu principal.");
+
+                VistaTurno reserva = new VistaTurno();
+                reserva.setVisible(true);
+
+                javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+                desktop.add(reserva);
+
+                java.awt.Dimension desktopSize = desktop.getSize();
+                java.awt.Dimension jifSize = reserva.getSize();
+                reserva.setLocation((desktopSize.width - jifSize.width) / 2,
+                        (desktopSize.height - jifSize.height) / 2);
+                reserva.toFront();
+            }
+
+            this.dispose();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al crear día de spa: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Error al crear dia de spa: " + e.getMessage() + 
+                "\n\nPor favor, verifique los datos e intente nuevamente.",
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
-    
+
+
     private void limpiarCampos() {
         txtPreferencias.setText("");
         jCCliente.setSelectedIndex(0);
-    
-    }
 
-    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -348,7 +380,6 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         // TODO add your handling code here:
         crearDiaDeSpa();
-        
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed

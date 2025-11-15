@@ -40,28 +40,28 @@ public class TurnoData {
 
     //AGREGAR TURNO
     public void AltaTurno(Turno sesion) {
-        String query = "INSERT INTO sesion(fechaHoraInicio, fechaHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, estado) VALUES (?,?,?,?,?,?,?)";
-        
+        String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, estado) VALUES (?,?,?,?,?,?,?)";
+
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(sesion.getFechaYHoraDeInicio()));
             ps.setTimestamp(2, Timestamp.valueOf(sesion.getFechaYHoraDeFin()));
             ps.setInt(3, sesion.getTratamiento().getCodTratam());
-            
+
             if (sesion.getConsultorio() != null) {
                 ps.setInt(4, sesion.getConsultorio().getNroConsultorio());
             } else {
                 ps.setNull(4, java.sql.Types.INTEGER);
             }
-            
+
             ps.setString(5, sesion.getEspecialista().getMatricula());
-            
+
             if (sesion.getInstalacion() != null) {
                 ps.setInt(6, sesion.getInstalacion().getCodInstal());
             } else {
                 ps.setNull(6, java.sql.Types.INTEGER);
             }
-            
+
             ps.setBoolean(7, sesion.isEstado());
 
             ps.executeUpdate();
@@ -77,29 +77,29 @@ public class TurnoData {
     }
 
     public void guardarSesionConPack(Turno sesion, int codPack) {
-        String query = "INSERT INTO sesion(fechaHoraInicio, fechaHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
-        
+        String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
+
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(sesion.getFechaYHoraDeInicio()));
             ps.setTimestamp(2, Timestamp.valueOf(sesion.getFechaYHoraDeFin()));
             ps.setInt(3, sesion.getTratamiento().getCodTratam());
-            
+
             if (sesion.getConsultorio() != null) {
                 ps.setInt(4, sesion.getConsultorio().getNroConsultorio());
             } else {
                 ps.setNull(4, java.sql.Types.INTEGER);
             }
-            
+
             ps.setString(5, sesion.getEspecialista().getMatricula());
-            
+
             if (sesion.getInstalacion() != null) {
                 ps.setInt(6, sesion.getInstalacion().getCodInstal());
             } else {
                 ps.setNull(6, java.sql.Types.INTEGER);
             }
-            
-            ps.setInt(7, codPack); 
+
+            ps.setInt(7, codPack);
             ps.setBoolean(8, sesion.isEstado());
 
             ps.executeUpdate();
@@ -113,20 +113,21 @@ public class TurnoData {
             JOptionPane.showMessageDialog(null, "Error al guardar la sesión: " + e.getMessage());
         }
     }
+
     public List<Turno> buscarSesionesPorDiaSpa(int codPack) {
         String sql = "SELECT * FROM sesion WHERE codPack = ?";
         List<Turno> sesiones = new ArrayList<>();
-        
+
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ps.setInt(1, codPack);
             ResultSet rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 Turno sesion = new Turno();
                 sesion.setCodSesion(rs.getInt("codSesion"));
-                sesion.setFechaYHoraDeInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
-                sesion.setFechaYHoraDeFin(rs.getTimestamp("fechaHoraFin").toLocalDateTime());
+                sesion.setFechaYHoraDeInicio(rs.getTimestamp("fechaYHoraInicio").toLocalDateTime());
+                sesion.setFechaYHoraDeFin(rs.getTimestamp("fechaYHoraFin").toLocalDateTime());
                 sesion.setTratamiento(tratamientodata.buscarTratamiento(rs.getInt("codTratamiento")));
                 sesiones.add(sesion);
             }
@@ -136,7 +137,6 @@ public class TurnoData {
         }
         return sesiones;
     }
-
 
     //BORRAR UN TURNO
     public void BajaTurno(int codSesion) {
@@ -152,6 +152,8 @@ public class TurnoData {
     }
 
     public Turno BuscarTurno(int codSesion) {
+        DiaDeSpaData diadespadata = new DiaDeSpaData();
+
         String sql = "SELECT * FROM sesion WHERE codSesion = ? ";
         Turno s = null;
 
@@ -181,6 +183,8 @@ public class TurnoData {
     }
 
     public List<Turno> ListarTurnos() {
+        DiaDeSpaData diadespadata = new DiaDeSpaData();
+
         String sql = "SELECT * FROM sesion WHERE 1";
         Turno s = null;
         List<Turno> sesiones = new ArrayList();
@@ -189,7 +193,7 @@ public class TurnoData {
             PreparedStatement ps = conexion.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 Timestamp ts = rs.getTimestamp("fechaYHoraInicio");
                 Timestamp ts1 = rs.getTimestamp("fechaYHoraFin");
 
@@ -199,8 +203,9 @@ public class TurnoData {
                 s.setCodSesion(rs.getInt("codSesion"));
                 sesiones.add(s);
 
-            } else {
-                System.out.println("No se encontro la sesión");
+            }
+            if (sesiones.isEmpty()) {
+                System.out.println("No se encontraron sesiones");
             }
             ps.close();
 
@@ -265,12 +270,12 @@ public class TurnoData {
             JOptionPane.showMessageDialog(null, "Error al deshabilitar la sesión" + e.getMessage());
         }
     }
-    
-    public Tratamiento BuscarTratamiento(int codTratam){
+
+    public Tratamiento BuscarTratamiento(int codTratam) {
         return tratamientodata.buscarTratamiento(codTratam);
     }
-    
-    public List<Especialista> ListarEspecialistas(String tipo){
+
+    public List<Especialista> ListarEspecialistas(String tipo) {
         List<Especialista> especialistas = new ArrayList<>();
         String sql = "SELECT * FROM especialista WHERE especialidad = ? AND estado = true";
 
@@ -294,7 +299,8 @@ public class TurnoData {
 
         return especialistas;
     }
-    public List<Consultorio> ListarConsultorios(String tipo){
+
+    public List<Consultorio> ListarConsultorios(String tipo) {
         List<Consultorio> consultorios = new ArrayList<>();
         String sql = "SELECT * FROM consultorio WHERE usos = ? AND apto = true";
 
@@ -317,10 +323,11 @@ public class TurnoData {
 
         return consultorios;
     }
-    
-    public List<Instalacion> ListaInstalaciones(){
+
+    public List<Instalacion> ListaInstalaciones() {
         return instalaciondata.ListarInstalacion();
     }
+
     public void eliminarSesionesPorDiaSpa(int codPack) {
         String sql = "DELETE FROM sesion WHERE codPack = ?";
         try {

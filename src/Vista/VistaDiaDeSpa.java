@@ -102,6 +102,11 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                 jBActualizarMouseClicked(evt);
             }
         });
+        jBActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBActualizarActionPerformed(evt);
+            }
+        });
 
         jBSalir.setBackground(new java.awt.Color(255, 153, 102));
         jBSalir.setForeground(new java.awt.Color(255, 255, 255));
@@ -297,6 +302,10 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
     private void jBFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFechaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jBFechaActionPerformed
+
+    private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBActualizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

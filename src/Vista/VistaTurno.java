@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Modelo.DiaDeSpa;
 import Modelo.Tratamiento;
 import Modelo.Turno;
 import Persistencia.ConsultorioData;
@@ -41,6 +42,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             return column == 1 || column == 2;
         }
     };
+     private DiaDeSpa diaDeSpaActual;
+    private Tratamiento tratamientoPendiente;
 
     /**
      * Creates new form VistaSesion
@@ -49,7 +52,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         initComponents();
         armarCabecera();
         cargarTratamientosPorTipo(null);
-                
+
         // Agrupar radio buttons para que sean exclusivos
         ButtonGroup grupoTipos = new ButtonGroup();
         grupoTipos.add(radioFacial);
@@ -63,9 +66,29 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         radioCorporal.addActionListener(this::radioCorporalActionPerformed);
         radioRelajacion.addActionListener(this::radioRelajacionActionPerformed);
 
+         btnReservar.setToolTipText("Seleccione un tratamiento y cree un Día de Spa para reservar");
+        btnReservaInstalacion.setToolTipText("Cree un Día de Spa para reservar una instalación");
+        btnConsultar.setToolTipText("Informacion sobre el tratamiento seleccionado");
+        btnContacto.setToolTipText("Contacto");
+
+        mostrarMensajeInformativo();
+
+    }
+    
+    private void mostrarMensajeInformativo() {
+        JOptionPane.showMessageDialog(this,
+            "¡Bienvenido al Sistema de Reservas!\n\n" +
+            "Para realizar cualquier reserva, primero debe crear un Dia de Spa.\n\n" +
+            "Flujo de reserva:\n" +
+            "1. Seleccione un tratamiento\n" +
+            "2. Haga click en Reservar Tratamiento o Reservar Instalación\n" +
+            "3. Cree su Dia de Spa\n" +
+            "4. Complete su reserva\n\n" +
+            "¡Empecemos!",
+            "Bienvenido - Sistema de Reservas",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
-    
     private void armarCabecera() {
         modeloTabla.addColumn("Código");
         modeloTabla.addColumn("Nombre");
@@ -100,6 +123,85 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         }
     }
 
+    private void abrirAgregarDiaDeSpa(String tipoReserva) {
+        String mensaje = "";
+        if (tipoReserva.equals("tratamiento")) {
+            mensaje = "Para reservar el tratamiento '" + tratamientoPendiente.getNombre() + 
+                     "', primero debe crear su Día de Spa.";
+        } else {
+            mensaje = "Para reservar una instalación, primero debe crear su Día de Spa.";
+        }
+        
+        JOptionPane.showMessageDialog(this, mensaje,
+            "Crear Día de Spa", JOptionPane.INFORMATION_MESSAGE);
+
+        // Crear instancia de AgregarDiaDeSpa pasando esta VistaTurno como referencia
+        AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this);
+        agregarDiaSpa.setVisible(true);
+
+        javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+        desktop.add(agregarDiaSpa);
+
+        java.awt.Dimension desktopSize = desktop.getSize();
+        java.awt.Dimension jifSize = agregarDiaSpa.getSize();
+        agregarDiaSpa.setLocation((desktopSize.width - jifSize.width) / 2,
+                (desktopSize.height - jifSize.height) / 2);
+        agregarDiaSpa.toFront();
+    }
+
+    public void diaDeSpaCreado(DiaDeSpa diaDeSpa) {
+        this.diaDeSpaActual = diaDeSpa;
+        
+        // Mostrar mensaje de confirmacion
+        JOptionPane.showMessageDialog(this,
+            "¡Dia de Spa creado exitosamente!\n\n" +
+            "Procediendo con su reserva...",
+            "Dia de Spa Creado",
+            JOptionPane.INFORMATION_MESSAGE);
+        
+        // continuar automaticamente con la reserva que el usuario queria hacer
+        continuarConReserva();
+    }
+
+    //Continuar con la reserva despues de crear el dia de spa
+    private void continuarConReserva() {
+        if (tratamientoPendiente != null) {
+            abrirReservaConTratamiento(tratamientoPendiente);
+        } else {
+            abrirReservaSoloInstalacion();
+        }
+    }
+
+    //Abrir reserva de tratamiento
+    private void abrirReservaConTratamiento(Tratamiento tratamiento) {
+        ReservarSesion reserva = new ReservarSesion(tratamiento, diaDeSpaActual);
+        reserva.setVisible(true);
+
+        javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+        desktop.add(reserva);
+
+        java.awt.Dimension desktopSize = desktop.getSize();
+        java.awt.Dimension jifSize = reserva.getSize();
+        reserva.setLocation((desktopSize.width - jifSize.width) / 2,
+                (desktopSize.height - jifSize.height) / 2);
+        reserva.toFront();
+        
+        tratamientoPendiente = null;
+    }
+
+    private void abrirReservaSoloInstalacion() {
+        ReservarSesion reserva = new ReservarSesion(diaDeSpaActual);
+        reserva.setVisible(true);
+
+        javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+        desktop.add(reserva);
+
+        java.awt.Dimension desktopSize = desktop.getSize();
+        java.awt.Dimension jifSize = reserva.getSize();
+        reserva.setLocation((desktopSize.width - jifSize.width) / 2,
+                (desktopSize.height - jifSize.height) / 2);
+        reserva.toFront();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,6 +213,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
+        dateUtil1 = new com.toedter.calendar.DateUtil();
+        jCalendarBeanInfo1 = new com.toedter.calendar.JCalendarBeanInfo();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaTratamientos = new javax.swing.JTable();
@@ -126,6 +230,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         btnConsultar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
+        btnReservaInstalacion = new javax.swing.JButton();
 
         jScrollPane1.setViewportView(jTree1);
 
@@ -149,8 +254,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(tablaTratamientos);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 102, 51));
-        jLabel3.setText("<html><u>Servicios Disponibles</u></html>");
+        jLabel3.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel3.setText("<html>Servicios Disponibles</html>");
 
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("(Seleccione el tratamiento de su interes para consultar o hacer una reserva)");
@@ -186,9 +291,9 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         });
 
         btnReservar.setBackground(new java.awt.Color(255, 153, 102));
-        btnReservar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnReservar.setForeground(new java.awt.Color(0, 0, 0));
-        btnReservar.setText("Reservar");
+        btnReservar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReservar.setForeground(new java.awt.Color(255, 255, 255));
+        btnReservar.setText("Reservar Tratamiento");
         btnReservar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReservarActionPerformed(evt);
@@ -196,8 +301,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         });
 
         btnContacto.setBackground(new java.awt.Color(255, 153, 102));
-        btnContacto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnContacto.setForeground(new java.awt.Color(0, 0, 0));
+        btnContacto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnContacto.setForeground(new java.awt.Color(255, 255, 255));
         btnContacto.setText("Contacto");
         btnContacto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,8 +311,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         });
 
         btnConsultar.setBackground(new java.awt.Color(255, 153, 102));
-        btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnConsultar.setForeground(new java.awt.Color(0, 0, 0));
+        btnConsultar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,11 +324,21 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jLabel4.setText("Para Consultas o mas Informacion, contactanos!");
 
         btnSalir.setBackground(new java.awt.Color(255, 153, 102));
-        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
-        btnSalir.setText("Salir");
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalir.setText("X");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
+            }
+        });
+
+        btnReservaInstalacion.setBackground(new java.awt.Color(255, 153, 102));
+        btnReservaInstalacion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReservaInstalacion.setForeground(new java.awt.Color(255, 255, 255));
+        btnReservaInstalacion.setText("Reservar Instalacion");
+        btnReservaInstalacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReservaInstalacionActionPerformed(evt);
             }
         });
 
@@ -232,47 +347,56 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(182, 182, 182)
+                .addComponent(btnSalir)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(101, 101, 101)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(168, 168, 168)
-                        .addComponent(btnReservar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(57, 57, 57)
-                        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(radioFacial)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(radioFacial)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(radioCorporal))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnReservar, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(16, 16, 16)))
                                 .addGap(27, 27, 27)
-                                .addComponent(radioCorporal)
-                                .addGap(27, 27, 27)
-                                .addComponent(radioRelajacion)
-                                .addGap(18, 18, 18)
-                                .addComponent(radioEstetico))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnReservaInstalacion, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(radioRelajacion)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(radioEstetico))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
                                 .addComponent(jLabel4)
-                                .addGap(31, 31, 31)
-                                .addComponent(btnContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSalir)))))
-                .addGap(23, 23, 23))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(144, 144, 144)
+                        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(23, 27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSalir))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -287,24 +411,25 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReservar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(btnReservaInstalacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(btnConsultar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(btnContacto)
-                    .addComponent(btnSalir))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addComponent(btnContacto))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -328,7 +453,10 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         int filaSeleccionada = tablaTratamientos.getSelectedRow();
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione un tratamiento para reservar");
+            JOptionPane.showMessageDialog(this, 
+                "Seleccione un tratamiento de la lista para reservar",
+                "Selección Requerida", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -336,18 +464,10 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         Tratamiento tratamiento = tratamientod.buscarTratamiento(codigoTratamiento);
 
         if (tratamiento != null) {
-            ReservarSesion reserva = new ReservarSesion(tratamiento);
-            reserva.setVisible(true);
-
-            javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
-            desktop.add(reserva);  
-
-            java.awt.Dimension desktopSize = desktop.getSize();
-            java.awt.Dimension jifSize = reserva.getSize();
-            reserva.setLocation((desktopSize.width - jifSize.width) / 2,
-                    (desktopSize.height - jifSize.height) / 2);
-                    reserva.toFront();
-
+            this.tratamientoPendiente = tratamiento;
+            
+            abrirAgregarDiaDeSpa("tratamiento");
+            
         } else {
             JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
         }
@@ -431,12 +551,20 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btnReservaInstalacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaInstalacionActionPerformed
+        this.tratamientoPendiente = null;
+        abrirAgregarDiaDeSpa("instalacion");
+    }//GEN-LAST:event_btnReservaInstalacionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnContacto;
+    private javax.swing.JButton btnReservaInstalacion;
     private javax.swing.JButton btnReservar;
     private javax.swing.JButton btnSalir;
+    private com.toedter.calendar.DateUtil dateUtil1;
+    private com.toedter.calendar.JCalendarBeanInfo jCalendarBeanInfo1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
