@@ -140,13 +140,13 @@ public class TratamientoData {
             ps.setString(7, t.getProductos());
             ps.setInt(8, t.getCodTratam());
 
-             int filasAfectadas = ps.executeUpdate();  // ejecuta la actualización
+            int filasAfectadas = ps.executeUpdate();  // ejecuta la actualización
 
-        if (filasAfectadas == 0) {
-            // No se modificó ninguna fila: puede que codTratam no exista
-            JOptionPane.showMessageDialog(null, "No se modificó ningún tratamiento. Verifique el código.");
-            return false;
-        }
+            if (filasAfectadas == 0) {
+                // No se modificó ninguna fila: puede que codTratam no exista
+                JOptionPane.showMessageDialog(null, "No se modificó ningún tratamiento. Verifique el código.");
+                return false;
+            }
             return true;
 
         } catch (SQLException ex) {
@@ -165,7 +165,7 @@ public class TratamientoData {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                 Tratamiento tratamiento = new Tratamiento();
+                Tratamiento tratamiento = new Tratamiento();
                 tratamiento.setCodTratam(rs.getInt("codTratam"));
                 tratamiento.setNombre(rs.getString("nombre"));
                 tratamiento.setDetalle(rs.getString("detalle"));
@@ -211,6 +211,35 @@ public class TratamientoData {
         return tratamientos;
     }
 
-    //Buscar Tratamiento por nombre
-    
+
+//Listar tratamientos mas sesionados
+    public List<Object[]> listarTratamientosMasSesionados(java.sql.Date fechaInicio, java.sql.Date fechaFin) {
+        String sql = "SELECT t.nombre, t.tipo, COUNT(s.codSesion) as cantidad_sesiones "
+                + "FROM tratamiento t "
+                + "JOIN sesion s ON t.codTratam = s.codTratamiento "
+                + "WHERE DATE(s.fechaYHoraInicio) BETWEEN ? AND ? "
+                + "GROUP BY t.codTratam, t.nombre, t.tipo "
+                + "ORDER BY cantidad_sesiones DESC";
+        List<Object[]> resultados = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setDate(1, fechaInicio);
+            ps.setDate(2, fechaFin);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("nombre"),
+                    rs.getString("tipo"),
+                    rs.getInt("cantidad_sesiones")
+                };
+                resultados.add(fila);
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al listar tratamientos mas sesionados: " + e.getMessage());
+        }
+        return resultados;
+    }
 }
