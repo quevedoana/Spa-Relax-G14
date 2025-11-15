@@ -47,6 +47,8 @@ public class GestionSpa extends javax.swing.JFrame {
         btnConsultarTurnos = new javax.swing.JCheckBoxMenuItem();
         jMenu10 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu9 = new javax.swing.JMenu();
+        itemConsultas = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -153,6 +155,18 @@ public class GestionSpa extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu10);
 
+        jMenu9.setText("Consultas");
+
+        itemConsultas.setText("Consultas");
+        itemConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemConsultasActionPerformed(evt);
+            }
+        });
+        jMenu9.add(itemConsultas);
+
+        jMenuBar1.add(jMenu9);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -165,9 +179,7 @@ public class GestionSpa extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
         );
 
         pack();
@@ -176,7 +188,7 @@ public class GestionSpa extends javax.swing.JFrame {
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
         // TODO add your h here:
-                                   
+
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMClienteActionPerformed
@@ -222,7 +234,7 @@ public class GestionSpa extends javax.swing.JFrame {
 
     private void btnVerTratamientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTratamientosActionPerformed
         // TODO add your handling code here:
-         escritorio.removeAll();
+        escritorio.removeAll();
         escritorio.repaint();
         VistaTratamiento ve = new VistaTratamiento();
         ve.setLocation(
@@ -261,10 +273,8 @@ public class GestionSpa extends javax.swing.JFrame {
 
     private void jMenu10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu10ActionPerformed
         // TODO add your handling code here:
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_jMenu10ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -277,9 +287,22 @@ public class GestionSpa extends javax.swing.JFrame {
                 (escritorio.getHeight() - vc.getHeight()) / 2
         );
         escritorio.add(vc);
-   
+
         vc.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void itemConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConsultasActionPerformed
+         escritorio.removeAll();
+        escritorio.repaint();
+        SistemaConsultas vc = new SistemaConsultas();
+        vc.setLocation(
+                (escritorio.getWidth() - vc.getWidth()) / 2,
+                (escritorio.getHeight() - vc.getHeight()) / 2
+        );
+        escritorio.add(vc);
+
+        vc.setVisible(true);
+    }//GEN-LAST:event_itemConsultasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -321,6 +344,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnGestionConsultorios;
     private javax.swing.JMenuItem btnVerTratamientos;
     private javax.swing.JDesktopPane escritorio;
+    private javax.swing.JMenuItem itemConsultas;
     private javax.swing.JMenuItem jMCliente;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
@@ -331,6 +355,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
