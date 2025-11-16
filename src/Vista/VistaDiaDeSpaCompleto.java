@@ -29,7 +29,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         initComponents();
         // Definir los nombres de las columnas según tus campos de BD
     modeloSpa = new DefaultTableModel(
-        new String[]{"codPack", "FechaHora", "Preferencias", "codCli", "Estado", "Sesiones", "Monto"},
+        new String[]{"codPack", "FechaHora", "Preferencias", "Cliente", "Estado", "Monto"},
         0
     );
     jtSpa.setModel(modeloSpa);
@@ -62,7 +62,6 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
             d.getPreferencias(),
             d.getCliente(),
             d.isEstado(),
-            d.getSesiones(),  // supongo que es nro sesiones o algo así
             d.getMonto()
         });
     }
@@ -78,18 +77,17 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
     }
 }
     private void cargarSesiones(int codPack) {
-    modeloSesion.setRowCount(0);  // limpiás las sesiones anteriores
-
-    List<Turno> sesiones = turnos.buscarSesionesPorDiaSpa(WIDTH);  // tu DAO de sesiones
+    modeloSesion.setRowCount(0);
+    List<Turno> sesiones = turnos.buscarSesionesConNombresPorDiaSpa(codPack);
     for (Turno s : sesiones) {
         modeloSesion.addRow(new Object[]{
             s.getCodSesion(),
             s.getFechaYHoraDeInicio(),
             s.getFechaYHoraDeFin(),
-            s.getTratamiento(),
-            s.getConsultorio(),
-            s.getEspecialista(),
-            s.getInstalacion(),
+            s.getTratamiento().getNombre(),
+            s.getConsultorio().getNroConsultorio(),
+            s.getEspecialista().getNombreYApellido(),  // acá nombre y apellido juntos
+            s.getInstalacion().getNombre(),
             s.isEstado()
         });
     }
@@ -113,6 +111,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtsesion = new javax.swing.JTable();
+        jbSalir = new javax.swing.JButton();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -157,6 +156,13 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         ));
         jScrollPane3.setViewportView(jtsesion);
 
+        jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -175,9 +181,13 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)
                             .addComponent(jScrollPane1))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jbSalir)
+                .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,7 +200,9 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jbSalir)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -207,6 +219,11 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jbSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -216,6 +233,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;
+    private javax.swing.JButton jbSalir;
     private javax.swing.JTable jtSpa;
     private javax.swing.JTable jtsesion;
     // End of variables declaration//GEN-END:variables

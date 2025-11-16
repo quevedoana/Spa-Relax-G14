@@ -146,7 +146,74 @@ public class TurnoData {
         }
         return sesiones;
     }
+//buscar sesiones por dia de spa actualizado
+    public List<Turno> buscarSesionesConNombresPorDiaSpa(int codPack) {
+    String sql = "SELECT s.codSesion, " +
+                 "s.fechaYHoraInicio, s.fechaYHoraFin, " +
+                 "t.codTratam, t.nombre AS nombreTratamiento, " +
+                 "s.nroConsultorio, " +
+                 "e.NombreYApellido AS nombreEspecialista, " +  // especialista con nombre + apellido
+                 "i.codInstal, i.nombre, " +
+                 "s.estado " +
+                 "FROM sesion s " +
+                 "JOIN tratamiento t ON s.codTratamiento = t.codTratam " +
+                 "JOIN especialista e ON s.matriculaMasajista = e.matricula " +  
+                 // adaptá “matriculaMasajista” / “matriculaEspecialista” según tu BD
+                 "LEFT JOIN instalacion i ON s.codInstalacion = i.codInstal " +
+                 "WHERE s.codPack = ?";
+    List<Turno> sesiones = new ArrayList<>();
+    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setInt(1, codPack);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Turno sesion = new Turno();
+                sesion.setCodSesion(rs.getInt("codSesion"));
+                sesion.setFechaYHoraDeInicio(rs.getTimestamp("fechaYHoraInicio").toLocalDateTime());
+                sesion.setFechaYHoraDeFin(rs.getTimestamp("fechaYHoraFin").toLocalDateTime());
+                
+                // Tratamiento: suponiendo que tenés un objeto Tratamiento
+                Tratamiento tr = new Tratamiento();
+                tr.setCodTratam(rs.getInt("codTratam"));
+                tr.setNombre(rs.getString("nombreTratamiento"));
+                sesion.setTratamiento(tr);
 
+                // Consultorio: si en tu modelo Consultorio tiene solo el código
+                Consultorio cons = new Consultorio();
+                cons.setNroConsultorio(rs.getInt("nroConsultorio"));
+                sesion.setConsultorio(cons);
+
+                // Especialista / Masajista: nombre y apellido juntos
+                Especialista mas = new Especialista();
+                mas.setNombreYApellido(rs.getString("nombreEspecialista"));
+                sesion.setEspecialista(mas);
+
+                // Instalación
+                // Instalación: puede venir null
+                int codInst = rs.getInt("codInstal");
+                if (rs.wasNull()) {
+                    // No hay instalación asociada
+                    Instalacion inst = new Instalacion();
+                    inst.setCodInstal(0); // o algún valor por defecto
+                    inst.setNombre("Sin instalación");
+                    sesion.setInstalacion(inst);
+                } else {
+                    Instalacion inst = new Instalacion();
+                    inst.setCodInstal(codInst);
+                    inst.setNombre(rs.getString("nombreInstalacion"));
+                    sesion.setInstalacion(inst);
+                }
+
+                sesion.setEstado(rs.getBoolean("estado"));
+
+                sesiones.add(sesion);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // manejar error (logging, excepción, etc.)
+    }
+    return sesiones;
+}
     //BORRAR UN TURNO
     public void BajaTurno(int codSesion) {
         String sql = "DELETE FROM sesion WHERE codSesion = ? ";
