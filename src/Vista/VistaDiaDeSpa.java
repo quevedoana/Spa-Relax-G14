@@ -64,6 +64,9 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         btnAgregaDia = new javax.swing.JButton();
         jBFecha = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jCEstado = new javax.swing.JComboBox<>();
+        jBEstado = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setTitle("Dia de Spa");
@@ -160,6 +163,26 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel1.setText("Estado");
+
+        jCEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+
+        jBEstado.setBackground(new java.awt.Color(255, 153, 102));
+        jBEstado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jBEstado.setForeground(new java.awt.Color(255, 255, 255));
+        jBEstado.setText("Cambiar Estado");
+        jBEstado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jBEstadoMouseClicked(evt);
+            }
+        });
+        jBEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEstadoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -169,41 +192,52 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jBSalir))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(jBBorrar)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
-                                .addGap(27, 27, 27)
-                                .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)
-                                .addComponent(jBFecha)
-                                .addGap(124, 124, 124))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(147, 147, 147)
-                                .addComponent(jBActualizar)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(164, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(27, 27, 27)
+                        .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(jBFecha)
+                        .addGap(124, 124, 124)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(282, 282, 282)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jBBorrar)
+                                        .addGap(166, 166, 166))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(51, 51, 51)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jBActualizar)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(30, 30, 30)
+                                        .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jBRefrescar)
+                                        .addGap(19, 19, 19))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(65, 65, 65)
+                                        .addComponent(jBEstado)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jBRefrescar)
-                        .addGap(59, 59, 59))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAgregaDia)
-                        .addGap(257, 257, 257))))
+                .addComponent(btnAgregaDia)
+                .addGap(257, 257, 257))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,12 +256,17 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                             .addComponent(jLabel3))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBBorrar)
                     .addComponent(jBActualizar)
                     .addComponent(jBRefrescar))
-                .addGap(31, 31, 31)
+                .addGap(84, 84, 84)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jBEstado))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                 .addComponent(btnAgregaDia)
                 .addGap(26, 26, 26))
         );
@@ -236,9 +275,10 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,15 +347,28 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jBActualizarActionPerformed
 
+    private void jBEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEstadoActionPerformed
+        // TODO add your handling code here:
+         cambiarEstadoDiaDeSpa();
+    }//GEN-LAST:event_jBEstadoActionPerformed
+
+    private void jBEstadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBEstadoMouseClicked
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jBEstadoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregaDia;
     private javax.swing.JButton jBActualizar;
     private javax.swing.JButton jBBorrar;
+    private javax.swing.JButton jBEstado;
     private javax.swing.JButton jBFecha;
     private javax.swing.JButton jBRefrescar;
     private javax.swing.JButton jBSalir;
+    private javax.swing.JComboBox<String> jCEstado;
     private com.toedter.calendar.JDateChooser jDDiaDeSpa;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
@@ -438,7 +491,7 @@ private void armarCabecera() {
             JOptionPane.showMessageDialog(this, "Error al actualizar día de spa: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    /*private void cambiarEstadoDiaDeSpa() {
+    private void cambiarEstadoDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
         DiaDeSpa aux = new DiaDeSpa();
         if (fila == -1) {
@@ -450,7 +503,7 @@ private void armarCabecera() {
         aux.setFechaYHora((LocalDateTime) modelo.getValueAt(fila, 1));
         aux.setPreferencias((String) modelo.getValueAt(fila, 2));
         aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
-        aux.setSesion(sd.buscarSesion((int) modelo.getValueAt(fila, 5)));
+        aux.setSesiones(sd.ListarTurnos());
         aux.setMonto((double) modelo.getValueAt(fila, 6));
 
         String nuevoEstado = (String) jCEstado.getSelectedItem();
@@ -473,5 +526,5 @@ private void armarCabecera() {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }*/
+    }
 }
