@@ -234,10 +234,10 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                                         .addComponent(jBEstado)
                                         .addGap(0, 0, Short.MAX_VALUE)))))))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(232, 232, 232)
                 .addComponent(btnAgregaDia)
-                .addGap(257, 257, 257))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,9 +266,9 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
                     .addComponent(jCEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jBEstado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(btnAgregaDia)
-                .addGap(26, 26, 26))
+                .addGap(73, 73, 73))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
