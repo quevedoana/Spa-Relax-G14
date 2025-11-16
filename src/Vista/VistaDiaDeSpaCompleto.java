@@ -5,18 +5,95 @@
  */
 package Vista;
 
+import Modelo.DiaDeSpa;
+import Modelo.Turno;
+import Persistencia.DiaDeSpaData;
+import Persistencia.TurnoData;
+import java.util.List;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Anitabonita
  */
 public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
-
+    private DiaDeSpaData dias= new DiaDeSpaData();
+    private TurnoData turnos= new TurnoData();
+    private DefaultTableModel modeloSpa;
+    private DefaultTableModel modeloSesion;
     /**
      * Creates new form VistaDiaDeSpaCompleto
      */
     public VistaDiaDeSpaCompleto() {
         initComponents();
+        // Definir los nombres de las columnas según tus campos de BD
+    modeloSpa = new DefaultTableModel(
+        new String[]{"codPack", "FechaHora", "Preferencias", "codCli", "Estado", "Sesiones", "Monto"},
+        0
+    );
+    jtSpa.setModel(modeloSpa);
+
+    modeloSesion = new DefaultTableModel(
+        new String[]{"codSesion", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Instalación", "Estado"},
+        0
+    );
+    jtsesion.setModel(modeloSesion);
+
+    // Permitir selección de fila única para detectar bien el cambio
+    jtSpa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    // Agregar listener para cuando cambie la fila seleccionada
+    jtSpa.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            filaSpaSeleccionado();
+        }
+    });
+    cargarDiasSpa();
     }
+
+    private void cargarDiasSpa() {
+    modeloSpa.setRowCount(0); // limpiar lo que haya
+    List<DiaDeSpa> lista = dias.listarDiasDeSpa();  // tu DAO
+    for (DiaDeSpa d : lista) {
+        modeloSpa.addRow(new Object[]{
+            d.getCodPack(),
+            d.getFechaYHora(),
+            d.getPreferencias(),
+            d.getCliente(),
+            d.isEstado(),
+            d.getSesiones(),  // supongo que es nro sesiones o algo así
+            d.getMonto()
+        });
+    }
+}
+   private void filaSpaSeleccionado() {
+    int fila = jtSpa.getSelectedRow();
+    if (fila >= 0) {
+        Object o = modeloSpa.getValueAt(fila, 0);  // columna 0 = codPack
+        if (o != null) {
+            int codPack = (o instanceof Integer) ? ((Integer)o).intValue() : Integer.parseInt(o.toString());
+            cargarSesiones(codPack);
+        }
+    }
+}
+    private void cargarSesiones(int codPack) {
+    modeloSesion.setRowCount(0);  // limpiás las sesiones anteriores
+
+    List<Turno> sesiones = turnos.buscarSesionesPorDiaSpa(WIDTH);  // tu DAO de sesiones
+    for (Turno s : sesiones) {
+        modeloSesion.addRow(new Object[]{
+            s.getCodSesion(),
+            s.getFechaYHoraDeInicio(),
+            s.getFechaYHoraDeFin(),
+            s.getTratamiento(),
+            s.getConsultorio(),
+            s.getEspecialista(),
+            s.getInstalacion(),
+            s.isEstado()
+        });
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,15 +104,104 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtSpa = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jtsesion = new javax.swing.JTable();
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        jLabel1.setText("Seleccione un dia de spa:");
+
+        jtSpa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jtSpa);
+
+        jLabel2.setText("A continuacion se muestra las sesiones del dia de spa:");
+
+        jtsesion.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jtsesion);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -43,5 +209,14 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jtSpa;
+    private javax.swing.JTable jtsesion;
     // End of variables declaration//GEN-END:variables
 }
