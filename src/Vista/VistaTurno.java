@@ -42,7 +42,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             return column == 1 || column == 2;
         }
     };
-     private DiaDeSpa diaDeSpaActual;
+    private DiaDeSpa diaDeSpaActual;
     private Tratamiento tratamientoPendiente;
 
     /**
@@ -66,7 +66,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         radioCorporal.addActionListener(this::radioCorporalActionPerformed);
         radioRelajacion.addActionListener(this::radioRelajacionActionPerformed);
 
-         btnReservar.setToolTipText("Seleccione un tratamiento y cree un Día de Spa para reservar");
+        btnReservar.setToolTipText("Seleccione un tratamiento y cree un Día de Spa para reservar");
         btnReservaInstalacion.setToolTipText("Cree un Día de Spa para reservar una instalación");
         btnConsultar.setToolTipText("Informacion sobre el tratamiento seleccionado");
         btnContacto.setToolTipText("Contacto");
@@ -74,19 +74,19 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         mostrarMensajeInformativo();
 
     }
-    
+
     private void mostrarMensajeInformativo() {
         JOptionPane.showMessageDialog(this,
-            "¡Bienvenido al Sistema de Reservas!\n\n" +
-            "Para realizar cualquier reserva, primero debe crear un Dia de Spa.\n\n" +
-            "Flujo de reserva:\n" +
-            "1. Seleccione un tratamiento\n" +
-            "2. Haga click en Reservar Tratamiento o Reservar Instalación\n" +
-            "3. Cree su Dia de Spa\n" +
-            "4. Complete su reserva\n\n" +
-            "¡Empecemos!",
-            "Bienvenido - Sistema de Reservas",
-            JOptionPane.INFORMATION_MESSAGE);
+                "¡Bienvenido al Sistema de Reservas!\n\n"
+                + "Para realizar cualquier reserva, primero debe crear un Dia de Spa.\n\n"
+                + "Flujo de reserva:\n"
+                + "1. Seleccione un tratamiento\n"
+                + "2. Haga click en Reservar Tratamiento o Reservar Instalación\n"
+                + "3. Cree su Dia de Spa\n"
+                + "4. Complete su reserva\n\n"
+                + "¡Empecemos!",
+                "Bienvenido - Sistema de Reservas",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void armarCabecera() {
@@ -123,39 +123,126 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         }
     }
 
-    private void abrirAgregarDiaDeSpa(String tipoReserva) {
-         // Verificar si ya hay días de spa existentes para seleccionar
-    List<DiaDeSpa> diasExistentes = diadespad.listarDiasDeSpa();
-    
-    if (!diasExistentes.isEmpty()) {
-        // Ofrecer opción de seleccionar existente o crear nuevo
-        Object[] opciones = {"Seleccionar Día de Spa Existente", "Crear Nuevo Día de Spa"};
-        int eleccion = JOptionPane.showOptionDialog(this,
-            "¿Desea usar un Día de Spa existente o crear uno nuevo?",
-            "Seleccionar Día de Spa",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            opciones,
-            opciones[0]);
-        
-        if (eleccion == 0) {
-            // Seleccionar existente
-            abrirSeleccionDiaDeSpa(diasExistentes, tipoReserva);
-            return;
+    private void abrirSeleccionDiaDeSpa(List<DiaDeSpa> diasExistentes, String tipoReserva) {
+        try {
+            // Crear array de opciones para el diálogo de selección
+            String[] opcionesDias = new String[diasExistentes.size()];
+            for (int i = 0; i < diasExistentes.size(); i++) {
+                DiaDeSpa dia = diasExistentes.get(i);
+
+                // MANEJO DE LocalDateTime
+                String fechaFormateada = "Fecha no disponible";
+                LocalDateTime fechaHora = dia.getFechaYHora();
+
+                if (fechaHora != null) {
+                    try {
+                        // Formatear LocalDateTime directamente
+                        fechaFormateada = fechaHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                    } catch (Exception formatError) {
+                        fechaFormateada = "Error formateando fecha";
+                    }
+                }
+
+                opcionesDias[i] = "Día #" + dia.getCodPack()
+                        + " - Cliente: " + dia.getCliente().getNombreCompleto()
+                        + " - Fecha: " + fechaFormateada
+                        + " - Monto: $" + String.format("%.2f", dia.getMonto());
+            }
+
+            // Mostrar diálogo de selección
+            String diaSeleccionado = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Seleccione un Día de Spa existente para agregar la reserva:",
+                    "Seleccionar Día de Spa Existente",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcionesDias,
+                    opcionesDias[0] // Opción por defecto
+            );
+
+            // Si el usuario seleccionó un día (no canceló)
+            if (diaSeleccionado != null) {
+                // Encontrar el índice del día seleccionado
+                int indexSeleccionado = -1;
+                for (int i = 0; i < opcionesDias.length; i++) {
+                    if (opcionesDias[i].equals(diaSeleccionado)) {
+                        indexSeleccionado = i;
+                        break;
+                    }
+                }
+
+                if (indexSeleccionado >= 0) {
+                    // Asignar el día seleccionado como actual
+                    this.diaDeSpaActual = diasExistentes.get(indexSeleccionado);
+
+                    // Formatear fecha para el mensaje de confirmación
+                    String fechaConfirmacion = "Fecha no disponible";
+                    LocalDateTime fechaHora = diaDeSpaActual.getFechaYHora();
+                    if (fechaHora != null) {
+                        fechaConfirmacion = fechaHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                    }
+
+                    JOptionPane.showMessageDialog(this,
+                            "¡Día de Spa seleccionado exitosamente!\n\n"
+                            + "Cliente: " + diaDeSpaActual.getCliente().getNombreCompleto() + "\n"
+                            + "Fecha: " + fechaConfirmacion + "\n"
+                            + "Procediendo con su reserva...",
+                            "Día de Spa Seleccionado",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    // Continuar con el proceso de reserva
+                    continuarConReserva();
+                }
+            } else {
+                // Usuario canceló - volver al menú principal
+                JOptionPane.showMessageDialog(this,
+                        "Puede crear un nuevo Día de Spa cuando lo desee.",
+                        "Selección Cancelada",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al seleccionar Día de Spa: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-        // Si elige 1 o cierra, continúa con creación nueva
     }
+
+    private void abrirAgregarDiaDeSpa(String tipoReserva) {
+        // Verificar si ya hay días de spa existentes para seleccionar
+        List<DiaDeSpa> diasExistentes = diadespad.listarDiasDeSpa();
+
+        if (!diasExistentes.isEmpty()) {
+            // Ofrecer opción de seleccionar existente o crear nuevo
+            Object[] opciones = {"Seleccionar Día de Spa Existente", "Crear Nuevo Día de Spa"};
+            int eleccion = JOptionPane.showOptionDialog(this,
+                    "¿Desea usar un Día de Spa existente o crear uno nuevo?",
+                    "Seleccionar Día de Spa",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]);
+
+            if (eleccion == 0) {
+                // Seleccionar existente
+                abrirSeleccionDiaDeSpa(diasExistentes, tipoReserva);
+                return;
+            }
+            // Si elige 1 o cierra, continúa con creación nueva
+        }
         String mensaje = "";
         if (tipoReserva.equals("tratamiento")) {
-            mensaje = "Para reservar el tratamiento '" + tratamientoPendiente.getNombre() + 
-                     "', primero debe crear su Día de Spa.";
+            mensaje = "Para reservar el tratamiento '" + tratamientoPendiente.getNombre()
+                    + "', primero debe crear su Día de Spa.";
         } else {
             mensaje = "Para reservar una instalación, primero debe crear su Día de Spa.";
         }
-        
+
         JOptionPane.showMessageDialog(this, mensaje,
-            "Crear Día de Spa", JOptionPane.INFORMATION_MESSAGE);
+                "Crear Día de Spa", JOptionPane.INFORMATION_MESSAGE);
 
         // Crear instancia de AgregarDiaDeSpa pasando esta VistaTurno como referencia
         AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this);
@@ -173,14 +260,14 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
     public void diaDeSpaCreado(DiaDeSpa diaDeSpa) {
         this.diaDeSpaActual = diaDeSpa;
-        
+
         // Mostrar mensaje de confirmacion
         JOptionPane.showMessageDialog(this,
-            "¡Dia de Spa creado exitosamente!\n\n" +
-            "Procediendo con su reserva...",
-            "Dia de Spa Creado",
-            JOptionPane.INFORMATION_MESSAGE);
-        
+                "¡Dia de Spa creado exitosamente!\n\n"
+                + "Procediendo con su reserva...",
+                "Dia de Spa Creado",
+                JOptionPane.INFORMATION_MESSAGE);
+
         // continuar automaticamente con la reserva que el usuario queria hacer
         continuarConReserva();
     }
@@ -207,7 +294,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         reserva.setLocation((desktopSize.width - jifSize.width) / 2,
                 (desktopSize.height - jifSize.height) / 2);
         reserva.toFront();
-        
+
         tratamientoPendiente = null;
     }
 
@@ -224,6 +311,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                 (desktopSize.height - jifSize.height) / 2);
         reserva.toFront();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -475,10 +563,10 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         int filaSeleccionada = tablaTratamientos.getSelectedRow();
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, 
-                "Seleccione un tratamiento de la lista para reservar",
-                "Selección Requerida", 
-                JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione un tratamiento de la lista para reservar",
+                    "Selección Requerida",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -487,9 +575,9 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
         if (tratamiento != null) {
             this.tratamientoPendiente = tratamiento;
-            
+
             abrirAgregarDiaDeSpa("tratamiento");
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
         }

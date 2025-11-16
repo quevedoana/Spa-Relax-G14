@@ -49,6 +49,7 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         itemConsultas = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -164,6 +165,14 @@ public class GestionSpa extends javax.swing.JFrame {
             }
         });
         jMenu9.add(itemConsultas);
+
+        jMenuItem3.setText("jMenuItem3");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem3);
 
         jMenuBar1.add(jMenu9);
 
@@ -304,6 +313,21 @@ public class GestionSpa extends javax.swing.JFrame {
         vc.setVisible(true);
     }//GEN-LAST:event_itemConsultasActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaDiaDeSpaCompleto vc = new VistaDiaDeSpaCompleto();
+        vc.setLocation(
+                (escritorio.getWidth() - vc.getWidth()) / 2,
+                (escritorio.getHeight() - vc.getHeight()) / 2
+        );
+        escritorio.add(vc);
+
+        vc.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -360,6 +384,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu menuTurno;
     // End of variables declaration//GEN-END:variables

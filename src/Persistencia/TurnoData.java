@@ -78,7 +78,16 @@ public class TurnoData {
 
     public void guardarSesionConPack(Turno sesion, int codPack) {
         String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
+        System.out.println("DEBUG - Intentando guardar sesión con codPack: " + codPack);
 
+        // Verificar si el codPack es válido
+        if (codPack <= 0) {
+            JOptionPane.showMessageDialog(null,
+                    "ERROR: codPack inválido (" + codPack + "). El Día de Spa no fue guardado correctamente.");
+            return;
+        }
+
+        
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(sesion.getFechaYHoraDeInicio()));

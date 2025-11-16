@@ -32,10 +32,6 @@ public class PagoTarjeta extends javax.swing.JDialog {
         grupoTipos.add(radioTrajeta);
         grupoTipos.add(radioTrasferencia);
 
-        // Agregar listeners a los radio buttons
-        radioTrajeta.addActionListener(this::radioTrajetaActionPerformed);
-        radioTrasferencia.addActionListener(this::radioTransferenciaActionPerformed);
-
     }
 
     /**
@@ -61,23 +57,19 @@ public class PagoTarjeta extends javax.swing.JDialog {
     
 
     private void campos() {
+   
         textNombre.setEnabled(false);
         textCodigo.setEnabled(false);
         textTarjeta.setEnabled(false);
         textNombreApellido.setEnabled(false);
         labelcvu.setEnabled(false);
-        if (dateVencimiento != null) {
-            dateVencimiento.setEnabled(false);
-        }
+        fechaVencimiento.setEnabled(false);
 
         if (radioTrajeta.isSelected()) {
             textNombre.setEnabled(true);
             textCodigo.setEnabled(true);
             textTarjeta.setEnabled(true);
-            if (dateVencimiento != null) {
-                dateVencimiento.setEnabled(true);
-            }
-
+            fechaVencimiento.setEnabled(true);
         } else if (radioTrasferencia.isSelected()) {
             textNombreApellido.setEnabled(true);
             labelcvu.setEnabled(true);
@@ -87,48 +79,69 @@ public class PagoTarjeta extends javax.swing.JDialog {
             textTarjeta.setText("");
             textNombre.setText("");
             textCodigo.setText("");
-            if (dateVencimiento != null) {
-                dateVencimiento.setDate(null);
-            }
+            fechaVencimiento.setDate(null);
         }
 
         if (!radioTrasferencia.isSelected()) {
             textNombreApellido.setText("");
         }
-
     }
 
-    private boolean validaciones() {
+   private boolean validaciones() {
+        // Validar que se seleccionó un método de pago
         if (!radioTrajeta.isSelected() && !radioTrasferencia.isSelected()) {
             JOptionPane.showMessageDialog(this, "Seleccione un método de pago", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            if (radioTrajeta.isSelected()) {
-                boolean camposValidos = !textTarjeta.getText().trim().isEmpty()
-                        && !textNombre.getText().trim().isEmpty()
-                        && !textCodigo.getText().trim().isEmpty();
-
-                if (!camposValidos) {
-                    JOptionPane.showMessageDialog(this, "Complete todos los campos de tarjeta", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-                if (dateVencimiento != null && dateVencimiento.getDate() != null) {
-                    Date hoy = new Date(2025, 11, 01);
-                    if (dateVencimiento.getDate().before(hoy)) {
-                        JOptionPane.showMessageDialog(this, "La fecha de vencimiento no puede ser anterior a hoy", "Error", JOptionPane.ERROR_MESSAGE);
-                        return false;
-                    }
-                    return camposValidos;
-                }
-                return true;
-
-            } else if (radioTrasferencia.isSelected()) {
-                boolean camposValidos = !textNombreApellido.getText().trim().isEmpty();
-
-                return camposValidos;
-            }
             return false;
         }
-        return false;
+
+        if (radioTrajeta.isSelected()) {
+            // Validar campos de tarjeta
+            if (textTarjeta.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el número de tarjeta", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            if (textNombre.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el nombre del titular", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            if (textCodigo.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el código de seguridad", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            if (fechaVencimiento.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione la fecha de vencimiento", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            
+            // Validar que la fecha no sea anterior a hoy
+            java.util.Date hoy = new java.util.Date();
+            if (fechaVencimiento.getDate().before(hoy)) {
+                JOptionPane.showMessageDialog(this, "La tarjeta está vencida", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            
+            // Validar formato del número de tarjeta (16 dígitos)
+            String tarjeta = textTarjeta.getText().replaceAll("\\s+", "");
+            if (!tarjeta.matches("\\d{16}")) {
+                JOptionPane.showMessageDialog(this, "El número de tarjeta debe tener 16 dígitos", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            
+            // Validar código de seguridad (3-4 dígitos)
+            if (!textCodigo.getText().matches("\\d{3,4}")) {
+                JOptionPane.showMessageDialog(this, "El código de seguridad debe tener 3 o 4 dígitos", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+
+        } else if (radioTrasferencia.isSelected()) {
+            // Validar campos de transferencia
+            if (textNombreApellido.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese su nombre y apellido", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        
+        return true;
     }
 
 
@@ -319,14 +332,40 @@ public class PagoTarjeta extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
-        if (validaciones()) {
-            JOptionPane.showMessageDialog(this, "Pago procesado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            this.pago = true;
-            this.dispose();
+       if (validaciones()) {
+            // Simular procesamiento de pago
+            try {
+                // Mostrar mensaje de procesamiento
+                JOptionPane.showMessageDialog(this, 
+                    "Procesando pago...\nPor favor espere.", 
+                    "Procesando", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                // Simular delay de procesamiento
+                Thread.sleep(1500);
+                
+                JOptionPane.showMessageDialog(this, 
+                    "✅ Pago procesado exitosamente\n\n" +
+                    (radioTrajeta.isSelected() ? 
+                     "Método: Tarjeta terminada en " + textTarjeta.getText().substring(textTarjeta.getText().length() - 4) :
+                     "Método: Transferencia - Envíe comprobante"), 
+                    "Pago Exitoso", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                this.pago = true;
+                this.dispose();
+                
+            } catch (InterruptedException ex) {
+                JOptionPane.showMessageDialog(this, 
+                    "Error en el procesamiento del pago", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                this.pago = false;
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Complete todos los campos requeridos", "Error", JOptionPane.ERROR_MESSAGE);
             this.pago = false;
         }
+
     }//GEN-LAST:event_btnPagarActionPerformed
 
     /**
@@ -392,11 +431,5 @@ public class PagoTarjeta extends javax.swing.JDialog {
     private javax.swing.JTextField textTarjeta;
     // End of variables declaration//GEN-END:variables
 
-    private void radioTrajetaActionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private void radioTransferenciaActionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+  
 }
