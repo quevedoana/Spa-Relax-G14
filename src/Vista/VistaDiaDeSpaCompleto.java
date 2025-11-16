@@ -126,6 +126,9 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
         jLabel1.setText("Seleccione un dia de spa:");
 
         jtSpa.setModel(new javax.swing.table.DefaultTableModel(
@@ -141,6 +144,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jtSpa);
 
+        jLabel2.setForeground(new java.awt.Color(255, 102, 51));
         jLabel2.setText("A continuacion se muestra las sesiones del dia de spa:");
 
         jtsesion.setModel(new javax.swing.table.DefaultTableModel(
