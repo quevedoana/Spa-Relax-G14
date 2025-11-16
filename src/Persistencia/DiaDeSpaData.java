@@ -247,7 +247,7 @@ public class DiaDeSpaData {
         }
     }
 
-    public void cambiarEstadoDiaDeSpa(int codPack, boolean estado) {
+    /*public void cambiarEstadoDiaDeSpa(int codPack, boolean estado) {
         String sql = "UPDATE dia_de_spa SET estado = ? WHERE codPack = ?";
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
@@ -263,7 +263,37 @@ public class DiaDeSpaData {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al cambiar estado del día de spa: " + e.getMessage());
         }
-    }
+    }*/
+     //ALTA LOGICA = darle estado activo a los inactivos?
+       public void habilitarDiaDeSpa(DiaDeSpa d){
+         String sql = "UPDATE dia_de_spa SET estado = 1 WHERE codPack = ? AND estado = 0 ";
+         try{
+             PreparedStatement ps = conexion.prepareStatement(sql);
+             ps.setInt(1, d.getCodPack());
+             ps.setBoolean(2, d.isEstado());
+             ps.executeUpdate();
+             
+             ps.close();
+             
+     }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al habilitar el día de spa" + e.getMessage());
+}
+     }
+       //BAJA LOGICA = darle estado inactivo a los activos?
+     public void deshabilitarDiaDeSpa(DiaDeSpa d){
+         String sql = "UPDATE dia_de_spa SET estado = 0 WHERE codPack = ? AND estado = 1 ";
+         try{
+             PreparedStatement ps = conexion.prepareStatement(sql);
+             ps.setInt(1, d.getCodPack());
+             ps.setBoolean(2, d.isEstado());
+             ps.executeUpdate();
+             
+             ps.close();
+             
+     }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al deshabilitar el día de spa" + e.getMessage());
+}
+     }
 
     public List<DiaDeSpa> buscarDiasDeSpaPorCliente(int codCli) {
         String sql = "SELECT * FROM dia_de_spa WHERE codCli = ?";
