@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -40,6 +41,30 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         instalacionData = new InstalacionData();
         diaDeSpaData = new DiaDeSpaData();
         cargarComboboxes();
+        configurarCamposHora();
+    }
+    private void configurarCamposHora(){
+        horaInicioEspecialistasLibres.setModel(new javax.swing.SpinnerDateModel());
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(horaInicioEspecialistasLibres, "HH:mm");
+        horaInicioEspecialistasLibres.setEditor(editor);
+        horaInicioEspecialistasLibres.setValue(new java.util.Date());
+        
+        horaFinEspecialistasLibres.setModel(new javax.swing.SpinnerDateModel());
+        editor = new JSpinner.DateEditor(horaFinEspecialistasLibres, "HH:mm");
+        horaFinEspecialistasLibres.setEditor(editor);
+        horaFinEspecialistasLibres.setValue(new java.util.Date());
+        
+        horaInicioInstalacionesLibres.setModel(new javax.swing.SpinnerDateModel());
+        editor = new JSpinner.DateEditor(horaInicioInstalacionesLibres, "HH:mm");
+        horaInicioInstalacionesLibres.setEditor(editor);
+        horaInicioInstalacionesLibres.setValue(new java.util.Date());
+        
+        horaFinInstalacionesLibres.setModel(new javax.swing.SpinnerDateModel());
+        editor = new JSpinner.DateEditor(horaFinInstalacionesLibres, "HH:mm");
+        horaFinInstalacionesLibres.setEditor(editor);
+        horaFinInstalacionesLibres.setValue(new java.util.Date());
+        
+        
     }
 
     private void cargarComboboxes() {
@@ -72,7 +97,13 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                 return;
             }
 
-            // Procesar según el tipo de lista
+             if ("array".equals(tipo)) {
+            for (Object item : resultados) {
+                Object[] filaArray = (Object[]) item;
+                modelo.addRow(filaArray);
+            }
+        } else {
+            
             for (Object item : resultados) {
                 Object[] fila = null;
 
@@ -109,6 +140,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                         break;
 
                     case "diadespa":
+                        // Solo si realmente es una lista de DiaDeSpa
                         DiaDeSpa dia = (DiaDeSpa) item;
                         fila = new Object[]{
                             dia.getCodPack(),
@@ -125,6 +157,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                     modelo.addRow(fila);
                 }
             }
+        }
 
             tabla.setModel(modelo);
 
@@ -516,7 +549,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
 
             // Mostrar instalaciones más solicitadas
             List<Object[]> resultados = instalacionData.listarInstalacionesMasSolicitadas(sqlFechaInicio, sqlFechaFin);
-            mostrarResultadosEnTabla(resultados, new String[]{"Instalación", "Detalle", "Cantidad Reservas"},"tratamiento");
+            mostrarResultadosEnTabla(resultados, new String[]{"Instalación", "Detalle", "Cantidad Reservas"}, "array");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -537,7 +570,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             textConsultaSeleccionada.setText("Días de Spa del " + new SimpleDateFormat("dd/MM/yyyy").format(fecha));
 
             List<Object[]> resultados = diaDeSpaData.generarInformeDiasDeSpaPorFecha(sqlFecha);
-            mostrarResultadosEnTabla(resultados, new String[]{"Código", "Cliente", "Fecha", "Preferencias", "Monto", "Sesiones"},"diadespa");
+            mostrarResultadosEnTabla(resultados, new String[]{"Código", "Cliente", "Fecha", "Preferencias", "Monto", "Sesiones"}, "array");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

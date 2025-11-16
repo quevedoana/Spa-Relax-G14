@@ -17,27 +17,26 @@ public class AgregarTratamiento extends javax.swing.JInternalFrame {
 
     private TratamientoData tratamientoData = new TratamientoData();
     private Productos producto;
-    private VistaTratamiento vistaPadre;
 
     public AgregarTratamiento() {
         initComponents();
         tratamientoData = new TratamientoData();
         producto = new Productos();
 
-        // Agrupar radio buttons
+        
         ButtonGroup grupoTipos = new ButtonGroup();
         grupoTipos.add(radioFacial);
         grupoTipos.add(radioCorporal);
         grupoTipos.add(radioRelajacion);
         grupoTipos.add(radioEstetico);
 
-        // Agregar listeners a radio buttons para actualizar productos
+        
         radioFacial.addActionListener(e -> actualizarProductosPorTipo("Facial"));
         radioCorporal.addActionListener(e -> actualizarProductosPorTipo("Corporal"));
         radioRelajacion.addActionListener(e -> actualizarProductosPorTipo("Relajacion"));
         radioEstetico.addActionListener(e -> actualizarProductosPorTipo("Estetico"));
 
-        // Agregar listeners a botones
+        
         btnAgregarNuevoTratam.addActionListener(this::btnAgregarNuevoTratamActionPerformed);
         btnCancelarAggTratam.addActionListener(this::btnCancelarAggTratamActionPerformed);
     }

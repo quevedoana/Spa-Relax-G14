@@ -58,12 +58,7 @@ public class PagoTarjeta extends javax.swing.JDialog {
         });
     }
 
-    private void crearCampoFecha() {
-        dateVencimiento = new JDateChooser();
-        dateVencimiento.setEnabled(false);
-        fechaVencimiento.add(dateVencimiento);
-
-    }
+    
 
     private void campos() {
         textNombre.setEnabled(false);

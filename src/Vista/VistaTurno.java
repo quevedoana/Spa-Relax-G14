@@ -124,6 +124,28 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     }
 
     private void abrirAgregarDiaDeSpa(String tipoReserva) {
+         // Verificar si ya hay días de spa existentes para seleccionar
+    List<DiaDeSpa> diasExistentes = diadespad.listarDiasDeSpa();
+    
+    if (!diasExistentes.isEmpty()) {
+        // Ofrecer opción de seleccionar existente o crear nuevo
+        Object[] opciones = {"Seleccionar Día de Spa Existente", "Crear Nuevo Día de Spa"};
+        int eleccion = JOptionPane.showOptionDialog(this,
+            "¿Desea usar un Día de Spa existente o crear uno nuevo?",
+            "Seleccionar Día de Spa",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]);
+        
+        if (eleccion == 0) {
+            // Seleccionar existente
+            abrirSeleccionDiaDeSpa(diasExistentes, tipoReserva);
+            return;
+        }
+        // Si elige 1 o cierra, continúa con creación nueva
+    }
         String mensaje = "";
         if (tipoReserva.equals("tratamiento")) {
             mensaje = "Para reservar el tratamiento '" + tratamientoPendiente.getNombre() + 
