@@ -54,7 +54,7 @@ public class EspecialistaData {
             ResultSet resultado = ps.executeQuery();
             if (resultado.next()) {
                 //Masajista: matricula, nombre y ape, teléfono, especialidad (facial, corporal, relajación, o estético), estado
-                esp = new Especialista(resultado.getString("matricula"), resultado.getString("NombreYApellido"), resultado.getInt("telefono"), resultado.getString("especialidad"), resultado.getBoolean("estado"));
+                esp = new Especialista(resultado.getString("matricula"), resultado.getString("NombreYApellido"), resultado.getLong("telefono"), resultado.getString("especialidad"), resultado.getBoolean("estado"));
                 esp.setMatricula(resultado.getString("matricula"));
 
             } else {
@@ -78,7 +78,7 @@ public class EspecialistaData {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ResultSet resultado = ps.executeQuery();
             while (resultado.next()) {
-                Especialista esp = new Especialista(resultado.getString("matricula"), resultado.getString("NombreYApellido"), resultado.getInt("telefono"), resultado.getString("especialidad"), resultado.getBoolean("estado"));
+                Especialista esp = new Especialista(resultado.getString("matricula"), resultado.getString("NombreYApellido"), resultado.getLong("telefono"), resultado.getString("especialidad"), resultado.getBoolean("estado"));
                 especia.add(esp);
 
             }
