@@ -88,7 +88,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
             s.getConsultorio().getNroConsultorio(),
             s.getEspecialista().getNombreYApellido(),  // acá nombre y apellido juntos
             s.getInstalacion().getNombre(),
-            s.isEstado()
+            s.isEstado()? "Activo" : "Inactivo"   // <-- convierte boolean a texto
         });
     }
 }
