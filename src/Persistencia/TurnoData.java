@@ -169,7 +169,7 @@ public class TurnoData {
                 + "JOIN tratamiento t ON s.codTratamiento = t.codTratam "
                 + "JOIN especialista e ON s.matriculaMasajista = e.matricula "
                 + // adaptá “matriculaMasajista” / “matriculaEspecialista” según tu BD
-                "LEFT JOIN instalacion i ON s.codInstalacion = i.codInstal "
+                "LEFT JOIN instalacion i ON s.CodInstalacion = i.codInstal "
                 + "WHERE s.codPack = ?";
         List<Turno> sesiones = new ArrayList<>();
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -209,7 +209,7 @@ public class TurnoData {
                     } else {
                         Instalacion inst = new Instalacion();
                         inst.setCodInstal(codInst);
-                        inst.setNombre(rs.getString("nombreInstalacion"));
+                        inst.setNombre(rs.getString("nombre"));
                         sesion.setInstalacion(inst);
                     }
 
