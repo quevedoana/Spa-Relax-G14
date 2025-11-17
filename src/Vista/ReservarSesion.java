@@ -224,28 +224,30 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
             }
 
             // Crear turno solo para instalacion
-            Turno nuevoTurno = new Turno(
-                    fechaHoraInicio,
-                    fechaHoraFin,
-                    null, // Sin tratamiento
-                    null, // Sin consultorio
-                    null, // Sin especialista
-                    instalacionSeleccionada,
-                    null,
-                    true
-            );
+           Turno nuevoTurno = new Turno(
+                fechaHoraInicio,
+                fechaHoraFin,
+                null, // Sin tratamiento
+                null, // Sin consultorio
+                null, // Sin especialista
+                instalacionSeleccionada,
+                diaDeSpa, 
+                true
+        );
 
-            // Guardar en la base de datos
-            turnoData.AltaTurno(nuevoTurno);
+        
+        turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
 
-            JOptionPane.showMessageDialog(this,
-                    "¡Instalacion reservada exitosamente!\n"
-                    + "Instalacion: " + instalacionSeleccionada.getNombre() + "\n"
-                    + "Horario: " + horario + "\n"
-                    + "Duracion: 60 minutos\n"
-                    + "Total: " + textTotal.getText());
+        JOptionPane.showMessageDialog(this,
+                "¡Instalacion reservada exitosamente!\n"
+                + "Instalacion: " + instalacionSeleccionada.getNombre() + "\n"
+                + "Horario: " + horario + "\n"
+                + "Dia de Spa: #" + diaDeSpa.getCodPack() + "\n"  // ✅ Mostrar codPack
+                + "Duracion: 60 minutos\n"
+                + "Total: " + textTotal.getText());
 
-            this.dispose();
+        this.dispose();
+
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -308,18 +310,18 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
 
             // Crear el turno
             Turno nuevoTurno = new Turno(
-                    fechaHoraInicio,
-                    fechaHoraFin,
-                    tratamientoSeleccionado,
-                    consultorioSeleccionado,
-                    especialistaSeleccionado,
-                    instalacionSeleccionada,
-                    null,
-                    true
-            );
+                fechaHoraInicio,
+                fechaHoraFin,
+                tratamientoSeleccionado,
+                consultorioSeleccionado,
+                especialistaSeleccionado,
+                instalacionSeleccionada,
+                diaDeSpa, 
+                true
+        );
 
-            // Guardar en la base de datos
-            turnoData.AltaTurno(nuevoTurno);
+       
+        turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
 
             JOptionPane.showMessageDialog(this,
                     "¡Turno reservado exitosamente!\n"

@@ -77,50 +77,58 @@ public class TurnoData {
     }
 
     public void guardarSesionConPack(Turno sesion, int codPack) {
-        String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
-        System.out.println("DEBUG - Intentando guardar sesión con codPack: " + codPack);
+    String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, codPack, estado) VALUES (?,?,?,?,?,?,?,?)";
 
-        // Verificar si el codPack es válido
-        if (codPack <= 0) {
-            JOptionPane.showMessageDialog(null,
-                    "ERROR: codPack inválido (" + codPack + "). El Día de Spa no fue guardado correctamente.");
-            return;
+    try {
+        PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        ps.setTimestamp(1, Timestamp.valueOf(sesion.getFechaYHoraDeInicio()));
+        ps.setTimestamp(2, Timestamp.valueOf(sesion.getFechaYHoraDeFin()));
+        ps.setInt(3, sesion.getTratamiento().getCodTratam());
+
+        if (sesion.getConsultorio() != null) {
+            ps.setInt(4, sesion.getConsultorio().getNroConsultorio());
+        } else {
+            ps.setNull(4, java.sql.Types.INTEGER);
         }
 
-        
+        ps.setString(5, sesion.getEspecialista().getMatricula());
+
+        if (sesion.getInstalacion() != null) {
+            ps.setInt(6, sesion.getInstalacion().getCodInstal());
+        } else {
+            ps.setNull(6, java.sql.Types.INTEGER);
+        }
+
+        ps.setInt(7, codPack);
+        ps.setBoolean(8, sesion.isEstado());
+
+        ps.executeUpdate();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            sesion.setCodSesion(rs.getInt(1));
+        }
+        ps.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al guardar la sesión: " + e.getMessage());
+    }
+}
+
+    private boolean verificarPackExiste(int codPack) {
+        String sql = "SELECT COUNT(*) FROM dia_de_spa WHERE codPack = ?";
         try {
-            PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setTimestamp(1, Timestamp.valueOf(sesion.getFechaYHoraDeInicio()));
-            ps.setTimestamp(2, Timestamp.valueOf(sesion.getFechaYHoraDeFin()));
-            ps.setInt(3, sesion.getTratamiento().getCodTratam());
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, codPack);
+            ResultSet rs = ps.executeQuery();
 
-            if (sesion.getConsultorio() != null) {
-                ps.setInt(4, sesion.getConsultorio().getNroConsultorio());
-            } else {
-                ps.setNull(4, java.sql.Types.INTEGER);
-            }
-
-            ps.setString(5, sesion.getEspecialista().getMatricula());
-
-            if (sesion.getInstalacion() != null) {
-                ps.setInt(6, sesion.getInstalacion().getCodInstal());
-            } else {
-                ps.setNull(6, java.sql.Types.INTEGER);
-            }
-
-            ps.setInt(7, codPack);
-            ps.setBoolean(8, sesion.isEstado());
-
-            ps.executeUpdate();
-
-            ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                sesion.setCodSesion(rs.getInt(1));
+                return rs.getInt(1) > 0;
             }
             ps.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al guardar la sesión: " + e.getMessage());
+            System.out.println("❌ ERROR en verificación pack: " + e.getMessage());
         }
+        return false;
     }
 
     public List<Turno> buscarSesionesPorDiaSpa(int codPack) {
@@ -147,73 +155,76 @@ public class TurnoData {
         return sesiones;
     }
 //buscar sesiones por dia de spa actualizado
+
     public List<Turno> buscarSesionesConNombresPorDiaSpa(int codPack) {
-    String sql = "SELECT s.codSesion, " +
-                 "s.fechaYHoraInicio, s.fechaYHoraFin, " +
-                 "t.codTratam, t.nombre AS nombreTratamiento, " +
-                 "s.nroConsultorio, " +
-                 "e.NombreYApellido AS nombreEspecialista, " +  // especialista con nombre + apellido
-                 "i.codInstal, i.nombre, " +
-                 "s.estado " +
-                 "FROM sesion s " +
-                 "JOIN tratamiento t ON s.codTratamiento = t.codTratam " +
-                 "JOIN especialista e ON s.matriculaMasajista = e.matricula " +  
-                 // adaptá “matriculaMasajista” / “matriculaEspecialista” según tu BD
-                 "LEFT JOIN instalacion i ON s.codInstalacion = i.codInstal " +
-                 "WHERE s.codPack = ?";
-    List<Turno> sesiones = new ArrayList<>();
-    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-        ps.setInt(1, codPack);
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Turno sesion = new Turno();
-                sesion.setCodSesion(rs.getInt("codSesion"));
-                sesion.setFechaYHoraDeInicio(rs.getTimestamp("fechaYHoraInicio").toLocalDateTime());
-                sesion.setFechaYHoraDeFin(rs.getTimestamp("fechaYHoraFin").toLocalDateTime());
-                
-                // Tratamiento: suponiendo que tenés un objeto Tratamiento
-                Tratamiento tr = new Tratamiento();
-                tr.setCodTratam(rs.getInt("codTratam"));
-                tr.setNombre(rs.getString("nombreTratamiento"));
-                sesion.setTratamiento(tr);
+        String sql = "SELECT s.codSesion, "
+                + "s.fechaYHoraInicio, s.fechaYHoraFin, "
+                + "t.codTratam, t.nombre AS nombreTratamiento, "
+                + "s.nroConsultorio, "
+                + "e.NombreYApellido AS nombreEspecialista, "
+                + // especialista con nombre + apellido
+                "i.codInstal, i.nombre, "
+                + "s.estado "
+                + "FROM sesion s "
+                + "JOIN tratamiento t ON s.codTratamiento = t.codTratam "
+                + "JOIN especialista e ON s.matriculaMasajista = e.matricula "
+                + // adaptá “matriculaMasajista” / “matriculaEspecialista” según tu BD
+                "LEFT JOIN instalacion i ON s.codInstalacion = i.codInstal "
+                + "WHERE s.codPack = ?";
+        List<Turno> sesiones = new ArrayList<>();
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, codPack);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Turno sesion = new Turno();
+                    sesion.setCodSesion(rs.getInt("codSesion"));
+                    sesion.setFechaYHoraDeInicio(rs.getTimestamp("fechaYHoraInicio").toLocalDateTime());
+                    sesion.setFechaYHoraDeFin(rs.getTimestamp("fechaYHoraFin").toLocalDateTime());
 
-                // Consultorio: si en tu modelo Consultorio tiene solo el código
-                Consultorio cons = new Consultorio();
-                cons.setNroConsultorio(rs.getInt("nroConsultorio"));
-                sesion.setConsultorio(cons);
+                    // Tratamiento: suponiendo que tenés un objeto Tratamiento
+                    Tratamiento tr = new Tratamiento();
+                    tr.setCodTratam(rs.getInt("codTratam"));
+                    tr.setNombre(rs.getString("nombreTratamiento"));
+                    sesion.setTratamiento(tr);
 
-                // Especialista / Masajista: nombre y apellido juntos
-                Especialista mas = new Especialista();
-                mas.setNombreYApellido(rs.getString("nombreEspecialista"));
-                sesion.setEspecialista(mas);
+                    // Consultorio: si en tu modelo Consultorio tiene solo el código
+                    Consultorio cons = new Consultorio();
+                    cons.setNroConsultorio(rs.getInt("nroConsultorio"));
+                    sesion.setConsultorio(cons);
 
-                // Instalación
-                // Instalación: puede venir null
-                int codInst = rs.getInt("codInstal");
-                if (rs.wasNull()) {
-                    // No hay instalación asociada
-                    Instalacion inst = new Instalacion();
-                    inst.setCodInstal(0); // o algún valor por defecto
-                    inst.setNombre("Sin instalación");
-                    sesion.setInstalacion(inst);
-                } else {
-                    Instalacion inst = new Instalacion();
-                    inst.setCodInstal(codInst);
-                    inst.setNombre(rs.getString("nombreInstalacion"));
-                    sesion.setInstalacion(inst);
+                    // Especialista / Masajista: nombre y apellido juntos
+                    Especialista mas = new Especialista();
+                    mas.setNombreYApellido(rs.getString("nombreEspecialista"));
+                    sesion.setEspecialista(mas);
+
+                    // Instalación
+                    // Instalación: puede venir null
+                    int codInst = rs.getInt("codInstal");
+                    if (rs.wasNull()) {
+                        // No hay instalación asociada
+                        Instalacion inst = new Instalacion();
+                        inst.setCodInstal(0); // o algún valor por defecto
+                        inst.setNombre("Sin instalación");
+                        sesion.setInstalacion(inst);
+                    } else {
+                        Instalacion inst = new Instalacion();
+                        inst.setCodInstal(codInst);
+                        inst.setNombre(rs.getString("nombreInstalacion"));
+                        sesion.setInstalacion(inst);
+                    }
+
+                    sesion.setEstado(rs.getBoolean("estado"));
+
+                    sesiones.add(sesion);
                 }
-
-                sesion.setEstado(rs.getBoolean("estado"));
-
-                sesiones.add(sesion);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // manejar error (logging, excepción, etc.)
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // manejar error (logging, excepción, etc.)
+        return sesiones;
     }
-    return sesiones;
-}
+
     //BORRAR UN TURNO
     public void BajaTurno(int codSesion) {
         String sql = "DELETE FROM sesion WHERE codSesion = ? ";

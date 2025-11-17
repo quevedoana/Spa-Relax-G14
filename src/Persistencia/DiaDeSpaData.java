@@ -37,43 +37,38 @@ public class DiaDeSpaData {
     }
 
     public void guardarDiaDeSpa(DiaDeSpa diaDeSpa) {
-    // ✅ ELIMINAR la columna 'sesiones' del INSERT - es redundante
-    String query = "INSERT INTO dia_de_spa(fechaYHora, preferencias, codCli, estado, monto) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO dia_de_spa(fechaYHora, preferencias, codCli, estado, monto) VALUES (?,?,?,?,?)";
 
-    try {
-        PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        ps.setTimestamp(1, Timestamp.valueOf(diaDeSpa.getFechaYHora()));
-        ps.setString(2, diaDeSpa.getPreferencias());
-        ps.setInt(3, diaDeSpa.getCliente().getCodCli());
-        ps.setBoolean(4, diaDeSpa.isEstado());
-        ps.setDouble(5, diaDeSpa.getMonto());
+        try {
+            PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setTimestamp(1, Timestamp.valueOf(diaDeSpa.getFechaYHora()));
+            ps.setString(2, diaDeSpa.getPreferencias());
+            ps.setInt(3, diaDeSpa.getCliente().getCodCli());
+            ps.setBoolean(4, diaDeSpa.isEstado());
+            ps.setDouble(5, diaDeSpa.getMonto());
 
-        ps.executeUpdate();
+            ps.executeUpdate();
 
-        ResultSet rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            int codPackGenerado = rs.getInt(1);
-            diaDeSpa.setCodPack(codPackGenerado);
-            
-            System.out.println("✅ DEBUG - DiaDeSpa guardado con codPack: " + codPackGenerado);
-            
-            // ✅ AHORA guardar las sesiones CON el codPack
-            if (diaDeSpa.getSesiones() != null && !diaDeSpa.getSesiones().isEmpty()) {
-                for (Turno sesion : diaDeSpa.getSesiones()) {
-                    System.out.println("✅ DEBUG - Guardando sesión para codPack: " + codPackGenerado);
-                    turnoData.guardarSesionConPack(sesion, codPackGenerado);
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                int codPackGenerado = rs.getInt(1);
+                diaDeSpa.setCodPack(codPackGenerado);
+                
+                // Guardar las sesiones asociadas
+                if (diaDeSpa.getSesiones() != null && !diaDeSpa.getSesiones().isEmpty()) {
+                    for (Turno sesion : diaDeSpa.getSesiones()) {
+                        turnoData.guardarSesionConPack(sesion, codPackGenerado);
+                    }
                 }
             }
+            ps.close();
+            
+            JOptionPane.showMessageDialog(null, "Día de Spa guardado exitosamente con código: " + diaDeSpa.getCodPack());
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el Día de spa: " + e.getMessage());
         }
-        ps.close();
-        
-        JOptionPane.showMessageDialog(null, "Día de Spa guardado exitosamente con código: " + diaDeSpa.getCodPack());
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al guardar el Día de spa: " + e.getMessage());
-        e.printStackTrace();
     }
-}
 
     public DiaDeSpa buscarDiaDeSpa(int codPack) {
         String sql = "SELECT * FROM dia_de_spa WHERE codPack = ?";

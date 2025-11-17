@@ -33,7 +33,7 @@ public class Turno {
         this.Consultorio = Consultorio;
         this.especialista = especialista;
         this.instalacion = instalacion;
-        this.DiaDeSpa = null;
+        this.DiaDeSpa = DiaDeSpa;
         this.estado = estado;
     }
 
