@@ -9,6 +9,7 @@ import Modelo.DiaDeSpa;
 import Modelo.Turno;
 import Persistencia.DiaDeSpaData;
 import Persistencia.TurnoData;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -35,9 +36,19 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
     jtSpa.setModel(modeloSpa);
 
     modeloSesion = new DefaultTableModel(
-        new String[]{"codSesion", "Inicio", "Fin", "Tratamiento", "Consultorio", "Masajista", "Instalación", "Estado"},
-        0
-    );
+    new String[]{
+        "codSesion",
+        "Fecha Inicio",      // nueva columna para la fecha
+        "Hora Inicio",       // nueva columna para la hora de inicio
+        "Hora Fin",          // nueva columna para la hora de fin
+        "Tratamiento",
+        "Consultorio",
+        "Especialista",
+        "Instalación",
+        "Estado"
+    },
+    0
+);
     jtsesion.setModel(modeloSesion);
 
     // Permitir selección de fila única para detectar bien el cambio
@@ -60,8 +71,8 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
             d.getCodPack(),
             d.getFechaYHora(),
             d.getPreferencias(),
-            d.getCliente(),
-            d.isEstado(),
+            d.getCliente().getNombreCompleto(),
+            d.isEstado()? "Activo" : "Inactivo",
             d.getMonto()
         });
     }
@@ -80,10 +91,18 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
     modeloSesion.setRowCount(0);
     List<Turno> sesiones = turnos.buscarSesionesConNombresPorDiaSpa(codPack);
     for (Turno s : sesiones) {
+        LocalDateTime inicio = s.getFechaYHoraDeInicio();
+        LocalDateTime fin = s.getFechaYHoraDeFin();
+
+        // Extraer las partes
+        String fechaInicio = inicio.toLocalDate().toString();   // por ejemplo "2025-11-17"
+        String horaInicio = inicio.toLocalTime().toString();    // por ejemplo "14:30"
+        String horaFin = fin.toLocalTime().toString();          // por ejemplo "15:45"
         modeloSesion.addRow(new Object[]{
             s.getCodSesion(),
-            s.getFechaYHoraDeInicio(),
-            s.getFechaYHoraDeFin(),
+            fechaInicio,
+            horaInicio,
+            horaFin,
             s.getTratamiento().getNombre(),
             s.getConsultorio().getNroConsultorio(),
             s.getEspecialista().getNombreYApellido(),  // acá nombre y apellido juntos
@@ -181,17 +200,14 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
