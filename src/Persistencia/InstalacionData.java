@@ -65,6 +65,8 @@ public class InstalacionData {
                 ins = new Instalacion(resultado.getString("nombre"), resultado.getString("detalleDeUso"), resultado.getDouble("precio30m"), resultado.getBoolean("estado"));
                 ins.setCodInstal(resultado.getInt("codInstal"));
 
+            } else {
+                System.out.println("No se encontro la instalacion");
             }
             ps.close();
 

@@ -64,7 +64,7 @@ public class ClienteData {
             if (resultado.next()) {
 
                 cli = new Cliente(
-                        resultado.getLong("DNI"), 
+                        resultado.getInt("DNI"), 
                         resultado.getString("NombreCompleto"), 
                         resultado.getLong("Telefono"),
                         resultado.getInt("Edad"), 
@@ -95,7 +95,7 @@ public class ClienteData {
             ResultSet resultado = ps.executeQuery();
             if (resultado.next()) {
 
-                cli = new Cliente(resultado.getLong("DNI"), resultado.getString("NombreCompleto"), resultado.getLong("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
+                cli = new Cliente(resultado.getLong("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
                 cli.setCodCli(resultado.getInt("CodCli"));
 
             } else {

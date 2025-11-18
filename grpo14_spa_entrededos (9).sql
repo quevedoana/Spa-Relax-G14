@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-11-2025 a las 20:31:53
+-- Tiempo de generación: 18-11-2025 a las 02:27:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -31,7 +31,7 @@ USE `grpo14_spa_entrededos`;
 
 CREATE TABLE `cliente` (
   `codCli` int(11) NOT NULL,
-  `DNI` bigint(11) NOT NULL,
+  `DNI` int(11) NOT NULL,
   `NombreCompleto` varchar(60) NOT NULL,
   `Telefono` bigint(20) NOT NULL,
   `Edad` int(11) NOT NULL,
@@ -59,10 +59,7 @@ INSERT INTO `cliente` (`codCli`, `DNI`, `NombreCompleto`, `Telefono`, `Edad`, `A
 (45, 57125478, 'Andrea Ardiles', 2664875126, 15, 'Nada', 1),
 (46, 17458965, 'Valentina Vergara', 2665894512, 53, 'Alergico a piedras', 1),
 (47, 38452159, 'Ricardo Roberto Ruiz', 2657415874, 31, 'Alergico a Mala Onda', 1),
-(48, 50425698, 'Mario Molina', 2665203269, 20, 'alergico al laburito', 0),
-(49, 45896123, 'Pedro Hernandez', 2664369852, 24, 'alergia al barro', 1),
-(50, 4589650, 'Armando Lucero', 2665123698, 20, 'nada', 1),
-(51, 44563215, 'Carmen Olivera', 2657894521, 54, 'alergias leves', 1);
+(48, 50425698, 'Mario Molina', 2665203269, 20, 'alergico al laburito', 0);
 
 -- --------------------------------------------------------
 
@@ -119,11 +116,7 @@ INSERT INTO `dia_de_spa` (`codPack`, `fechaYHora`, `preferencias`, `codCli`, `es
 (10, '2025-11-20 13:00:00', 'masajes', 25, 1, NULL, 105500),
 (14, '2025-11-28 18:00:00', 'masajes', 25, 1, NULL, 57500),
 (17, '2025-11-08 21:33:00', 'nada', 22, 1, NULL, 0),
-(18, '2025-11-28 09:00:00', 'masajes', 25, 1, NULL, 65000),
-(19, '2025-11-16 14:00:00', 'masajes corporales', 25, 1, NULL, 40000),
-(20, '2025-11-23 10:00:00', 'ninguna', 24, 1, NULL, 17666.666666666668),
-(21, '2025-11-30 12:00:00', 'ninguno', 25, 1, NULL, 114000),
-(22, '2025-11-26 10:00:00', 'ninguna', 22, 1, NULL, 58000);
+(18, '2025-11-28 09:00:00', 'masajes', 25, 1, NULL, 65000);
 
 -- --------------------------------------------------------
 
@@ -181,7 +174,7 @@ CREATE TABLE `instalacion` (
 --
 
 INSERT INTO `instalacion` (`codInstal`, `nombre`, `detalleDeUso`, `precio30m`, `estado`) VALUES
-(1, 'Piscina Climatizada', 'Piscinas con agua a temperatura agradable, a veces equipadas', 20000, 1),
+(1, 'Piscina Climatizada', 'Piscinas con agua a temperatura agradable, a veces equipadas', 20000, 0),
 (3, 'Hidromasaje', 'Bañeras con chorros de agua a presión para relajar los músc', 15000, 1),
 (4, 'Sauna', 'Habitaciones con vapor de agua caliente que ayudan a purifi', 20000, 1),
 (5, 'Duchas de sensaciones', 'Combina diferentes temperaturas, presiones y aromas para est', 10000, 1),
@@ -221,15 +214,7 @@ INSERT INTO `sesion` (`codSesion`, `fechaYHoraInicio`, `fechaYHoraFin`, `codTrat
 (23, '2025-11-17 16:00:00', '2025-11-17 17:30:00', 20, 4, 'AB12343', 4, 10, 1),
 (24, '2025-11-17 16:00:00', '2025-11-17 17:50:00', 19, 4, 'AB12343', 6, 10, 1),
 (25, '2025-11-17 09:00:00', '2025-11-17 10:30:00', 21, 4, 'CD1418', 3, 18, 1),
-(26, '2025-11-17 10:00:00', '2025-11-17 11:00:00', 11, 12, 'AB4321', 5, 18, 1),
-(27, '2025-11-21 14:00:00', '2025-11-21 15:30:00', 1, 2, 'AB5712', 3, 19, 1),
-(28, '2025-11-23 09:00:00', '2025-11-23 10:05:00', 8, 9, 'AB1', 6, 20, 1),
-(29, '2025-11-30 12:00:00', '2025-11-30 13:05:00', 9, 3, 'AB1', 3, 21, 1),
-(30, '2025-11-26 10:00:00', '2025-11-26 11:30:00', 1, 2, 'AB5712', 3, 22, 1),
-(31, '2025-11-26 10:00:00', '2025-11-26 11:00:00', 20, 4, 'AB12343', NULL, 22, 1),
-(32, '2025-11-26 10:00:00', '2025-11-26 10:35:00', 8, 3, 'AB1', NULL, 22, 1),
-(33, '2025-11-30 15:00:00', '2025-11-30 16:30:00', 1, 2, 'AB12345', 3, 21, 1),
-(34, '2025-11-30 17:00:00', '2025-11-30 18:30:00', 1, 2, 'GH5412', 4, 21, 1);
+(26, '2025-11-17 10:00:00', '2025-11-17 11:00:00', 11, 12, 'AB4321', 5, 18, 1);
 
 -- --------------------------------------------------------
 
@@ -295,8 +280,8 @@ ALTER TABLE `consultorio`
 --
 ALTER TABLE `dia_de_spa`
   ADD PRIMARY KEY (`codPack`),
-  ADD KEY `sesiones` (`sesiones`),
-  ADD KEY `codCli` (`codCli`,`sesiones`) USING BTREE;
+  ADD UNIQUE KEY `codCli` (`codCli`,`sesiones`),
+  ADD KEY `sesiones` (`sesiones`);
 
 --
 -- Indices de la tabla `especialista`
@@ -336,7 +321,7 @@ ALTER TABLE `tratamiento`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `codCli` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `codCli` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `consultorio`
@@ -348,7 +333,7 @@ ALTER TABLE `consultorio`
 -- AUTO_INCREMENT de la tabla `dia_de_spa`
 --
 ALTER TABLE `dia_de_spa`
-  MODIFY `codPack` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `codPack` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `instalacion`
@@ -360,7 +345,7 @@ ALTER TABLE `instalacion`
 -- AUTO_INCREMENT de la tabla `sesion`
 --
 ALTER TABLE `sesion`
-  MODIFY `codSesion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `codSesion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `tratamiento`
