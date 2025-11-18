@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -223,6 +224,41 @@ public class EspecialistaData {
             ps.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al listar masajistas por especialidad: " + e.getMessage());
+        }
+        return especialistas;
+    }
+// Listar masajistas libres en una franja horaria con fecha
+
+    public List<Especialista> listarMasajistasLibresEnFranjaPorFecha(Timestamp inicio, Timestamp fin) {
+        String sql = " SELECT e.* "
+                + " FROM especialista e "
+                + " WHERE e.estado = true "
+                + " AND e.matricula NOT IN (SELECT s.matriculaMasajista "
+                + "  FROM sesion s "
+                + " WHERE s.estado = true "
+                + " AND s.fechaYHoraInicio < ? "
+                + " AND s.fechaYHoraFin > ?) ";
+        List<Especialista> especialistas = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setTimestamp(1, inicio);
+            ps.setTimestamp(2, fin);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Especialista e = new Especialista(
+                        rs.getString("matricula"),
+                        rs.getString("NombreYApellido"),
+                        rs.getLong("telefono"),
+                        rs.getString("especialidad"),
+                        rs.getBoolean("estado")
+                );
+                especialistas.add(e);
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al listar masajistas libres: " + e.getMessage());
         }
         return especialistas;
     }

@@ -13,8 +13,13 @@ import Persistencia.EspecialistaData;
 import Persistencia.InstalacionData;
 import Persistencia.TratamientoData;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
@@ -43,28 +48,28 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         cargarComboboxes();
         configurarCamposHora();
     }
-    private void configurarCamposHora(){
+
+    private void configurarCamposHora() {
         horaInicioEspecialistasLibres.setModel(new javax.swing.SpinnerDateModel());
         JSpinner.DateEditor editor = new JSpinner.DateEditor(horaInicioEspecialistasLibres, "HH:mm");
         horaInicioEspecialistasLibres.setEditor(editor);
         horaInicioEspecialistasLibres.setValue(new java.util.Date());
-        
+
         horaFinEspecialistasLibres.setModel(new javax.swing.SpinnerDateModel());
         editor = new JSpinner.DateEditor(horaFinEspecialistasLibres, "HH:mm");
         horaFinEspecialistasLibres.setEditor(editor);
         horaFinEspecialistasLibres.setValue(new java.util.Date());
-        
+
         horaInicioInstalacionesLibres.setModel(new javax.swing.SpinnerDateModel());
         editor = new JSpinner.DateEditor(horaInicioInstalacionesLibres, "HH:mm");
         horaInicioInstalacionesLibres.setEditor(editor);
         horaInicioInstalacionesLibres.setValue(new java.util.Date());
-        
+
         horaFinInstalacionesLibres.setModel(new javax.swing.SpinnerDateModel());
         editor = new JSpinner.DateEditor(horaFinInstalacionesLibres, "HH:mm");
         horaFinInstalacionesLibres.setEditor(editor);
         horaFinInstalacionesLibres.setValue(new java.util.Date());
-        
-        
+
     }
 
     private void cargarComboboxes() {
@@ -97,66 +102,67 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                 return;
             }
 
-             if ("array".equals(tipo)) {
-            for (Object item : resultados) {
-                Object[] filaArray = (Object[]) item;
-                modelo.addRow(filaArray);
-            }
-        } else {
-            
-            for (Object item : resultados) {
-                Object[] fila = null;
-
-                switch (tipo) {
-                    case "especialista":
-                        Especialista esp = (Especialista) item;
-                        fila = new Object[]{
-                            esp.getMatricula(),
-                            esp.getNombreYApellido(),
-                            esp.getTelefono(),
-                            esp.getEspecialidad()
-                        };
-                        break;
-
-                    case "tratamiento":
-                        Tratamiento trat = (Tratamiento) item;
-                        fila = new Object[]{
-                            trat.getCodTratam(),
-                            trat.getNombre(),
-                            trat.getTipo(),
-                            trat.getDuracion() + " min",
-                            "$ " + trat.getCosto()
-                        };
-                        break;
-
-                    case "instalacion":
-                        Instalacion inst = (Instalacion) item;
-                        fila = new Object[]{
-                            inst.getCodInstal(),
-                            inst.getNombre(),
-                            inst.getDetalleDeUso(),
-                            "$ " + inst.getPrecio30m()
-                        };
-                        break;
-
-                    case "diadespa":
-                        DiaDeSpa dia = (DiaDeSpa) item;
-                        fila = new Object[]{
-                            dia.getCodPack(),
-                            dia.getCliente().getNombreCompleto(),
-                            dia.getFechaYHora().toString(),
-                            dia.getPreferencias(),
-                            "$ " + dia.getMonto(),
-                            dia.getSesiones() != null ? dia.getSesiones().size() : 0
-                        };
-                        break;
+            if ("array".equals(tipo)) {
+                for (Object item : resultados) {
+                    Object[] filaArray = (Object[]) item;
+                    modelo.addRow(filaArray);
                 }
+            } else {
 
-                if (fila != null) {
-                    modelo.addRow(fila);
+                for (Object item : resultados) {
+                    Object[] fila = null;
+
+                    switch (tipo) {
+                        case "especialista":
+                            Especialista esp = (Especialista) item;
+                            fila = new Object[]{
+                                esp.getMatricula(),
+                                esp.getNombreYApellido(),
+                                esp.getTelefono(),
+                                esp.getEspecialidad()
+                            };
+                            break;
+
+                        case "tratamiento":
+                            Tratamiento trat = (Tratamiento) item;
+                            fila = new Object[]{
+                                trat.getCodTratam(),
+                                trat.getNombre(),
+                                trat.getTipo(),
+                                trat.getDuracion() + " min",
+                                "$ " + trat.getCosto()
+                            };
+                            break;
+
+                        case "instalacion":
+                            Instalacion inst = (Instalacion) item;
+                            fila = new Object[]{
+                                inst.getCodInstal(),
+                                inst.getNombre(),
+                                inst.getDetalleDeUso(),
+                                "$ " + inst.getPrecio30m()
+                            };
+                            break;
+
+                        case "diadespa":
+                            // Solo si realmente es una lista de DiaDeSpa
+                            DiaDeSpa dia = (DiaDeSpa) item;
+                            fila = new Object[]{
+                                dia.getCodPack(),
+                                dia.getCliente().getNombreCompleto(),
+                                dia.getFechaYHora().toString(),
+                                dia.getPreferencias(),
+                                "$ " + dia.getMonto(),
+                                dia.getSesiones() != null ? dia.getSesiones().size() : 0
+                            };
+                            break;
+                    }
+
+                    if (fila != null) {
+                        modelo.addRow(fila);
+                    }
                 }
             }
-        }
 
             tabla.setModel(modelo);
 
@@ -167,6 +173,25 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
+    private LocalTime convertirSpinnerAHoraSegura(JSpinner spinner) {
+    Object raw = spinner.getValue();
+
+    java.util.Date dateValue;
+
+    if (raw instanceof java.sql.Time) {
+        // Si el spinner devuelve un Time
+        dateValue = new java.util.Date(((java.sql.Time) raw).getTime());
+    } else if (raw instanceof java.util.Date) {
+        // Si devuelve un util.Date normal
+        dateValue = (java.util.Date) raw;
+    } else {
+        throw new IllegalArgumentException("Valor inesperado en el spinner: " + raw);
+    }
+
+    return dateValue.toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalTime();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -208,6 +233,8 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         btnConsultarInstalacionesLibres1 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        jDCEspecialistasLibres = new com.toedter.calendar.JDateChooser();
+        jDCInstalacionesLibres = new com.toedter.calendar.JDateChooser();
 
         setTitle("Consultas");
 
@@ -333,41 +360,61 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel9)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(jLabel12)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel12))))
                     .addComponent(jLabel13)
                     .addComponent(jLabel14))
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fechaInformeDiadeSpa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(horaInicioInstalacionesLibres)
-                    .addComponent(horaInicioEspecialistasLibres)
-                    .addComponent(comboTiposTratam, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(comboEspecialidades, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fechaInicioTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fechaInformeDiadeSpa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboTiposTratam, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboEspecialidades, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fechaInicioTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDCInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDCEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(220, 220, 220))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(horaFinInstalacionesLibres)
-                            .addComponent(horaFinEspecialistasLibres)
                             .addComponent(btnConsultarEspecialistas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnConsultarTratamientos1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
+                        .addComponent(btnConsultarInformeEstadisticos1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(92, 92, 92))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(horaInicioInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(horaInicioEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(horaFinEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(horaFinInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(28, 28, 28)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnConsultarEspacialistasLibre1)
-                            .addComponent(btnConsultarInformeEstadisticos1)
                             .addComponent(btnConsultarInstalacionesLibres1))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(43, 43, 43))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -379,7 +426,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                     .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -402,23 +449,27 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                             .addComponent(comboTiposTratam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnConsultarTratamientos1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(horaInicioEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(horaFinEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnConsultarEspacialistasLibre1)
-                            .addComponent(jLabel15))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(horaInicioInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(horaFinInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnConsultarInstalacionesLibres1)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel12)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(horaInicioEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(horaFinEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnConsultarEspacialistasLibre1)
+                                .addComponent(jLabel15))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel11)
+                                .addComponent(jDCEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addComponent(jLabel10)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11)))
+                        .addComponent(jLabel10)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDCInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(horaInicioInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(horaFinInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnConsultarInstalacionesLibres1)
+                        .addComponent(jLabel16)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -445,7 +496,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 650, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,7 +512,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             textConsultaSeleccionada.setText("Masajistas de especialidad: " + especialidad);
 
             List<Especialista> resultados = especialistaData.listarMasajistasPorEspecialidad(especialidad);
-            mostrarResultadosEnTabla(resultados, new String[]{"Matricula", "Nombre", "Telefono", "Especialidad"},"especialista");
+            mostrarResultadosEnTabla(resultados, new String[]{"Matricula", "Nombre", "Telefono", "Especialidad"}, "especialista");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -473,7 +524,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             textConsultaSeleccionada.setText("Tratamientos de tipo: " + tipo);
 
             List<Tratamiento> resultados = tratamientoData.listarTratamientosPorTipo(tipo);
-            mostrarResultadosEnTabla(resultados, new String[]{"Codigo", "Nombre", "Tipo", "Duracion", "Costo"},"tratamiento");
+            mostrarResultadosEnTabla(resultados, new String[]{"Codigo", "Nombre", "Tipo", "Duracion", "Costo"}, "tratamiento");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -482,51 +533,101 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
 
     private void btnConsultarEspacialistasLibre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarEspacialistasLibre1ActionPerformed
         try {
-            java.util.Date inicio = (java.util.Date) horaInicioEspecialistasLibres.getValue();
-            java.util.Date fin = (java.util.Date) horaFinEspecialistasLibres.getValue();
+        //Obtener fecha desde el JDateChooser
+        java.util.Date fechaSeleccionada = jDCEspecialistasLibres.getDate();
+        if (fechaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fecha", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-            if (inicio == null || fin == null) {
-                JOptionPane.showMessageDialog(this, "Seleccione hora inicio y fin", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+        LocalDate fecha = fechaSeleccionada.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
 
-            Timestamp tsInicio = new Timestamp(inicio.getTime());
-            Timestamp tsFin = new Timestamp(fin.getTime());
+        //Obtener horas desde los spinners, de forma segura
+        LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioEspecialistasLibres);
+        LocalTime hFin    = convertirSpinnerAHoraSegura(horaFinEspecialistasLibres);
 
-            textConsultaSeleccionada.setText("Masajistas libres de "
-                    + new SimpleDateFormat("HH:mm").format(inicio) + " a "
-                    + new SimpleDateFormat("HH:mm").format(fin));
+        //Combinar fecha + horas
+        LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
+        LocalDateTime fin    = LocalDateTime.of(fecha, hFin);
 
-            List<Especialista> resultados = especialistaData.listarMasajistasLibresEnFranja(tsInicio, tsFin);
-            mostrarResultadosEnTabla(resultados, new String[]{"Matrícula", "Nombre", "Teléfono", "Especialidad"},"especialista");
+        //Validación horaria
+        if (!fin.isAfter(inicio)) {
+            JOptionPane.showMessageDialog(this, "La hora de fin debe ser mayor a la de inicio", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        //Convertir a Timestamp
+        Timestamp tsInicio = Timestamp.valueOf(inicio);
+        Timestamp tsFin    = Timestamp.valueOf(fin);
+
+        //Mostrar texto
+        textConsultaSeleccionada.setText("Masajistas libres de " + hInicio + " a " + hFin);
+
+        //Obtener resultados
+        List<Especialista> resultados = especialistaData.listarMasajistasLibresEnFranjaPorFecha(tsInicio, tsFin);
+
+        //Mostrar en tabla
+        mostrarResultadosEnTabla(
+            resultados,
+            new String[]{"Matrícula", "Nombre", "Teléfono", "Especialidad"},
+            "especialista"
+        );
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    
         }    }//GEN-LAST:event_btnConsultarEspacialistasLibre1ActionPerformed
 
     private void btnConsultarInstalacionesLibres1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarInstalacionesLibres1ActionPerformed
-        try {
-            java.util.Date inicio = (java.util.Date) horaInicioInstalacionesLibres.getValue();
-            java.util.Date fin = (java.util.Date) horaFinInstalacionesLibres.getValue();
-
-            if (inicio == null || fin == null) {
-                JOptionPane.showMessageDialog(this, "Seleccione hora inicio y fin", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Timestamp tsInicio = new Timestamp(inicio.getTime());
-            Timestamp tsFin = new Timestamp(fin.getTime());
-
-            textConsultaSeleccionada.setText("Instalaciones libres de "
-                    + new SimpleDateFormat("HH:mm").format(inicio) + " a "
-                    + new SimpleDateFormat("HH:mm").format(fin));
-
-            List<Instalacion> resultados = instalacionData.listarInstalacionesLibresEnFranja(tsInicio, tsFin);
-            mostrarResultadosEnTabla(resultados, new String[]{"Código", "Nombre", "Detalle", "Precio 30min"},"instalacion");
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                                                                     
+    try {
+        //Obtener fecha desde el JDateChooser
+        java.util.Date fechaSeleccionada = jDCInstalacionesLibres.getDate();
+        if (fechaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fecha", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+
+        LocalDate fecha = fechaSeleccionada.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        //Obtener horas desde los spinners usando la función de hora segura
+        LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioInstalacionesLibres);
+        LocalTime hFin    = convertirSpinnerAHoraSegura(horaFinInstalacionesLibres);
+
+        //Combinar fecha + hora
+        LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
+        LocalDateTime fin    = LocalDateTime.of(fecha, hFin);
+
+        //Validar rango horario
+        if (!fin.isAfter(inicio)) {
+            JOptionPane.showMessageDialog(this, "La hora fin debe ser mayor a hora inicio", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        //Convertir a Timestamp
+        Timestamp tsInicio = Timestamp.valueOf(inicio);
+        Timestamp tsFin    = Timestamp.valueOf(fin);
+
+        //Texto resumen
+        textConsultaSeleccionada.setText("Instalaciones libres de " + hInicio + " a " + hFin);
+
+        //Llamar al método de la clase data
+        List<Instalacion> resultados = instalacionData.listarInstalacionesLibresEnFranjaPorFecha(tsInicio, tsFin);
+
+        //Mostrar en tabla
+        mostrarResultadosEnTabla(
+                resultados,
+                new String[]{"Código", "Nombre", "Detalle", "Precio 30min"},
+                "instalacion"
+        );
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnConsultarInstalacionesLibres1ActionPerformed
 
     private void btnConsultarInformeEstadisticos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarInformeEstadisticos1ActionPerformed
@@ -593,6 +694,8 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner horaInicioEspecialistasLibres;
     private javax.swing.JSpinner horaInicioInstalacionesLibres;
     private javax.swing.JButton jButton6;
+    private com.toedter.calendar.JDateChooser jDCEspecialistasLibres;
+    private com.toedter.calendar.JDateChooser jDCInstalacionesLibres;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

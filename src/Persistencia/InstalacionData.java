@@ -229,4 +229,46 @@ public class InstalacionData {
         }
         return resultados;
     }
+
+    // Listar instalaciones libres en franja con fecha
+    public List<Instalacion> listarInstalacionesLibresEnFranjaPorFecha(java.sql.Timestamp inicio, java.sql.Timestamp fin) {
+        String sql
+                = "SELECT i.* FROM instalacion i "
+                + "WHERE i.estado = true "
+                + "AND i.codInstal NOT IN ("
+                + "    SELECT s.codInstalacion FROM sesion s "
+                + "    WHERE s.estado = true "
+                + "      AND s.codInstalacion IS NOT NULL "
+                + "      AND ("
+                + "            s.fechaYHoraInicio < ? "
+                + "        AND s.fechaYHoraFin > ? "
+                + "          )"
+                + ")";
+
+        List<Instalacion> instalaciones = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setTimestamp(1, fin);
+            ps.setTimestamp(2, inicio);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Instalacion i = new Instalacion(
+                        rs.getString("nombre"),
+                        rs.getString("detalleDeUso"),
+                        rs.getDouble("precio30m"),
+                        rs.getBoolean("estado")
+                );
+                i.setCodInstal(rs.getInt("codInstal"));
+                instalaciones.add(i);
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al listar instalaciones libres: " + e.getMessage());
+        }
+
+        return instalaciones;
+    }
+
 }
