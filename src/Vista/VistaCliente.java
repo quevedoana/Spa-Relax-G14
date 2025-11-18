@@ -522,7 +522,7 @@ private void deshabilitarBotones() {
             }
             
 
-            Cliente clienteActualizado = new Cliente(codcli, nombreCompleto, telefono, edad, afecciones, estado);
+            Cliente clienteActualizado = new Cliente(dni, nombreCompleto, telefono, edad, afecciones, estado);
             clienteActualizado.setCodCli(codcli);
 
             clientedata.actualizarCliente(clienteActualizado);
