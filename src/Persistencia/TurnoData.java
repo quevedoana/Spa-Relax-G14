@@ -468,7 +468,23 @@ public boolean existeSolapamientoEspecialista(String matricula, LocalDateTime in
     }
     return false;
 }
-
+//para saber que el cliente no esta en dos sitios al mismo tiempo
+public boolean existeSolapamientoCliente(int nroCliente, LocalDateTime inicio, LocalDateTime fin) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM sesion s " +
+                 "JOIN dia_de_spa d ON s.codPack = d.codPack " +    // ajusta el nombre de la tabla si es distinto
+                 "WHERE d.codCli = ? AND s.estado = 1 AND (s.fechaYHoraInicio < ? AND s.fechaYHoraFin > ?)";
+    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setInt(1, nroCliente);
+        ps.setTimestamp(2, Timestamp.valueOf(fin));
+        ps.setTimestamp(3, Timestamp.valueOf(inicio));
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
    
 
 }
