@@ -135,7 +135,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                     + "Crearemos uno nuevo para usted.",
                     "Sin Días de Spa",
                     JOptionPane.INFORMATION_MESSAGE);
-            abrirAgregarDiaDeSpa("nuevo");
+            abrirAgregarDiaDeSpa("nuevo",dni);
             return;
         }
 
