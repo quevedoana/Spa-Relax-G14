@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -161,43 +162,6 @@ public class InstalacionData {
         }
     }
 
-    public List<Instalacion> listarInstalacionesLibresEnFranja(java.sql.Timestamp inicio, java.sql.Timestamp fin) {
-        String sql = "SELECT i.* FROM instalacion i "
-                + "WHERE i.estado = true "
-                + "AND i.codInstal NOT IN ("
-                + "    SELECT s.codInstalacion FROM sesion s "
-                + "    WHERE s.estado = true AND s.codInstalacion IS NOT NULL "
-                + "    AND ((s.fechaYHoraInicio BETWEEN ? AND ?) "
-                + "    OR (s.fechaYHoraFin BETWEEN ? AND ?) "
-                + "    OR (? BETWEEN s.fechaYHoraInicio AND s.fechaYHoraFin))"
-                + ")";
-        List<Instalacion> instalaciones = new ArrayList<>();
-
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setTimestamp(1, inicio);
-            ps.setTimestamp(2, fin);
-            ps.setTimestamp(3, inicio);
-            ps.setTimestamp(4, fin);
-            ps.setTimestamp(5, inicio);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Instalacion i = new Instalacion(
-                        rs.getString("nombre"),
-                        rs.getString("detalleDeUso"),
-                        rs.getDouble("precio30m"),
-                        rs.getBoolean("estado")
-                );
-                i.setCodInstal(rs.getInt("codInstal"));
-                instalaciones.add(i);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al listar instalaciones libres: " + e.getMessage());
-        }
-        return instalaciones;
-    }
 
     public List<Object[]> listarInstalacionesMasSolicitadas(java.sql.Date fechaInicio, java.sql.Date fechaFin) {
         String sql = "SELECT i.nombre, i.detalleDeUso, COUNT(s.codSesion) as cantidad_reservas "
@@ -231,44 +195,53 @@ public class InstalacionData {
     }
 
     // Listar instalaciones libres en franja con fecha
-    public List<Instalacion> listarInstalacionesLibresEnFranjaPorFecha(java.sql.Timestamp inicio, java.sql.Timestamp fin) {
-        String sql
-                = "SELECT i.* FROM instalacion i "
-                + "WHERE i.estado = true "
-                + "AND i.codInstal NOT IN ("
-                + "    SELECT s.codInstalacion FROM sesion s "
-                + "    WHERE s.estado = true "
-                + "      AND s.codInstalacion IS NOT NULL "
-                + "      AND ("
-                + "            s.fechaYHoraInicio < ? "
-                + "        AND s.fechaYHoraFin > ? "
-                + "          )"
-                + ")";
-
-        List<Instalacion> instalaciones = new ArrayList<>();
-
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setTimestamp(1, fin);
-            ps.setTimestamp(2, inicio);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Instalacion i = new Instalacion(
-                        rs.getString("nombre"),
-                        rs.getString("detalleDeUso"),
-                        rs.getDouble("precio30m"),
-                        rs.getBoolean("estado")
-                );
-                i.setCodInstal(rs.getInt("codInstal"));
-                instalaciones.add(i);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al listar instalaciones libres: " + e.getMessage());
+    public List<Instalacion> listarInstalacionesLibresEnFranjaPorFecha(Timestamp inicio, Timestamp fin) {
+    String sql = "SELECT i.* FROM instalacion i " +
+                 "WHERE i.estado = 1 " +
+                 "AND i.codInstal NOT IN ( " +
+                 "    SELECT s.CodInstalacion FROM sesion s " +
+                 "    WHERE s.estado = 1 " +
+                 "    AND s.CodInstalacion IS NOT NULL " +
+                 "    AND ((s.fechaYHorainicio BETWEEN ? AND ?) " +
+                 "    OR (s.fechaYHoraFin BETWEEN ? AND ?) " +
+                 "    OR (? BETWEEN s.fechaYHorainicio AND s.fechaYHoraFin)) " +
+                 ") " +
+                 "ORDER BY i.codInstal"; // ✅ Ordenar para ver todas
+    
+    List<Instalacion> instalaciones = new ArrayList<>();
+    
+    try {
+        PreparedStatement ps = conexion.prepareStatement(sql);
+        ps.setTimestamp(1, inicio);
+        ps.setTimestamp(2, fin);
+        ps.setTimestamp(3, inicio);
+        ps.setTimestamp(4, fin);
+        ps.setTimestamp(5, inicio);
+        
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Instalacion inst = new Instalacion();
+            inst.setCodInstal(rs.getInt("codInstal"));
+            inst.setNombre(rs.getString("nombre"));
+            inst.setDetalleDeUso(rs.getString("detalleDeUso"));
+            inst.setPrecio30m(rs.getDouble("precio30m"));
+            inst.setEstado(rs.getBoolean("estado"));
+            instalaciones.add(inst);
         }
-
-        return instalaciones;
+        ps.close();
+        
+        // DEBUG
+        System.out.println("Instalaciones libres encontradas: " + instalaciones.size());
+        for (Instalacion inst : instalaciones) {
+            System.out.println(" - " + inst.getCodInstal() + ": " + inst.getNombre());
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al buscar instalaciones libres: " + e.getMessage());
+        e.printStackTrace();
     }
+    return instalaciones;
+}
 
 }

@@ -32,7 +32,7 @@ public class ClienteData {
         String query = "INSERT INTO cliente(DNI, NombreCompleto, Telefono, Edad, Afecciones, Estado) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, c.getDni());
+            ps.setLong(1, c.getDni());
             ps.setString(2, c.getNombreCompleto());
             ps.setLong(3, c.getTelefono());
             ps.setInt(4, c.getEdad());
@@ -86,16 +86,16 @@ public class ClienteData {
         return cli;
     }
     //para validar duplicados de dni
-     public Cliente buscarClientePorDni(int DNI) { //select 1 alumno
+     public Cliente buscarClientePorDni(long DNI) { //select 1 alumno
         String sql = "SELECT * FROM cliente WHERE DNI = ? " ;
         Cliente cli = null;
         try {
             PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setInt(1, DNI);
+            ps.setLong(1, DNI);
             ResultSet resultado = ps.executeQuery();
             if (resultado.next()) {
 
-                cli = new Cliente(resultado.getInt("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
+                cli = new Cliente(resultado.getLong("DNI"), resultado.getString("NombreCompleto"), resultado.getInt("Telefono"), resultado.getInt("Edad"), resultado.getString("Afecciones"), resultado.getBoolean("Estado"));
                 cli.setCodCli(resultado.getInt("CodCli"));
 
             } else {
@@ -119,7 +119,7 @@ public class ClienteData {
             while (resultado.next()) {
 
                 Cliente cli = new Cliente(
-                        resultado.getInt("DNI"),
+                        resultado.getLong("DNI"),
                         resultado.getString("NombreCompleto"),
                         resultado.getLong("Telefono"),
                         resultado.getInt("Edad"),
@@ -144,7 +144,7 @@ public class ClienteData {
 
         try {
             PreparedStatement ps = conexion.prepareStatement(query);
-                ps.setInt(1, c.getDni());
+                ps.setLong(1, c.getDni());
                 ps.setString(2, c.getNombreCompleto());
                 ps.setLong(3, c.getTelefono());
                 ps.setInt(4, c.getEdad());

@@ -64,34 +64,41 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     }
 
     private void buscarDiaDeSpaExistente() {
-        String dniStr = JOptionPane.showInputDialog(this,
-                "¿Ya tiene un Día de Spa asignado?\n\n"
-                + "Ingrese su DNI para buscar días de spa activos:\n"
-                + "(Deje vacío para crear uno nuevo)",
-                "Buscar Día de Spa Existente",
-                JOptionPane.QUESTION_MESSAGE);
+    String dniStr = JOptionPane.showInputDialog(this,
+            "¿Ya tiene un Día de Spa asignado?\n\n"
+            + "Ingrese su DNI para buscar días de spa activos:\n"
+            + "(Deje vacío para crear uno nuevo)",
+            "Buscar Día de Spa Existente",
+            JOptionPane.QUESTION_MESSAGE);
 
-        if (dniStr == null) {
-            return;
-        }
-        if (dniStr.trim().isEmpty()) {
-            abrirAgregarCliente();
-            
-            
-            return;
-        }
-
-        try {
-            int dni = Integer.parseInt(dniStr.trim());
-            buscarDiasDeSpaPorDNI(dni);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "DNI inválido. Por favor ingrese solo números.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    if (dniStr == null) {
+        return;
+    }
+    if (dniStr.trim().isEmpty()) {
+        abrirAgregarCliente();
+        return;
     }
 
-    private void buscarDiasDeSpaPorDNI(int dni) {
+    try {
+        String dniLimpio = dniStr.trim();
+        if (dniLimpio.length() > 8) {
+            JOptionPane.showMessageDialog(this,
+                    "El DNI no puede tener más de 8 dígitos",
+                    "DNI Inválido",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Long dni = Long.parseLong(dniLimpio);
+        buscarDiasDeSpaPorDNI(dni);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+                "DNI inválido. Por favor ingrese solo números.",
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    private void buscarDiasDeSpaPorDNI(Long dni) {
         ClienteData clienteData = new ClienteData();
         DiaDeSpaData diaSpaData = new DiaDeSpaData();
 

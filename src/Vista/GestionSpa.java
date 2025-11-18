@@ -5,6 +5,8 @@
  */
 package Vista;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Anitabonita
@@ -50,6 +52,7 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenu9 = new javax.swing.JMenu();
         itemConsultas = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -157,6 +160,11 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenuBar1.add(jMenu10);
 
         jMenu9.setText("Consultas");
+        jMenu9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu9ActionPerformed(evt);
+            }
+        });
 
         itemConsultas.setText("Consultas");
         itemConsultas.addActionListener(new java.awt.event.ActionListener() {
@@ -173,6 +181,14 @@ public class GestionSpa extends javax.swing.JFrame {
             }
         });
         jMenu9.add(jMenuItem3);
+
+        jMenuItem5.setText("Informe Dias de Spa");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem5);
 
         jMenuBar1.add(jMenu9);
 
@@ -323,8 +339,37 @@ public class GestionSpa extends javax.swing.JFrame {
         escritorio.add(vc);
 
         vc.setVisible(true);
+          
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenu9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu9ActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaDiaDeSpaCompleto vc = new VistaDiaDeSpaCompleto();
+        vc.setLocation(
+                (escritorio.getWidth() - vc.getWidth()) / 2,
+                (escritorio.getHeight() - vc.getHeight()) / 2
+        );
+        escritorio.add(vc);
+
+        vc.setVisible(true);
+    }//GEN-LAST:event_jMenu9ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        InformeDiaDeSpa vc = new InformeDiaDeSpa();
+        vc.setLocation(
+                (escritorio.getWidth() - vc.getWidth()) / 2,
+                (escritorio.getHeight() - vc.getHeight()) / 2
+        );
+        escritorio.add(vc);
+
+        vc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -384,6 +429,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenu menuTurno;
     // End of variables declaration//GEN-END:variables
 }

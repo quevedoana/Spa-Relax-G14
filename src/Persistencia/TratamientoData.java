@@ -8,6 +8,7 @@ package Persistencia;
 import Modelo.Conexion;
 import Modelo.Tratamiento;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -211,35 +212,37 @@ public class TratamientoData {
         return tratamientos;
     }
 
-
-//Listar tratamientos mas sesionados
-    public List<Object[]> listarTratamientosMasSesionados(java.sql.Date fechaInicio, java.sql.Date fechaFin) {
-        String sql = "SELECT t.nombre, t.tipo, COUNT(s.codSesion) as cantidad_sesiones "
-                + "FROM tratamiento t "
-                + "JOIN sesion s ON t.codTratam = s.codTratamiento "
-                + "WHERE DATE(s.fechaYHoraInicio) BETWEEN ? AND ? "
-                + "GROUP BY t.codTratam, t.nombre, t.tipo "
-                + "ORDER BY cantidad_sesiones DESC";
-        List<Object[]> resultados = new ArrayList<>();
-
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setDate(1, fechaInicio);
-            ps.setDate(2, fechaFin);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Object[] fila = {
-                    rs.getString("nombre"),
-                    rs.getString("tipo"),
-                    rs.getInt("cantidad_sesiones")
-                };
-                resultados.add(fila);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al listar tratamientos mas sesionados: " + e.getMessage());
+   
+    public List<Object[]> listarTratamientosMasSeleccionados(Date fechaInicio, Date fechaFin) {
+    String sql = "SELECT t.nombre, COUNT(s.codTratamiento) as veces_seleccionado, " +
+                 "SUM(t.costo) as total_recaudado " +
+                 "FROM sesion s " +
+                 "JOIN tratamiento t ON s.codTratamiento = t.codTratam " +
+                 "WHERE DATE(s.fechaYHorainicio) BETWEEN ? AND ? " +
+                 "GROUP BY t.codTratam, t.nombre " +
+                 "ORDER BY veces_seleccionado DESC";
+    
+    List<Object[]> resultados = new ArrayList<>();
+    
+    try {
+        PreparedStatement ps = conexion.prepareStatement(sql);
+        ps.setDate(1, fechaInicio);
+        ps.setDate(2, fechaFin);
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Object[] fila = {
+                rs.getString("nombre"),
+                rs.getInt("veces_seleccionado"),
+                String.format("$%.2f", rs.getDouble("total_recaudado"))
+            };
+            resultados.add(fila);
         }
-        return resultados;
+        ps.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al obtener tratamientos más seleccionados: " + e.getMessage());
+        e.printStackTrace();
     }
+    return resultados;
+}
 }

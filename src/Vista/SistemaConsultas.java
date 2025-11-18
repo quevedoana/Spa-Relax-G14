@@ -173,25 +173,26 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
+
     private LocalTime convertirSpinnerAHoraSegura(JSpinner spinner) {
-    Object raw = spinner.getValue();
+        Object raw = spinner.getValue();
 
-    java.util.Date dateValue;
+        java.util.Date dateValue;
 
-    if (raw instanceof java.sql.Time) {
-        //Si el spinner devuelve un Time
-        dateValue = new java.util.Date(((java.sql.Time) raw).getTime());
-    } else if (raw instanceof java.util.Date) {
-        //Si devuelve un util.Date normal
-        dateValue = (java.util.Date) raw;
-    } else {
-        throw new IllegalArgumentException("Valor inesperado en el spinner: " + raw);
+        if (raw instanceof java.sql.Time) {
+            //Si el spinner devuelve un Time
+            dateValue = new java.util.Date(((java.sql.Time) raw).getTime());
+        } else if (raw instanceof java.util.Date) {
+            //Si devuelve un util.Date normal
+            dateValue = (java.util.Date) raw;
+        } else {
+            throw new IllegalArgumentException("Valor inesperado en el spinner: " + raw);
+        }
+
+        return dateValue.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalTime();
     }
-
-    return dateValue.toInstant()
-            .atZone(ZoneId.systemDefault())
-            .toLocalTime();
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -212,7 +213,6 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         comboEspecialidades = new javax.swing.JComboBox<>();
         comboTiposTratam = new javax.swing.JComboBox<>();
         btnConsultarEspecialistas1 = new javax.swing.JButton();
@@ -223,10 +223,8 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         horaInicioInstalacionesLibres = new javax.swing.JSpinner();
         fechaInicioTratamientos = new com.toedter.calendar.JDateChooser();
         fechaFinTratamientos = new com.toedter.calendar.JDateChooser();
-        fechaInformeDiadeSpa = new com.toedter.calendar.JDateChooser();
         btnConsultarEspacialistasLibre1 = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
         jScrollPane4 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -236,6 +234,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jDCEspecialistasLibres = new com.toedter.calendar.JDateChooser();
         jDCInstalacionesLibres = new com.toedter.calendar.JDateChooser();
         btnConsultarInformeEstadisticos2 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
 
         setTitle("Consultas");
 
@@ -268,10 +267,6 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 153, 102));
         jLabel13.setText("5. Tratamientos mas Seleccionados");
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 153, 102));
-        jLabel14.setText("6. Informes Dias de Spa");
 
         comboEspecialidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -310,15 +305,6 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
-            }
-        });
-
-        jButton6.setBackground(new java.awt.Color(255, 153, 102));
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Consultar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
             }
         });
 
@@ -361,89 +347,94 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel17.setText("a");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel9)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel11)
-                                .addComponent(jLabel12))))
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel14))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel10)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(3, 3, 3)
+                            .addComponent(jLabel11)))
+                    .addComponent(jLabel12))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaInformeDiadeSpa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comboTiposTratam, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboEspecialidades, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(fechaInicioTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(comboEspecialidades, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDCInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDCEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDCEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDCInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(9, 9, 9)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
+                        .addGap(134, 134, 134)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnConsultarEspecialistas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnConsultarTratamientos1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnConsultarEspecialistas1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                            .addComponent(btnConsultarTratamientos1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(horaInicioInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(horaInicioEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(92, 92, 92))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(horaInicioInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(horaInicioEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(horaFinEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(horaFinInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(28, 28, 28)))
+                                .addComponent(horaFinEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(horaFinInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(28, 28, 28)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnConsultarEspacialistasLibre1)
-                            .addComponent(btnConsultarInstalacionesLibres1))
+                            .addComponent(btnConsultarInstalacionesLibres1)
+                            .addComponent(btnConsultarInformeEstadisticos2))
                         .addGap(43, 43, 43))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(122, 122, 122)
+                .addComponent(jLabel8)
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jSeparator4)
+            .addComponent(jSeparator3)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane4))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(362, 362, 362)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(645, Short.MAX_VALUE)
-                    .addComponent(btnConsultarInformeEstadisticos2)
-                    .addGap(121, 121, 121)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(375, 375, 375)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel13)
+                                .addGap(44, 44, 44)
+                                .addComponent(fechaInicioTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(64, 64, 64)
+                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
+                                .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -453,64 +444,57 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                     .addComponent(jLabel8)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(comboEspecialidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnConsultarEspecialistas1)
-                            .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(comboTiposTratam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnConsultarTratamientos1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(comboEspecialidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnConsultarEspecialistas1)
+                                    .addComponent(jLabel9))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(comboTiposTratam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnConsultarTratamientos1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(horaInicioEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(horaFinEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnConsultarEspacialistasLibre1)
+                                        .addComponent(jLabel15))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel11)
+                                        .addComponent(jDCEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(jLabel10)))
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(horaInicioEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(horaFinEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnConsultarEspacialistasLibre1)
-                                .addComponent(jLabel15))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel11)
-                                .addComponent(jDCEspecialistasLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel10)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDCInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(horaInicioInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(horaFinInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnConsultarInstalacionesLibres1)
-                        .addComponent(jLabel16)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(horaInicioInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel16)
+                                .addComponent(horaFinInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnConsultarInstalacionesLibres1))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel12))
+                            .addComponent(jDCInstalacionesLibres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13)
                             .addComponent(fechaInicioTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton6)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel14)
-                                .addComponent(fechaInformeDiadeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jLabel13))
-                .addGap(18, 41, Short.MAX_VALUE)
+                            .addComponent(jLabel17)))
+                    .addComponent(btnConsultarInformeEstadisticos2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSalir)
                 .addGap(23, 23, 23))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(255, 255, 255)
-                    .addComponent(btnConsultarInformeEstadisticos2)
-                    .addContainerGap(295, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -556,130 +540,138 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
 
     private void btnConsultarEspacialistasLibre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarEspacialistasLibre1ActionPerformed
         try {
-        //Obtener fecha desde el JDateChooser
-        java.util.Date fechaSeleccionada = jDCEspecialistasLibres.getDate();
-        if (fechaSeleccionada == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fecha", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+            //Obtener fecha desde el JDateChooser
+            java.util.Date fechaSeleccionada = jDCEspecialistasLibres.getDate();
+            if (fechaSeleccionada == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione una fecha", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-        LocalDate fecha = fechaSeleccionada.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
+            LocalDate fecha = fechaSeleccionada.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
 
-        //Obtener horas desde los spinners, de forma segura
-        LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioEspecialistasLibres);
-        LocalTime hFin    = convertirSpinnerAHoraSegura(horaFinEspecialistasLibres);
+            //Obtener horas desde los spinners, de forma segura
+            LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioEspecialistasLibres);
+            LocalTime hFin = convertirSpinnerAHoraSegura(horaFinEspecialistasLibres);
 
-        //Combinar fecha y horas
-        LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
-        LocalDateTime fin    = LocalDateTime.of(fecha, hFin);
+            //Combinar fecha y horas
+            LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
+            LocalDateTime fin = LocalDateTime.of(fecha, hFin);
 
-        //Validación horaria
-        if (!fin.isAfter(inicio)) {
-            JOptionPane.showMessageDialog(this, "La hora de fin debe ser mayor a la de inicio", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+            //Validación horaria
+            if (!fin.isAfter(inicio)) {
+                JOptionPane.showMessageDialog(this, "La hora de fin debe ser mayor a la de inicio", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-        //Convertir a Timestamp
-        Timestamp tsInicio = Timestamp.valueOf(inicio);
-        Timestamp tsFin    = Timestamp.valueOf(fin);
+            //Convertir a Timestamp
+            Timestamp tsInicio = Timestamp.valueOf(inicio);
+            Timestamp tsFin = Timestamp.valueOf(fin);
 
-        //Mostrar texto
-        textConsultaSeleccionada.setText("Masajistas libres de " + hInicio + " a " + hFin);
+            //Mostrar texto
+            textConsultaSeleccionada.setText("Masajistas libres de " + hInicio + " a " + hFin);
 
-        //Obtener resultados
-        List<Especialista> resultados = especialistaData.listarMasajistasLibresEnFranjaPorFecha(tsInicio, tsFin);
+            //Obtener resultados
+            List<Especialista> resultados = especialistaData.listarMasajistasLibresEnFranjaPorFecha(tsInicio, tsFin);
 
-        //Mostrar en tabla
-        mostrarResultadosEnTabla(
-            resultados,
-            new String[]{"Matrícula", "Nombre", "Teléfono", "Especialidad"},
-            "especialista"
-        );
+            //Mostrar en tabla
+            mostrarResultadosEnTabla(
+                    resultados,
+                    new String[]{"Matrícula", "Nombre", "Teléfono", "Especialidad"},
+                    "especialista"
+            );
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
         }    }//GEN-LAST:event_btnConsultarEspacialistasLibre1ActionPerformed
 
     private void btnConsultarInstalacionesLibres1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarInstalacionesLibres1ActionPerformed
-                                                                     
-    try {
-        //Obtener fecha desde el JDateChooser
-        java.util.Date fechaSeleccionada = jDCInstalacionesLibres.getDate();
-        if (fechaSeleccionada == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fecha", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
+
+        try {
+            //Obtener fecha desde el JDateChooser
+            java.util.Date fechaSeleccionada = jDCInstalacionesLibres.getDate();
+            if (fechaSeleccionada == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione una fecha", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            LocalDate fecha = fechaSeleccionada.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            //Obtener horas desde los spinners usando la función de hora segura
+            LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioInstalacionesLibres);
+            LocalTime hFin = convertirSpinnerAHoraSegura(horaFinInstalacionesLibres);
+
+            //Combinar fecha y horas
+            LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
+            LocalDateTime fin = LocalDateTime.of(fecha, hFin);
+
+            //Validar rango horario
+            if (!fin.isAfter(inicio)) {
+                JOptionPane.showMessageDialog(this, "La hora fin debe ser mayor a hora inicio", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            //Convertir a Timestamp
+            Timestamp tsInicio = Timestamp.valueOf(inicio);
+            Timestamp tsFin = Timestamp.valueOf(fin);
+
+            //Texto resumen
+            textConsultaSeleccionada.setText("Instalaciones libres de " + hInicio + " a " + hFin);
+
+            //Llamar al método de la clase data
+            List<Instalacion> resultados = instalacionData.listarInstalacionesLibresEnFranjaPorFecha(tsInicio, tsFin);
+
+            //Mostrar en tabla
+            mostrarResultadosEnTabla(
+                    resultados,
+                    new String[]{"Código", "Nombre", "Detalle", "Precio 30min"},
+                    "instalacion"
+            );
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        LocalDate fecha = fechaSeleccionada.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-
-        //Obtener horas desde los spinners usando la función de hora segura
-        LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioInstalacionesLibres);
-        LocalTime hFin    = convertirSpinnerAHoraSegura(horaFinInstalacionesLibres);
-
-        //Combinar fecha y horas
-        LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
-        LocalDateTime fin    = LocalDateTime.of(fecha, hFin);
-
-        //Validar rango horario
-        if (!fin.isAfter(inicio)) {
-            JOptionPane.showMessageDialog(this, "La hora fin debe ser mayor a hora inicio", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        //Convertir a Timestamp
-        Timestamp tsInicio = Timestamp.valueOf(inicio);
-        Timestamp tsFin    = Timestamp.valueOf(fin);
-
-        //Texto resumen
-        textConsultaSeleccionada.setText("Instalaciones libres de " + hInicio + " a " + hFin);
-
-        //Llamar al método de la clase data
-        List<Instalacion> resultados = instalacionData.listarInstalacionesLibresEnFranjaPorFecha(tsInicio, tsFin);
-
-        //Mostrar en tabla
-        mostrarResultadosEnTabla(
-                resultados,
-                new String[]{"Código", "Nombre", "Detalle", "Precio 30min"},
-                "instalacion"
-        );
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_btnConsultarInstalacionesLibres1ActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        try {
-            java.util.Date fecha = fechaInformeDiadeSpa.getDate();
-
-            if (fecha == null) {
-                JOptionPane.showMessageDialog(this, "Seleccione una fecha", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Date sqlFecha = new Date(fecha.getTime());
-
-            textConsultaSeleccionada.setText("Días de Spa del " + new SimpleDateFormat("dd/MM/yyyy").format(fecha));
-
-            List<Object[]> resultados = diaDeSpaData.generarInformeDiasDeSpaPorFecha(sqlFecha);
-            mostrarResultadosEnTabla(resultados, new String[]{"Código", "Cliente", "Fecha", "Preferencias", "Monto", "Sesiones"}, "array");
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void btnConsultarInformeEstadisticos2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarInformeEstadisticos2ActionPerformed
         // TODO add your handling code here:
+        try {
+        java.util.Date fechaInicio = fechaInicioTratamientos.getDate();
+        java.util.Date fechaFin = fechaFinTratamientos.getDate();
+
+        if (fechaInicio == null || fechaFin == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione ambas fechas", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (fechaFin.before(fechaInicio)) {
+            JOptionPane.showMessageDialog(this, "La fecha fin debe ser posterior a la fecha inicio", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Date sqlFechaInicio = new Date(fechaInicio.getTime());
+        Date sqlFechaFin = new Date(fechaFin.getTime());
+
+        textConsultaSeleccionada.setText("Tratamientos más seleccionados del " + 
+            new SimpleDateFormat("dd/MM/yyyy").format(fechaInicio) + " al " + 
+            new SimpleDateFormat("dd/MM/yyyy").format(fechaFin));
+
+        
+        List<Object[]> resultados = tratamientoData.listarTratamientosMasSeleccionados(sqlFechaInicio, sqlFechaFin);
+        mostrarResultadosEnTabla(resultados, new String[]{"Tratamiento", "Veces Seleccionado", "Total Recaudado"}, "array");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
     }//GEN-LAST:event_btnConsultarInformeEstadisticos2ActionPerformed
 
 
@@ -693,22 +685,20 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> comboEspecialidades;
     private javax.swing.JComboBox<String> comboTiposTratam;
     private com.toedter.calendar.JDateChooser fechaFinTratamientos;
-    private com.toedter.calendar.JDateChooser fechaInformeDiadeSpa;
     private com.toedter.calendar.JDateChooser fechaInicioTratamientos;
     private javax.swing.JSpinner horaFinEspecialistasLibres;
     private javax.swing.JSpinner horaFinInstalacionesLibres;
     private javax.swing.JSpinner horaInicioEspecialistasLibres;
     private javax.swing.JSpinner horaInicioInstalacionesLibres;
-    private javax.swing.JButton jButton6;
     private com.toedter.calendar.JDateChooser jDCEspecialistasLibres;
     private com.toedter.calendar.JDateChooser jDCInstalacionesLibres;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;

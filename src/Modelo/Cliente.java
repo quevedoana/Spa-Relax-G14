@@ -11,7 +11,7 @@ package Modelo;
  */
 public class Cliente {
     private int codCli=-1;
-    private int dni;
+    private long dni;
     private String NombreCompleto;
     private long telefono;
     private int edad;
@@ -21,7 +21,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(int dni, String NombreCompleto, long telefono, int edad, String afecciones, boolean estado) {
+    public Cliente(long dni, String NombreCompleto, long telefono, int edad, String afecciones, boolean estado) {
         this.dni = dni;
         this.NombreCompleto = NombreCompleto;
         this.telefono = telefono;
@@ -38,11 +38,11 @@ public class Cliente {
         this.codCli = codCli;
     }
 
-    public int getDni() {
+    public long getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(long dni) {
         this.dni = dni;
     }
 

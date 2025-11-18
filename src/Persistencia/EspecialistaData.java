@@ -230,37 +230,43 @@ public class EspecialistaData {
 // Listar masajistas libres en una franja horaria con fecha
 
     public List<Especialista> listarMasajistasLibresEnFranjaPorFecha(Timestamp inicio, Timestamp fin) {
-        String sql = " SELECT e.* "
-                + " FROM especialista e "
-                + " WHERE e.estado = true "
-                + " AND e.matricula NOT IN (SELECT s.matriculaMasajista "
-                + "  FROM sesion s "
-                + " WHERE s.estado = true "
-                + " AND s.fechaYHoraInicio < ? "
-                + " AND s.fechaYHoraFin > ?) ";
-        List<Especialista> especialistas = new ArrayList<>();
-
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setTimestamp(1, inicio);
-            ps.setTimestamp(2, fin);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Especialista e = new Especialista(
-                        rs.getString("matricula"),
-                        rs.getString("NombreYApellido"),
-                        rs.getLong("telefono"),
-                        rs.getString("especialidad"),
-                        rs.getBoolean("estado")
-                );
-                especialistas.add(e);
-            }
-            ps.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al listar masajistas libres: " + e.getMessage());
+    String sql = "SELECT e.* FROM especialista e " +
+                 "WHERE e.estado = 1 " +
+                 "AND e.matricula NOT IN ( " +
+                 "    SELECT s.matriculaMasajista FROM sesion s " +
+                 "    WHERE s.estado = 1 " +
+                 "    AND ((s.fechaYHorainicio BETWEEN ? AND ?) " +
+                 "    OR (s.fechaYHoraFin BETWEEN ? AND ?) " +
+                 "    OR (? BETWEEN s.fechaYHorainicio AND s.fechaYHoraFin)) " +
+                 ")";
+    
+    List<Especialista> especialistas = new ArrayList<>();
+    
+    try {
+        PreparedStatement ps = conexion.prepareStatement(sql);
+        ps.setTimestamp(1, inicio);
+        ps.setTimestamp(2, fin);
+        ps.setTimestamp(3, inicio);
+        ps.setTimestamp(4, fin);
+        ps.setTimestamp(5, inicio);
+        
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Especialista esp = new Especialista();
+            esp.setMatricula(rs.getString("matricula"));
+            esp.setNombreYApellido(rs.getString("nombreYApellido"));
+            esp.setTelefono(rs.getLong("telefono"));
+            esp.setEspecialidad(rs.getString("especialidad"));
+            esp.setEstado(rs.getBoolean("estado"));
+            especialistas.add(esp);
         }
-        return especialistas;
+        ps.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al buscar especialistas libres: " + e.getMessage());
     }
+    return especialistas;
+}
+
 
 }
