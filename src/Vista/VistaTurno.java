@@ -29,7 +29,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private DefaultTableModel modeloTabla = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
-            return column == 1 || column == 2;
+            return false;
         }
     };
     private DiaDeSpa diaDeSpaActual;

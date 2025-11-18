@@ -201,15 +201,12 @@ public class InformeDiaDeSpa extends javax.swing.JInternalFrame {
 
         lblTotalDiasLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTotalDiasLabel.setForeground(new java.awt.Color(255, 255, 255));
-        lblTotalDiasLabel.setText("jLabel5");
 
         lblIngresos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblIngresos.setForeground(new java.awt.Color(255, 255, 255));
-        lblIngresos.setText("jLabel6");
 
         lblClientes.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblClientes.setForeground(new java.awt.Color(255, 255, 255));
-        lblClientes.setText("jLabel7");
 
         javax.swing.GroupLayout panelResumenLayout = new javax.swing.GroupLayout(panelResumen);
         panelResumen.setLayout(panelResumenLayout);

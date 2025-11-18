@@ -31,50 +31,58 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     private List<Cliente> listaClientes = new ArrayList<>();
     private VistaTurno vistaTurnoPadre;
 
+    public AgregarDiaDeSpa(Long dni) {
+        this(null, dni);
+    }
 
-      public AgregarDiaDeSpa(Long dni) {
-        this(null,dni);
+    public AgregarDiaDeSpa() {
+        this(null, null);
     }
-       public AgregarDiaDeSpa() {
-        this(null,null);
-    }
-    public AgregarDiaDeSpa(VistaTurno vistaTurnoPadre,Long dni) {
+
+    public AgregarDiaDeSpa(VistaTurno vistaTurnoPadre, Long dni) {
         initComponents();
         this.vistaTurnoPadre = vistaTurnoPadre;
         jSHora.setModel(new javax.swing.SpinnerDateModel());
         JSpinner.DateEditor editor = new JSpinner.DateEditor(jSHora, "HH:mm");
         jSHora.setEditor(editor);
-        if(dni!= null){
-        cargarCliente(dni);
+        if (dni != null) {
+            cargarCliente(dni);
+        } else {
+            cargarClientes();
         }
-        else{
-           cargarClientes();
-        }
-        
+
         setTitle("Crear Dia de Spa");
-        
+
         btnCrear.setText("Crear Dia de Spa y Continuar con Reserva");
     }
 
     public void cargarClientes() {
         jCCliente.removeAllItems();
-        jCCliente.removeAllItems();
+        listaClientes.clear();
 
         listaClientes = clienteData.ListarCliente();
+
+        if (listaClientes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay clientes disponibles");
+            return;
+        }
 
         for (Cliente cliente : listaClientes) {
             jCCliente.addItem(cliente.getNombreCompleto() + " - DNI: " + cliente.getDni());
         }
     }
-     public void cargarCliente(long dni) {
+
+    public void cargarCliente(long dni) {
         jCCliente.removeAllItems();
-        jCCliente.removeAllItems();
+        listaClientes.clear();
 
         Cliente cliente = clienteData.buscarClientePorDni(dni);
-
-        
+        if (cliente != null) {
             jCCliente.addItem(cliente.getNombreCompleto() + " - DNI: " + cliente.getDni());
-        
+            listaClientes.add(cliente);
+        } else {
+            JOptionPane.showMessageDialog(this, "Cliente no encontrado con DNI: " + dni);
+        }
     }
 
     private LocalDateTime obtenerFechaHoraDesdeUI() {
@@ -153,16 +161,16 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
             nuevoDia.setPreferencias(txtPreferencias.getText().trim());
             nuevoDia.setCliente(cliente);
             nuevoDia.setEstado(true);
-            nuevoDia.setMonto(0.0); 
-            nuevoDia.setSesiones(new ArrayList<>()); 
+            nuevoDia.setMonto(0.0);
+            nuevoDia.setSesiones(new ArrayList<>());
 
             diaSpaData.guardarDiaDeSpa(nuevoDia);
 
             if (vistaTurnoPadre != null) {
                 vistaTurnoPadre.diaDeSpaCreado(nuevoDia);
-            } else { 
+            } else {
                 JOptionPane.showMessageDialog(this,
-                    "Dia de spa creado exitosamente. Ahora puede proceder con las reservas desde el menu principal.");
+                        "Dia de spa creado exitosamente. Ahora puede proceder con las reservas desde el menu principal.");
 
                 VistaTurno reserva = new VistaTurno();
                 reserva.setVisible(true);
@@ -180,16 +188,14 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
             this.dispose();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error al crear dia de spa: " + e.getMessage() + 
-                "\n\nPor favor, verifique los datos e intente nuevamente.",
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Error al crear dia de spa: " + e.getMessage()
+                    + "\n\nPor favor, verifique los datos e intente nuevamente.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
