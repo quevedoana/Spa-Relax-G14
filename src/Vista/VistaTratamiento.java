@@ -30,20 +30,17 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         cargarTratamientosPorTipo(null);
         inicializarEditorEspecialidadEnTabla();
 
-        // Agrupar radio buttons para que sean exclusivos
         ButtonGroup grupoTipos = new ButtonGroup();
         grupoTipos.add(btnFacial);
         grupoTipos.add(btnCorporal);
         grupoTipos.add(btnRelajacion);
         grupoTipos.add(btnEstetico);
 
-        // Agregar listeners a los radio buttons
         btnFacial.addActionListener(this::btnFacialActionPerformed);
         btnCorporal.addActionListener(this::btnCorporalActionPerformed);
         btnRelajacion.addActionListener(this::btnRelajacionActionPerformed);
         btnEstetico.addActionListener(this::btnEsteticoActionPerformed);
 
-        // Agregar listeners a los botones
         btnActualizarTablaTrata.addActionListener(this::btnActualizarTablaTrataActionPerformed);
         btnAgregarTratam.addActionListener(this::btnAgregarTratamActionPerformed);
         btnEliminarTrata.addActionListener(this::btnEliminarTrataActionPerformed);
@@ -53,8 +50,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
     private void inicializarTabla() {
         modeloTabla = new DefaultTableModel() {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                // solo se puede editar el Nombre, Tipo, Detalle, Duracion, Costo        
+            public boolean isCellEditable(int row, int column) {      
                 return column == 1 || column == 2 || column == 3 || column == 4 || column == 5;
             }
         };
@@ -94,7 +90,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
     }
     
     
-    //prueba tabla inicializarEditorEspecialidadEnTabla()columna especialidad
     private void inicializarEditorEspecialidadEnTabla() {
         String[] opciones = { "Facial", "Corporal", "Relajación", "Estético" };
         TableColumn columnaEspecialidad = tablaTratamientosFiltrados.getColumnModel().getColumn(2);
@@ -314,7 +309,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
     if (nombre == null || nombre.trim().isEmpty()) {
         return false;
     }
-    // Expresión regular que acepta letras mayúsculas/minúsculas, vocales con tilde, ñ/Ñ, y espacios.
     String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+";
     return nombre.matches(regex);
 }
@@ -331,12 +325,10 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         }
 
         try {
-            // Obtener datos de la fila seleccionada
             int codTratam = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
             String producto = (String) modeloTabla.getValueAt(filaSeleccionada, 6);
             boolean activo = "Sí".equals(modeloTabla.getValueAt(filaSeleccionada, 7));
 
-            // Obtener datos modificables
             String nombre = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
             if (!validarLetra(nombre)) {
     JOptionPane.showMessageDialog(this,
@@ -349,7 +341,6 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             String tipo = modeloTabla.getValueAt(filaSeleccionada, 2).toString().trim();
             String detalle = (String) modeloTabla.getValueAt(filaSeleccionada, 3);
 
-            // Convertir datos numericos
             int duracion;
             double costo;
 

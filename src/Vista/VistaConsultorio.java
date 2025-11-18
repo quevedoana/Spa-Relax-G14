@@ -45,7 +45,7 @@ public class VistaConsultorio extends javax.swing.JInternalFrame {
 
     private void inicializarComboTipoEspecialidad() {
         String[] opciones = {"Seleccione...", "Facial", "Corporal", "Masajes", "Depilacion"};
-        jCBusos.removeAllItems();  // limpia items anteriores
+        jCBusos.removeAllItems();
         for (String opt : opciones) {
             jCBusos.addItem(opt);
         }

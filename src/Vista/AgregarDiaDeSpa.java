@@ -31,11 +31,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     private List<Cliente> listaClientes = new ArrayList<>();
     private VistaTurno vistaTurnoPadre;
 
-    ;
 
-    /**
-     * Creates new form AgregarDiaDeSpa
-     */
       public AgregarDiaDeSpa() {
         this(null);
     }
@@ -47,7 +43,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
         jSHora.setEditor(editor);
         cargarClientes();
         
-        setTitle("Crear Dia de Spa - Paso 1 de 2");
+        setTitle("Crear Dia de Spa");
         
         btnCrear.setText("Crear Dia de Spa y Continuar con Reserva");
     }
@@ -97,7 +93,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     }
 
     private Cliente obtenerClienteSeleccionado() {
-        if (jCCliente.getSelectedIndex() == 0) {
+        if (jCCliente.getSelectedIndex() == -1) {
             return null;
         }
 
@@ -110,8 +106,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void crearDiaDeSpa() {
         try {
-            // Validaciones
-            if (jCCliente.getSelectedIndex() == 0) {
+            if (jCCliente.getSelectedIndex() == -1) {
                 JOptionPane.showMessageDialog(this, "Seleccione un cliente");
                 return;
             }
@@ -131,29 +126,23 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
             if (fechaHora == null) {
                 return;
             }
-
-            // Validar que la fecha no sea anterior a hoy
             if (fechaHora.isBefore(LocalDateTime.now())) {
                 JOptionPane.showMessageDialog(this, "No puede seleccionar una fecha y hora pasadas");
                 return;
             }
-
-            // Crear nuevo dia de spa
             DiaDeSpa nuevoDia = new DiaDeSpa();
             nuevoDia.setFechaYHora(fechaHora);
             nuevoDia.setPreferencias(txtPreferencias.getText().trim());
             nuevoDia.setCliente(cliente);
             nuevoDia.setEstado(true);
-            nuevoDia.setMonto(0.0); //despues con los turnoa
+            nuevoDia.setMonto(0.0); 
             nuevoDia.setSesiones(new ArrayList<>()); 
 
-            // Guardar en base de datos
             diaSpaData.guardarDiaDeSpa(nuevoDia);
 
             if (vistaTurnoPadre != null) {
                 vistaTurnoPadre.diaDeSpaCreado(nuevoDia);
-            } else {
-                // Si no hay VistaTurno padre 
+            } else { 
                 JOptionPane.showMessageDialog(this,
                     "Dia de spa creado exitosamente. Ahora puede proceder con las reservas desde el menu principal.");
 
@@ -183,11 +172,6 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     }
 
 
-    private void limpiarCampos() {
-        txtPreferencias.setText("");
-        jCCliente.setSelectedIndex(0);
-
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -389,6 +373,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void btnCancelarDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDiaActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelarDiaActionPerformed
 
 

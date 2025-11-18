@@ -23,7 +23,6 @@ public class EspecialistaData {
     public EspecialistaData() {
         this.conexion = Conexion.getConexion();
     }
-    //Guardar Especialista}
 
     public void guardarEspecialista(Especialista e) {
         try {

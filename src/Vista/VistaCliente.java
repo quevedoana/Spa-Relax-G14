@@ -594,7 +594,6 @@ private void armarCabecera() {
 
     private void agregarCliente() {
         try {
-            // Validar campos vacíos
             if (jTDni.getText().trim().isEmpty()
                     || jTNombreC.getText().trim().isEmpty()
                     || jTTelefono.getText().trim().isEmpty()
@@ -603,15 +602,12 @@ private void armarCabecera() {
                 JOptionPane.showMessageDialog(this, "Todos los campos obligatorios deben completarse.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-
-            // validar formato numerico 
             int dni = Integer.parseInt(jTDni.getText().trim());
             String nombreCompleto = jTNombreC.getText().trim();
             long telefono = Long.parseLong(jTTelefono.getText().trim());
             int edad = Integer.parseInt(jTEdad.getText().trim());
             String afecciones = jTAfecciones.getText().trim();
 
-            // Validar rangos y longitudes
             if (dni < 1000000 || dni > 99999999) {
                 JOptionPane.showMessageDialog(this, "El DNI debe tener entre 7 y 8 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -624,13 +620,10 @@ private void armarCabecera() {
                 JOptionPane.showMessageDialog(this, "Número de teléfono no válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            // Validar nombre (solo letras y espacios)
             if (!nombreCompleto.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
                 JOptionPane.showMessageDialog(this, "El nombre solo debe contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            // Verificar duplicado por DNI
             if (clientedata.buscarClientePorDni(dni) != null) {
                 JOptionPane.showMessageDialog(this, "Ya existe un cliente con ese DNI.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -662,7 +655,6 @@ private void armarCabecera() {
         }
 
         try {
-            // obtener datos de la fila seleccionada
             int codcli = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
             int dni = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
             String nombreCompleto = modelo.getValueAt(filaSeleccionada, 2).toString().trim();
@@ -671,7 +663,6 @@ private void armarCabecera() {
             String afecciones = modelo.getValueAt(filaSeleccionada, 5).toString().trim();
             String estadoStr = modelo.getValueAt(filaSeleccionada, 6).toString();
             boolean estado = estadoStr.equals("Activo");
-            // Validar rangos y longitudes
             if (dni < 1000000 || dni > 99999999) {
                 JOptionPane.showMessageDialog(this, "El DNI debe tener entre 7 y 8 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -684,13 +675,10 @@ private void armarCabecera() {
                 JOptionPane.showMessageDialog(this, "Número de teléfono no válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            // Validar nombre (solo letras y espacios)
             if (!nombreCompleto.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
                 JOptionPane.showMessageDialog(this, "El nombre solo debe contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            // Verificar duplicado por DNI
             if (clientedata.buscarClientePorDni(dni) != null) {
                 JOptionPane.showMessageDialog(this, "Ya existe un cliente con ese DNI.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -730,7 +718,7 @@ private void armarCabecera() {
         String estadoActual = modelo.getValueAt(fila, 6).toString();
         String nuevoEstado = (String) jCEstado.getSelectedItem();
         boolean estadoBoolean = nuevoEstado.equals("Activo");
-        //validar que el estado no sea el mismo 
+        
          if (estadoActual.equalsIgnoreCase(nuevoEstado)) {
         JOptionPane.showMessageDialog(this, "El cliente ya está en ese estado.", "Información", JOptionPane.INFORMATION_MESSAGE);
         return;

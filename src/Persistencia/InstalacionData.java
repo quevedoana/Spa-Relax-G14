@@ -161,9 +161,6 @@ public class InstalacionData {
         }
     }
 
-    /**
-     * Listar instalaciones libres en una franja horaria
-     */
     public List<Instalacion> listarInstalacionesLibresEnFranja(java.sql.Timestamp inicio, java.sql.Timestamp fin) {
         String sql = "SELECT i.* FROM instalacion i "
                 + "WHERE i.estado = true "
@@ -202,7 +199,6 @@ public class InstalacionData {
         return instalaciones;
     }
 
-// Listar instalaciones mas solicitadas entre fechas
     public List<Object[]> listarInstalacionesMasSolicitadas(java.sql.Date fechaInicio, java.sql.Date fechaFin) {
         String sql = "SELECT i.nombre, i.detalleDeUso, COUNT(s.codSesion) as cantidad_reservas "
                 + "FROM instalacion i "

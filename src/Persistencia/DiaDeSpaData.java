@@ -54,7 +54,6 @@ public class DiaDeSpaData {
                 int codPackGenerado = rs.getInt(1);
                 diaDeSpa.setCodPack(codPackGenerado);
                 
-                // Guardar las sesiones asociadas
                 if (diaDeSpa.getSesiones() != null && !diaDeSpa.getSesiones().isEmpty()) {
                     for (Turno sesion : diaDeSpa.getSesiones()) {
                         turnoData.guardarSesionConPack(sesion, codPackGenerado);
@@ -209,10 +208,8 @@ public class DiaDeSpaData {
 
             for (Turno sesion : diaDeSpa.getSesiones()) {
                 if (sesion.getCodSesion() > 0) {
-                    // Sesión existente - actualizar
                     turnoData.ActualizarTurno(sesion);
                 } else {
-                    // Nueva sesión - guardar
                     turnoData.guardarSesionConPack(sesion, diaDeSpa.getCodPack());
                 }
             }
@@ -220,6 +217,19 @@ public class DiaDeSpaData {
             JOptionPane.showMessageDialog(null, "Error al actualizar sesiones: " + e.getMessage());
         }
     }
+    public void actualizarMontoDiaDeSpa(int codPack, double monto) {
+        try {
+            String sql = "UPDATE dia_de_spa SET monto = ? WHERE codPack = ?";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setDouble(1, monto);
+            ps.setInt(2, codPack);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar monto: " + ex.getMessage());
+        }
+ 
+}
 
     public void eliminarDiaDeSpa(int codPack) {
         String sql = "DELETE FROM dia_de_spa WHERE codPack = ?";
@@ -385,7 +395,7 @@ public class DiaDeSpaData {
         }
         return total;
     }
-    //Generar informe de días de spa en una fecha especifica
+
 
     public List<Object[]> generarInformeDiasDeSpaPorFecha(java.sql.Date fecha) {
         String sql = "SELECT d.codPack, c.NombreCompleto as cliente, d.fechaYHora, "
@@ -421,8 +431,7 @@ public class DiaDeSpaData {
         return resultados;
     }
 
-    //Listar dias de spa con detalles completos por fecha
-     
+
     public List<DiaDeSpa> listarDiasDeSpaCompletosPorFecha(java.sql.Date fecha) {
         String sql = "SELECT d.*, c.* FROM dia_de_spa d "
                 + "JOIN cliente c ON d.codCli = c.codCli "
@@ -436,7 +445,6 @@ public class DiaDeSpaData {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                // Crear cliente
                 Cliente cliente = new Cliente(
                         rs.getInt("DNI"),
                         rs.getString("NombreCompleto"),
@@ -447,10 +455,8 @@ public class DiaDeSpaData {
                 );
                 cliente.setCodCli(rs.getInt("codCli"));
 
-                // Obtener sesiones
                 List<Turno> sesiones = turnoData.buscarSesionesPorDiaSpa(rs.getInt("codPack"));
 
-                // Crear dia de spa
                 DiaDeSpa diaDeSpa = new DiaDeSpa(
                         rs.getTimestamp("fechaYHora").toLocalDateTime(),
                         rs.getString("preferencias"),
