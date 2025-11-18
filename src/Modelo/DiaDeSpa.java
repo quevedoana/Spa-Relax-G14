@@ -30,7 +30,7 @@ public class DiaDeSpa {
         this.fechaYHora = fechaYHora;
         this.preferencias = preferencias;
         this.monto = monto;
-        this.estado = true;
+        this.estado = estado;
         this.c = c;
         this.sesiones = sesiones;
     }

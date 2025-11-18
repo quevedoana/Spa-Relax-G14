@@ -190,12 +190,10 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBSalir))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(164, Short.MAX_VALUE)
+                    .addComponent(jBSalir)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(27, 27, 27)
                         .addComponent(jDDiaDeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -384,7 +382,6 @@ private void armarCabecera() {
         modelo.addColumn("Preferencias");
         modelo.addColumn("Cliente");
         modelo.addColumn("Estado");
-
         modelo.addColumn("Monto");
 
         jTDiaDeSpa.setModel(modelo);
@@ -402,7 +399,7 @@ private void armarCabecera() {
                 activo = "Inactivo";
             }
 
-            modelo.addRow(new Object[]{d.getCodPack(), d.getFechaYHora(), d.getPreferencias(), d.getCliente().getNombreCompleto(), activo, d.getMonto()});
+            modelo.addRow(new Object[]{d.getCodPack(), d.getFechaYHora(), d.getPreferencias(), d.getCliente().getCodCli(), activo, d.getMonto()});
         }
     }
 
@@ -426,7 +423,7 @@ private void armarCabecera() {
                 } else {
                     activo = "Inactivo";
                 }
-                modelo.addRow(new Object[]{diadespa.getCodPack(), diadespa.getFechaYHora(), diadespa.getPreferencias(), diadespa.getCliente().getNombreCompleto(), activo, diadespa.getMonto()});
+                modelo.addRow(new Object[]{diadespa.getCodPack(), diadespa.getFechaYHora(), diadespa.getPreferencias(), diadespa.getCliente().getCodCli(), activo, diadespa.getMonto()});
 
                 jDDiaDeSpa.setDate(null);
             }
@@ -466,32 +463,61 @@ private void armarCabecera() {
         }
     }
 
-    void guardarCambiosDesdeTabla() {
-        int filaSeleccionada = jTDiaDeSpa.getSelectedRow();
+    private void guardarCambiosDesdeTabla() {
 
-        try {
-            int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
-            LocalDateTime fechaYHora = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
-            String preferencias = modelo.getValueAt(filaSeleccionada, 2).toString().trim();
-            int codCli = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString());
-            String estadoStr = modelo.getValueAt(filaSeleccionada, 4).toString();
-            int codSesion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 5).toString());
-            double monto = Double.parseDouble(modelo.getValueAt(filaSeleccionada, 6).toString().trim());
-            boolean estado = estadoStr.equals("Activo");
+    int fila = jTDiaDeSpa.getSelectedRow();
 
-            DiaDeSpa diadespaactualizado = new DiaDeSpa(fechaYHora, preferencias, monto, estado, cd.buscarCliente(codCli), sd.ListarTurnos());
-            diadespaactualizado.setCodPack(codPack);
-
-            diadespadata.actualizarDiaDeSpa(diadespaactualizado);
-
-            JOptionPane.showMessageDialog(this, "Día de spa actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            cargarDatos();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar día de spa: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un día de spa.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
     }
+
+    try {
+
+        //Tomar datos de la tabla
+        int codPack = Integer.parseInt(modelo.getValueAt(fila, 0).toString());
+
+        Object valorFecha = modelo.getValueAt(fila, 1);
+        LocalDateTime fechaYHora = null;
+
+        if (valorFecha instanceof Timestamp) {
+            fechaYHora = ((Timestamp) valorFecha).toLocalDateTime();
+        } else if (valorFecha instanceof java.util.Date) {
+            fechaYHora = ((java.util.Date) valorFecha).toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+        } else {
+            fechaYHora = LocalDateTime.parse(valorFecha.toString().trim());
+        }
+
+        String preferencias = modelo.getValueAt(fila, 2).toString().trim();
+        int codCli = Integer.parseInt(modelo.getValueAt(fila, 3).toString());
+
+        String estadoStr = modelo.getValueAt(fila, 4).toString();
+        boolean estado = estadoStr.equalsIgnoreCase("Activo");
+
+        double monto = Double.parseDouble(modelo.getValueAt(fila, 5).toString());
+
+        
+        DiaDeSpa dia = new DiaDeSpa();
+        dia.setCodPack(codPack);
+        dia.setFechaYHora(fechaYHora);
+        dia.setPreferencias(preferencias);
+        dia.setCliente(cd.buscarCliente(codCli));
+        dia.setMonto(monto);
+        dia.setEstado(estado);
+
+        
+        diadespadata.actualizarDiaDeSpa(dia);
+
+        
+
+        cargarDatos();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al actualizar día de spa:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     private void cambiarEstadoDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
@@ -516,26 +542,23 @@ private void armarCabecera() {
 
         aux.setFechaYHora(fechaHora);
 
-        aux.setCodPack((int) modelo.getValueAt(fila, 0));
+        aux.setCodPack(Integer.parseInt(modelo.getValueAt(fila, 0).toString()));
         aux.setFechaYHora(fechaHora);
         aux.setPreferencias((String) modelo.getValueAt(fila, 2));
-        aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
+        aux.setCliente(cd.buscarCliente(Integer.parseInt(modelo.getValueAt(fila, 3).toString())));
         aux.setSesiones(sd.ListarTurnos());
-        aux.setMonto((double) modelo.getValueAt(fila, 6));
-
+        aux.setMonto(Double.parseDouble(modelo.getValueAt(fila, 5).toString()));
+        
+        String estadoActual = modelo.getValueAt(fila, 4).toString();
         String nuevoEstado = (String) jCEstado.getSelectedItem();
-        boolean estadoBoolean = nuevoEstado.equals("Activo");
+        boolean estadoBoolean = nuevoEstado.equalsIgnoreCase("Activo");
+         if (estadoActual.equalsIgnoreCase(nuevoEstado)) {
+        JOptionPane.showMessageDialog(this, "El dia de spa ya está en ese estado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
 
         try {
-            if (estadoBoolean) {
-
-                diadespadata.habilitarDiaDeSpa(aux);
-
-            } else {
-
-                diadespadata.deshabilitarDiaDeSpa(aux);
-
-            }
+           diadespadata.cambiarEstadoDiaDeSpa(aux.getCodPack(),estadoBoolean);
             cargarDatos();
 
             JOptionPane.showMessageDialog(this, "Estado del día de spa cambio a: " + nuevoEstado, "Exito", JOptionPane.INFORMATION_MESSAGE);
