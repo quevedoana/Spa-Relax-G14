@@ -33,8 +33,31 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         initComponents();
         armarCabecera();
         cargarDatos();
+        deshabilitarBotones();
+        jTCliente.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int filaSeleccionada = jTCliente.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                habilitarBotones();
+            } else {
+                deshabilitarBotones();
+            }
+        }
+    });
     }
-
+private void deshabilitarBotones() {
+        
+        jBBorrar.setEnabled(false);
+        jBActualizar.setEnabled(false);
+        jBEstado.setEnabled(false);
+        jCEstado.setEnabled(false);
+    }
+    private void habilitarBotones() {
+        jBBorrar.setEnabled(true);
+        jBActualizar.setEnabled(true);
+        jBEstado.setEnabled(true);
+        jCEstado.setEnabled(true);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
