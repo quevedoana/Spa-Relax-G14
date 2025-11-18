@@ -93,7 +93,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     }
 
     private Cliente obtenerClienteSeleccionado() {
-        if (jCCliente.getSelectedIndex() == 0) {
+        if (jCCliente.getSelectedIndex() == -1) {
             return null;
         }
 
@@ -106,7 +106,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void crearDiaDeSpa() {
         try {
-            if (jCCliente.getSelectedIndex() == 0) {
+            if (jCCliente.getSelectedIndex() == -1) {
                 JOptionPane.showMessageDialog(this, "Seleccione un cliente");
                 return;
             }
@@ -135,7 +135,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
             nuevoDia.setPreferencias(txtPreferencias.getText().trim());
             nuevoDia.setCliente(cliente);
             nuevoDia.setEstado(true);
-            nuevoDia.setMonto(0.0); //despues con los turnoa
+            nuevoDia.setMonto(0.0); 
             nuevoDia.setSesiones(new ArrayList<>()); 
 
             diaSpaData.guardarDiaDeSpa(nuevoDia);
@@ -373,6 +373,7 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void btnCancelarDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDiaActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelarDiaActionPerformed
 
 

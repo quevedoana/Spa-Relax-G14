@@ -225,17 +225,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     }
 
     private void abrirAgregarDiaDeSpa(String tipoReserva) {
-        String mensaje = "";
-        if (tipoReserva.equals("tratamiento")) {
-            mensaje = "Para reservar el tratamiento '" + tratamientoPendiente.getNombre()
-                    + "', primero debe crear su Día de Spa.";
-        } else {
-            mensaje = "Para reservar una instalación, primero debe crear su Día de Spa.";
-        }
-
-        JOptionPane.showMessageDialog(this, mensaje,
-                "Crear Día de Spa", JOptionPane.INFORMATION_MESSAGE);
-
+        
         AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this);
         agregarDiaSpa.setVisible(true);
 
