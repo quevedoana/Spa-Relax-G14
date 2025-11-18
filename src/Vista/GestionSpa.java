@@ -39,15 +39,15 @@ public class GestionSpa extends javax.swing.JFrame {
         jMCliente = new javax.swing.JMenuItem();
         btnGestionConsultorios = new javax.swing.JMenuItem();
         btnVerTratamientos = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu10 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        btnConsultarTurnos = new javax.swing.JCheckBoxMenuItem();
         jMenu9 = new javax.swing.JMenu();
         itemConsultas = new javax.swing.JMenuItem();
         intemConsultarDiaDeSpa = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
-        btnConsultarTurnos = new javax.swing.JCheckBoxMenuItem();
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -90,6 +90,14 @@ public class GestionSpa extends javax.swing.JFrame {
         });
         jMenu1.add(btnVerTratamientos);
 
+        jMenuItem4.setText("Gestionar spa");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
+
         jMenuItem1.setText("Gestion Instalación");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,20 +116,21 @@ public class GestionSpa extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu10.setText("Spa");
+        jMenu10.setText("Sacar Turno");
         jMenu10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu10ActionPerformed(evt);
             }
         });
 
-        jMenuItem4.setText("Gestionar spa");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        btnConsultarTurnos.setSelected(true);
+        btnConsultarTurnos.setText("Consultar Turnos");
+        btnConsultarTurnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                btnConsultarTurnosActionPerformed(evt);
             }
         });
-        jMenu10.add(jMenuItem4);
+        jMenu10.add(btnConsultarTurnos);
 
         jMenuBar1.add(jMenu10);
 
@@ -155,15 +164,6 @@ public class GestionSpa extends javax.swing.JFrame {
             }
         });
         jMenu9.add(jMenuItem5);
-
-        btnConsultarTurnos.setSelected(true);
-        btnConsultarTurnos.setText("Consultar Turnos");
-        btnConsultarTurnos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultarTurnosActionPerformed(evt);
-            }
-        });
-        jMenu9.add(btnConsultarTurnos);
 
         jMenuBar1.add(jMenu9);
 
