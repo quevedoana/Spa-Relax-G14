@@ -493,7 +493,7 @@ private void armarCabecera() {
 
         try {
             int codcli = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
-            int dni = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
+            long dni = Long.parseLong(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
             String nombreCompleto = modelo.getValueAt(filaSeleccionada, 2).toString().trim();
             long telefono = Long.parseLong(modelo.getValueAt(filaSeleccionada, 3).toString().trim());
             int edad = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 4).toString().trim());

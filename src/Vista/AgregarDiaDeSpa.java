@@ -32,16 +32,24 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
     private VistaTurno vistaTurnoPadre;
 
 
-      public AgregarDiaDeSpa() {
-        this(null);
+      public AgregarDiaDeSpa(Long dni) {
+        this(null,dni);
     }
-    public AgregarDiaDeSpa(VistaTurno vistaTurnoPadre) {
+       public AgregarDiaDeSpa() {
+        this(null,null);
+    }
+    public AgregarDiaDeSpa(VistaTurno vistaTurnoPadre,Long dni) {
         initComponents();
         this.vistaTurnoPadre = vistaTurnoPadre;
         jSHora.setModel(new javax.swing.SpinnerDateModel());
         JSpinner.DateEditor editor = new JSpinner.DateEditor(jSHora, "HH:mm");
         jSHora.setEditor(editor);
-        cargarClientes();
+        if(dni!= null){
+        cargarCliente(dni);
+        }
+        else{
+           cargarClientes();
+        }
         
         setTitle("Crear Dia de Spa");
         
@@ -57,6 +65,16 @@ public class AgregarDiaDeSpa extends javax.swing.JInternalFrame {
         for (Cliente cliente : listaClientes) {
             jCCliente.addItem(cliente.getNombreCompleto() + " - DNI: " + cliente.getDni());
         }
+    }
+     public void cargarCliente(long dni) {
+        jCCliente.removeAllItems();
+        jCCliente.removeAllItems();
+
+        Cliente cliente = clienteData.buscarClientePorDni(dni);
+
+        
+            jCCliente.addItem(cliente.getNombreCompleto() + " - DNI: " + cliente.getDni());
+        
     }
 
     private LocalDateTime obtenerFechaHoraDesdeUI() {

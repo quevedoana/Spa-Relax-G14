@@ -491,6 +491,10 @@ private void armarCabecera() {
         }
 
         String preferencias = modelo.getValueAt(fila, 2).toString().trim();
+        if (!preferencias.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
+                JOptionPane.showMessageDialog(this, "Las preferencias solo deben contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         int codCli = Integer.parseInt(modelo.getValueAt(fila, 3).toString());
 
         String estadoStr = modelo.getValueAt(fila, 4).toString();

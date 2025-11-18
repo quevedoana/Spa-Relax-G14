@@ -34,6 +34,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     };
     private DiaDeSpa diaDeSpaActual;
     private Tratamiento tratamientoPendiente;
+     
 
     /**
      * Creates new form VistaSesion
@@ -113,6 +114,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
             if (respuesta == JOptionPane.YES_OPTION) {
                 abrirAgregarCliente();
+                
             }
             return;
         }
@@ -142,6 +144,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
     private void mostrarSeleccionDiaDeSpa(List<DiaDeSpa> diasSpa, Cliente cliente) {
         String[] opciones = new String[diasSpa.size() + 1];
+        
         for (int i = 0; i < diasSpa.size(); i++) {
             DiaDeSpa dia = diasSpa.get(i);
             String fechaStr = dia.getFechaYHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
@@ -164,7 +167,9 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         }
 
         if (seleccion.equals("Crear nuevo día de spa")) {
-            abrirAgregarDiaDeSpa("nuevo");
+           
+            abrirAgregarDiaDeSpa("nuevo",cliente.getDni());
+            
         } else {
 
             int codPack = Integer.parseInt(seleccion.split("#")[1].split(" ")[0]);
@@ -232,9 +237,9 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         }
     }
 
-    private void abrirAgregarDiaDeSpa(String tipoReserva) {
-        
-        AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this);
+    private void abrirAgregarDiaDeSpa(String tipoReserva, long dni) {
+        AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this,dni);
+       
         agregarDiaSpa.setVisible(true);
 
         javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
@@ -245,6 +250,24 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         agregarDiaSpa.setLocation((desktopSize.width - jifSize.width) / 2,
                 (desktopSize.height - jifSize.height) / 2);
         agregarDiaSpa.toFront();
+        
+      
+    }
+    private void abrirAgregarDiaDeSpa(String tipoReserva) {
+        AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this,null);
+       
+        agregarDiaSpa.setVisible(true);
+
+        javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+        desktop.add(agregarDiaSpa);
+
+        java.awt.Dimension desktopSize = desktop.getSize();
+        java.awt.Dimension jifSize = agregarDiaSpa.getSize();
+        agregarDiaSpa.setLocation((desktopSize.width - jifSize.width) / 2,
+                (desktopSize.height - jifSize.height) / 2);
+        agregarDiaSpa.toFront();
+        
+      
     }
 
     private void abrirAgregarCliente() {
