@@ -138,7 +138,6 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Dni:");
 
-        jTDni.setBackground(new java.awt.Color(153, 204, 255));
         jTDni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTDniActionPerformed(evt);
@@ -147,18 +146,11 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
 
         jLabel6.setForeground(new java.awt.Color(255, 102, 51));
 
-        jTNombreC.setBackground(new java.awt.Color(153, 204, 255));
         jTNombreC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTNombreCActionPerformed(evt);
             }
         });
-
-        jTTelefono.setBackground(new java.awt.Color(153, 204, 255));
-
-        jTEdad.setBackground(new java.awt.Color(153, 204, 255));
-
-        jTAfecciones.setBackground(new java.awt.Color(153, 204, 255));
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));

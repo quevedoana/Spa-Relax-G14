@@ -455,7 +455,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Para Consultas o mas Informacion, contactanos!");
 
-        btnSalir.setBackground(new java.awt.Color(0, 153, 204));
+        btnSalir.setBackground(new java.awt.Color(0, 153, 255));
+        btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("X");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {

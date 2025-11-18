@@ -97,8 +97,6 @@ private void deshabilitarBotones() {
         jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setText("ID:");
 
-        jTId.setBackground(new java.awt.Color(153, 204, 255));
-
         jBBuscar.setBackground(new java.awt.Color(0, 153, 255));
         jBBuscar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBBuscar.setForeground(new java.awt.Color(255, 255, 255));
