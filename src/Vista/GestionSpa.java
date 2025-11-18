@@ -33,7 +33,7 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
-        escritorio = new javax.swing.JDesktopPane();
+        escritorio = escritorio = new Vista.EscritorioConFondo();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMCliente = new javax.swing.JMenuItem();
