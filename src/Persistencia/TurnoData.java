@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -416,6 +417,57 @@ public class TurnoData {
             JOptionPane.showMessageDialog(null, "Error al eliminar sesiones del día de spa: " + e.getMessage());
         }
     }
+    //controles de dia y horario
+    // Devuelve true si existe al menos una sesión activa que solapa (inicio, fin) para la instalación dada.
+public boolean existeSolapamientoInstalacion(int codInstalacion, LocalDateTime inicio, LocalDateTime fin) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM sesion " +
+                 "WHERE codInstalacion = ? AND estado = 1 AND (fechaYHoraInicio < ? AND fechaYHoraFin > ?)";
+    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setInt(1, codInstalacion);
+        ps.setTimestamp(2, Timestamp.valueOf(fin));
+        ps.setTimestamp(3, Timestamp.valueOf(inicio));
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
+
+// Para consultorio (nroConsultorio)
+public boolean existeSolapamientoConsultorio(int nroConsultorio, LocalDateTime inicio, LocalDateTime fin) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM sesion " +
+                 "WHERE nroConsultorio = ? AND estado = 1 AND (fechaYHoraInicio < ? AND fechaYHoraFin > ?)";
+    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setInt(1, nroConsultorio);
+        ps.setTimestamp(2, Timestamp.valueOf(fin));
+        ps.setTimestamp(3, Timestamp.valueOf(inicio));
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
+
+// Para especialista (matrícula)
+public boolean existeSolapamientoEspecialista(String matricula, LocalDateTime inicio, LocalDateTime fin) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM sesion " +
+                 "WHERE matriculaMasajista = ? AND estado = 1 AND (fechaYHoraInicio < ? AND fechaYHoraFin > ?)";
+    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setString(1, matricula);
+        ps.setTimestamp(2, Timestamp.valueOf(fin));
+        ps.setTimestamp(3, Timestamp.valueOf(inicio));
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
 
    
 

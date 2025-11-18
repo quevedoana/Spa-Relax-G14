@@ -14,6 +14,9 @@ import Persistencia.ConsultorioData;
 import Persistencia.DiaDeSpaData;
 import Persistencia.InstalacionData;
 import Persistencia.TurnoData;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -108,19 +111,46 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                 comboInstalaciones.addItem(inst.getNombre());
             }
         }
-        comboHorarios.removeAllItems();
+        cargarHorariosSegunDiaDeSpaInstalacion();
+    }
+private void cargarHorariosSegunDiaDeSpaInstalacion() {
+    comboHorarios.removeAllItems();
 
-        
-        String[] horarios = {
-            "09:00", "10:00", "11:00", "12:00",
-            "14:00", "15:00", "16:00", "17:00", "18:00"
-        };
+    String[] horarios = {
+        "09:00", "10:00", "11:00", "12:00",
+        "14:00", "15:00", "16:00", "17:00", "18:00"
+    };
 
-        for (String horario : horarios) {
-            comboHorarios.addItem(horario);
+    LocalTime horaMinima = null;
+    if (diaDeSpa != null && diaDeSpa.getFechaYHora() != null) {
+        horaMinima = diaDeSpa.getFechaYHora().toLocalTime();
+    }
+
+    boolean added = false;
+
+    for (String horario : horarios) {
+        try {
+            String[] parts = horario.split(":");
+            int h = Integer.parseInt(parts[0].trim());
+            int m = Integer.parseInt(parts[1].trim());
+            LocalTime t = LocalTime.of(h, m);
+
+            // Si no hay hora mínima → mostrar todos
+            // Si la hay → solo horarios >= horaMinima
+            if (horaMinima == null || !t.isBefore(horaMinima)) {
+                comboHorarios.addItem(horario);
+                added = true;
+            }
+
+        } catch (NumberFormatException | DateTimeException ex) {
+            System.err.println("Horario inválido: " + horario + " -> " + ex.getMessage());
         }
     }
 
+    if (!added) {
+        comboHorarios.addItem("No hay horarios disponibles");
+    }
+}
     private void cargarDatosIniciales() {
         
         comboEspecialistas.removeAllItems();
@@ -158,19 +188,47 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         }
 
         
-        comboHorarios.removeAllItems();
+        cargarHorariosSegunDiaDeSpa();
+    }
+//para cargar el combo horarios
+    private void cargarHorariosSegunDiaDeSpa() {
+    comboHorarios.removeAllItems();
 
-       
-        String[] horarios = {
-            "09:00", "10:00", "11:00", "12:00",
-            "14:00", "15:00", "16:00", "17:00", "18:00"
-        };
+    // Horarios estáticos que usabas
+    String[] horarios = {
+        "09:00", "10:00", "11:00", "12:00",
+        "14:00", "15:00", "16:00", "17:00", "18:00"
+    };
 
-        for (String horario : horarios) {
+    // Obtener la hora mínima permitida desde diaDeSpa (si existe)
+    LocalTime horaMinima = null;
+    if (diaDeSpa != null && diaDeSpa.getFechaYHora() != null) {
+        horaMinima = diaDeSpa.getFechaYHora().toLocalTime();
+    }
+
+    boolean any = false;
+    for (String horario : horarios) {
+        if (horaMinima == null) {
             comboHorarios.addItem(horario);
+            any = true;
+        } else {
+            // parsear horario y comparar
+            String[] parts = horario.split(":");
+            int h = Integer.parseInt(parts[0]);
+            int m = Integer.parseInt(parts[1]);
+            LocalTime t = LocalTime.of(h, m);
+
+            if (!t.isBefore(horaMinima)) { // t >= horaMinima
+                comboHorarios.addItem(horario);
+                any = true;
+            }
         }
     }
 
+    if (!any) {
+        comboHorarios.addItem("No hay horarios disponibles en ese día/hora");
+    }
+}
     private void calcularTotal() {
         double total = 0.0;
 
@@ -267,7 +325,16 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                     diaDeSpa,
                     true
             );
-
+            // 1) comprobar solapamiento en la instalación seleccionada
+try {
+    if (turnoData.existeSolapamientoInstalacion(instalacionSeleccionada.getCodInstal(), fechaHoraInicio, fechaHoraFin)) {
+        JOptionPane.showMessageDialog(this, "La instalación seleccionada ya está ocupada en ese horario.");
+        return;
+    }
+} catch (SQLException ex) {
+    JOptionPane.showMessageDialog(this, "Error al verificar disponibilidad de la instalación: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
             turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
 
  
@@ -383,7 +450,44 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                     diaDeSpa,
                     true
             );
-            System.out.println("DEBUG - fecha inicio turno = " + nuevoTurno.getFechaYHoraDeInicio());
+           //System.out.println("DEBUG - fecha inicio turno = " + nuevoTurno.getFechaYHoraDeInicio());
+           if (consultorioSeleccionado != null) {
+    try {
+        if (turnoData.existeSolapamientoConsultorio(consultorioSeleccionado.getNroConsultorio(), fechaHoraInicio, fechaHoraFin)) {
+            JOptionPane.showMessageDialog(this, "El consultorio seleccionado ya está ocupado en ese horario.");
+            return;
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al verificar disponibilidad de consultorio: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+}
+
+// Verificar especialista
+if (especialistaSeleccionado != null) {
+    try {
+        if (turnoData.existeSolapamientoEspecialista(especialistaSeleccionado.getMatricula(), fechaHoraInicio, fechaHoraFin)) {
+            JOptionPane.showMessageDialog(this, "El especialista ya tiene una sesión en ese horario.");
+            return;
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al verificar disponibilidad del especialista: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+}
+
+// Verificar instalación (si aplica)
+if (instalacionSeleccionada != null) {
+    try {
+        if (turnoData.existeSolapamientoInstalacion(instalacionSeleccionada.getCodInstal(), fechaHoraInicio, fechaHoraFin)) {
+            JOptionPane.showMessageDialog(this, "La instalación seleccionada ya está ocupada en ese horario.");
+            return;
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al verificar disponibilidad de la instalación: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+}
             turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
 
             montoAcumulado += costoServicio;
@@ -408,6 +512,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
 
     
 
