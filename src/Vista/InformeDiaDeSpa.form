@@ -216,19 +216,10 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTotalDiasLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel5"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblIngresos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel6"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblClientes">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel7"/>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>

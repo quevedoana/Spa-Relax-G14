@@ -190,12 +190,6 @@ public class InformeDiaDeSpa extends javax.swing.JInternalFrame {
 
         lblClientesLabel.setText("Cantidad de Clientes: ");
 
-        lblTotalDiasLabel.setText("jLabel5");
-
-        lblIngresos.setText("jLabel6");
-
-        lblClientes.setText("jLabel7");
-
         javax.swing.GroupLayout panelResumenLayout = new javax.swing.GroupLayout(panelResumen);
         panelResumen.setLayout(panelResumenLayout);
         panelResumenLayout.setHorizontalGroup(
