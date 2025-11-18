@@ -386,7 +386,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(tablaTratamientos);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel3.setForeground(new java.awt.Color(0, 153, 255));
         jLabel3.setText("<html>Servicios Disponibles</html>");
 
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
@@ -422,7 +422,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         });
 
-        btnReservar.setBackground(new java.awt.Color(255, 153, 102));
+        btnReservar.setBackground(new java.awt.Color(0, 153, 255));
         btnReservar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnReservar.setForeground(new java.awt.Color(255, 255, 255));
         btnReservar.setText("Reservar Tratamiento");
@@ -432,7 +432,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         });
 
-        btnContacto.setBackground(new java.awt.Color(255, 153, 102));
+        btnContacto.setBackground(new java.awt.Color(0, 153, 255));
         btnContacto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnContacto.setForeground(new java.awt.Color(255, 255, 255));
         btnContacto.setText("Contacto");
@@ -442,7 +442,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         });
 
-        btnConsultar.setBackground(new java.awt.Color(255, 153, 102));
+        btnConsultar.setBackground(new java.awt.Color(0, 153, 255));
         btnConsultar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultar.setText("Consultar");
@@ -455,7 +455,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Para Consultas o mas Informacion, contactanos!");
 
-        btnSalir.setBackground(new java.awt.Color(255, 153, 102));
+        btnSalir.setBackground(new java.awt.Color(0, 153, 204));
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("X");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -464,7 +464,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         });
 
-        btnReservaInstalacion.setBackground(new java.awt.Color(255, 153, 102));
+        btnReservaInstalacion.setBackground(new java.awt.Color(0, 153, 255));
         btnReservaInstalacion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnReservaInstalacion.setForeground(new java.awt.Color(255, 255, 255));
         btnReservaInstalacion.setText("Reservar Instalacion");

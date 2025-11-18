@@ -157,7 +157,7 @@ public class InformeDiaDeSpa extends javax.swing.JInternalFrame {
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 153, 51));
+        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setText("Seleccione la fecha: ");
 
         btnGenerar.setText("Generar Informe");
@@ -180,14 +180,17 @@ public class InformeDiaDeSpa extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        panelResumen.setBackground(new java.awt.Color(255, 153, 102));
+        panelResumen.setBackground(new java.awt.Color(0, 153, 255));
         panelResumen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "RESUMEN DEL DIA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         panelResumen.setForeground(new java.awt.Color(255, 255, 255));
 
+        lblTituloResumen.setForeground(new java.awt.Color(255, 255, 255));
         lblTituloResumen.setText("Total Dias de Spa: ");
 
+        lblIngresosLabel.setForeground(new java.awt.Color(255, 255, 255));
         lblIngresosLabel.setText("Ingresos totales:");
 
+        lblClientesLabel.setForeground(new java.awt.Color(255, 255, 255));
         lblClientesLabel.setText("Cantidad de Clientes: ");
 
         lblTotalDiasLabel.setText("jLabel5");
@@ -232,7 +235,7 @@ public class InformeDiaDeSpa extends javax.swing.JInternalFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 153, 0));
+        jLabel2.setForeground(new java.awt.Color(0, 153, 255));
         jLabel2.setText("INFORME DIARIO DE DIAS DE SPA");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

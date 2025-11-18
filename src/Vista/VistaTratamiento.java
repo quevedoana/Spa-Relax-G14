@@ -162,13 +162,14 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setBackground(new java.awt.Color(255, 102, 51));
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
-        jLabel1.setText("<html><u>TRATAMIENTOS</u></html>");
+        jLabel1.setBackground(new java.awt.Color(0, 153, 255));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
+        jLabel1.setText("TRATAMIENTOS");
 
-        btnEliminarTrata.setBackground(new java.awt.Color(255, 153, 102));
-        btnEliminarTrata.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminarTrata.setBackground(new java.awt.Color(0, 153, 255));
+        btnEliminarTrata.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminarTrata.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarTrata.setText("Eliminar");
         btnEliminarTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,8 +177,9 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        btnModificarTrata.setBackground(new java.awt.Color(255, 153, 102));
-        btnModificarTrata.setForeground(new java.awt.Color(0, 0, 0));
+        btnModificarTrata.setBackground(new java.awt.Color(0, 153, 255));
+        btnModificarTrata.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnModificarTrata.setForeground(new java.awt.Color(255, 255, 255));
         btnModificarTrata.setText("Modificar");
         btnModificarTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,8 +187,9 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        btnActualizarTablaTrata.setBackground(new java.awt.Color(255, 153, 102));
-        btnActualizarTablaTrata.setForeground(new java.awt.Color(0, 0, 0));
+        btnActualizarTablaTrata.setBackground(new java.awt.Color(0, 153, 255));
+        btnActualizarTablaTrata.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnActualizarTablaTrata.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizarTablaTrata.setText("Actualizar");
         btnActualizarTablaTrata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,9 +197,9 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAgregarTratam.setBackground(new java.awt.Color(255, 153, 102));
-        btnAgregarTratam.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnAgregarTratam.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgregarTratam.setBackground(new java.awt.Color(0, 153, 255));
+        btnAgregarTratam.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAgregarTratam.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarTratam.setText("Agregar Tratamiento");
         btnAgregarTratam.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         btnAgregarTratam.addActionListener(new java.awt.event.ActionListener() {
@@ -205,8 +208,9 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         });
 
-        Salir.setBackground(new java.awt.Color(255, 153, 102));
-        Salir.setForeground(new java.awt.Color(0, 0, 0));
+        Salir.setBackground(new java.awt.Color(0, 153, 255));
+        Salir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Salir.setForeground(new java.awt.Color(255, 255, 255));
         Salir.setText("X");
         Salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,21 +225,23 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(78, 78, 78)
                 .addComponent(btnEliminarTrata)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(92, 92, 92)
                 .addComponent(btnModificarTrata)
-                .addGap(108, 108, 108)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnActualizarTablaTrata)
                 .addGap(76, 76, 76))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(135, 135, 135)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnFacial)
                         .addGap(18, 18, 18)
                         .addComponent(btnCorporal)
                         .addGap(18, 18, 18)
-                        .addComponent(btnRelajacion)))
+                        .addComponent(btnRelajacion))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(13, 13, 13)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -251,8 +257,8 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
                         .addGap(16, 16, 16)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(239, 239, 239)
-                        .addComponent(btnAgregarTratam, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(219, 219, 219)
+                        .addComponent(btnAgregarTratam, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -261,7 +267,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(Salir)))
@@ -278,9 +284,9 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
                     .addComponent(btnEliminarTrata)
                     .addComponent(btnModificarTrata)
                     .addComponent(btnActualizarTablaTrata))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(btnAgregarTratam, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -241,7 +241,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel8.setForeground(new java.awt.Color(0, 153, 255));
         jLabel8.setText("Consulta Seleccionada:");
 
         textConsultaSeleccionada.setColumns(20);
@@ -249,30 +249,30 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(textConsultaSeleccionada);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel9.setForeground(new java.awt.Color(0, 153, 255));
         jLabel9.setText("1. Especialistas por Especialidad");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel10.setForeground(new java.awt.Color(0, 153, 255));
         jLabel10.setText("2. Tratamientos por Tipo");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel11.setForeground(new java.awt.Color(0, 153, 255));
         jLabel11.setText("3. Especialistas Libres");
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel12.setForeground(new java.awt.Color(0, 153, 255));
         jLabel12.setText("4. Instalaciones Libres");
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel13.setForeground(new java.awt.Color(0, 153, 255));
         jLabel13.setText("5. Tratamientos mas Seleccionados");
 
         comboEspecialidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         comboTiposTratam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        btnConsultarEspecialistas1.setBackground(new java.awt.Color(255, 153, 102));
+        btnConsultarEspecialistas1.setBackground(new java.awt.Color(0, 153, 255));
         btnConsultarEspecialistas1.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultarEspecialistas1.setText("Consultar");
         btnConsultarEspecialistas1.addActionListener(new java.awt.event.ActionListener() {
@@ -281,7 +281,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             }
         });
 
-        btnConsultarTratamientos1.setBackground(new java.awt.Color(255, 153, 102));
+        btnConsultarTratamientos1.setBackground(new java.awt.Color(0, 153, 255));
         btnConsultarTratamientos1.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultarTratamientos1.setText("Consultar");
         btnConsultarTratamientos1.addActionListener(new java.awt.event.ActionListener() {
@@ -290,7 +290,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             }
         });
 
-        btnConsultarEspacialistasLibre1.setBackground(new java.awt.Color(255, 153, 102));
+        btnConsultarEspacialistasLibre1.setBackground(new java.awt.Color(0, 153, 255));
         btnConsultarEspacialistasLibre1.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultarEspacialistasLibre1.setText("Consultar");
         btnConsultarEspacialistasLibre1.addActionListener(new java.awt.event.ActionListener() {
@@ -299,7 +299,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             }
         });
 
-        btnSalir.setBackground(new java.awt.Color(255, 153, 102));
+        btnSalir.setBackground(new java.awt.Color(0, 153, 255));
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -321,7 +321,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         ));
         jScrollPane4.setViewportView(tabla);
 
-        btnConsultarInstalacionesLibres1.setBackground(new java.awt.Color(255, 153, 102));
+        btnConsultarInstalacionesLibres1.setBackground(new java.awt.Color(0, 153, 255));
         btnConsultarInstalacionesLibres1.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultarInstalacionesLibres1.setText("Consultar");
         btnConsultarInstalacionesLibres1.addActionListener(new java.awt.event.ActionListener() {
@@ -338,7 +338,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jLabel16.setForeground(new java.awt.Color(255, 153, 102));
         jLabel16.setText("a");
 
-        btnConsultarInformeEstadisticos2.setBackground(new java.awt.Color(255, 153, 102));
+        btnConsultarInformeEstadisticos2.setBackground(new java.awt.Color(0, 153, 255));
         btnConsultarInformeEstadisticos2.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultarInformeEstadisticos2.setText("Consultar");
         btnConsultarInformeEstadisticos2.addActionListener(new java.awt.event.ActionListener() {

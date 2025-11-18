@@ -75,7 +75,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jBBorrar.setBackground(new java.awt.Color(255, 153, 102));
+        jBBorrar.setBackground(new java.awt.Color(0, 153, 255));
         jBBorrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBBorrar.setForeground(new java.awt.Color(255, 255, 255));
         jBBorrar.setText("Borrar");
@@ -98,7 +98,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTDiaDeSpa);
 
-        jBActualizar.setBackground(new java.awt.Color(255, 153, 102));
+        jBActualizar.setBackground(new java.awt.Color(0, 153, 255));
         jBActualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBActualizar.setForeground(new java.awt.Color(255, 255, 255));
         jBActualizar.setText("Modificar");
@@ -113,7 +113,7 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
             }
         });
 
-        jBSalir.setBackground(new java.awt.Color(255, 153, 102));
+        jBSalir.setBackground(new java.awt.Color(0, 153, 255));
         jBSalir.setForeground(new java.awt.Color(255, 255, 255));
         jBSalir.setText("X");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -123,12 +123,12 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel2.setForeground(new java.awt.Color(0, 153, 255));
         jLabel2.setText("Dia de Spa");
 
         jDDiaDeSpa.setForeground(new java.awt.Color(255, 102, 51));
 
-        jBRefrescar.setBackground(new java.awt.Color(255, 153, 102));
+        jBRefrescar.setBackground(new java.awt.Color(0, 153, 255));
         jBRefrescar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBRefrescar.setForeground(new java.awt.Color(255, 255, 255));
         jBRefrescar.setText("Refrescar Tabla");
@@ -139,11 +139,11 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel3.setForeground(new java.awt.Color(0, 153, 255));
         jLabel3.setText("Fecha:");
 
         btnAgregaDia.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnAgregaDia.setForeground(new java.awt.Color(255, 153, 102));
+        btnAgregaDia.setForeground(new java.awt.Color(0, 153, 255));
         btnAgregaDia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/pngtree-lovely-girl-spa-massage-concept-illustration-png-image_6938773 (1).png"))); // NOI18N
         btnAgregaDia.setText("Contratar Dia de Spa");
         btnAgregaDia.addActionListener(new java.awt.event.ActionListener() {
@@ -165,12 +165,12 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setText("Estado");
 
         jCEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
-        jBEstado.setBackground(new java.awt.Color(255, 153, 102));
+        jBEstado.setBackground(new java.awt.Color(0, 153, 255));
         jBEstado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBEstado.setForeground(new java.awt.Color(255, 255, 255));
         jBEstado.setText("Cambiar Estado");

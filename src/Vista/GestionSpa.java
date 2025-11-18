@@ -45,7 +45,7 @@ public class GestionSpa extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         itemConsultas = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        intemConsultarDiaDeSpa = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         btnConsultarTurnos = new javax.swing.JCheckBoxMenuItem();
 
@@ -140,13 +140,13 @@ public class GestionSpa extends javax.swing.JFrame {
         });
         jMenu9.add(itemConsultas);
 
-        jMenuItem3.setText("jMenuItem3");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        intemConsultarDiaDeSpa.setText("Consultar Dia de Spa");
+        intemConsultarDiaDeSpa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                intemConsultarDiaDeSpaActionPerformed(evt);
             }
         });
-        jMenu9.add(jMenuItem3);
+        jMenu9.add(intemConsultarDiaDeSpa);
 
         jMenuItem5.setText("Informe Dias de Spa");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -302,7 +302,7 @@ public class GestionSpa extends javax.swing.JFrame {
         vc.setVisible(true);
     }//GEN-LAST:event_itemConsultasActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void intemConsultarDiaDeSpaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intemConsultarDiaDeSpaActionPerformed
         // TODO add your handling code here:
         escritorio.removeAll();
         escritorio.repaint();
@@ -316,7 +316,7 @@ public class GestionSpa extends javax.swing.JFrame {
         vc.setVisible(true);
           
         
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_intemConsultarDiaDeSpaActionPerformed
 
     private void jMenu9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu9ActionPerformed
         // TODO add your handling code here:
@@ -386,6 +386,7 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnGestionConsultorios;
     private javax.swing.JMenuItem btnVerTratamientos;
     private javax.swing.JDesktopPane escritorio;
+    private javax.swing.JMenuItem intemConsultarDiaDeSpa;
     private javax.swing.JMenuItem itemConsultas;
     private javax.swing.JMenuItem jMCliente;
     private javax.swing.JMenu jMenu1;
@@ -398,7 +399,6 @@ public class GestionSpa extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables

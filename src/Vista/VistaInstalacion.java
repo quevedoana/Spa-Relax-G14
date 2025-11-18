@@ -304,7 +304,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setText("<html><u>Gestión de instalaciones</u></html>");
 
         jTInstalacion.setModel(new javax.swing.table.DefaultTableModel(
@@ -325,8 +325,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTInstalacion);
 
-        btnBorrarInstalacion.setBackground(new java.awt.Color(255, 153, 102));
-        btnBorrarInstalacion.setForeground(new java.awt.Color(0, 0, 0));
+        btnBorrarInstalacion.setBackground(new java.awt.Color(0, 153, 255));
         btnBorrarInstalacion.setText("Borrar");
         btnBorrarInstalacion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -337,8 +336,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnRefrescar.setBackground(new java.awt.Color(255, 153, 102));
-        btnRefrescar.setForeground(new java.awt.Color(0, 0, 0));
+        btnRefrescar.setBackground(new java.awt.Color(0, 153, 255));
         btnRefrescar.setText("Refrescar Tabla");
         btnRefrescar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -346,8 +344,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnActualizarInstalacion.setBackground(new java.awt.Color(255, 153, 102));
-        btnActualizarInstalacion.setForeground(new java.awt.Color(0, 0, 0));
+        btnActualizarInstalacion.setBackground(new java.awt.Color(0, 153, 255));
         btnActualizarInstalacion.setText("Actualizar");
         btnActualizarInstalacion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -358,8 +355,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAltaBajaLogica.setBackground(new java.awt.Color(255, 153, 102));
-        btnAltaBajaLogica.setForeground(new java.awt.Color(0, 0, 0));
+        btnAltaBajaLogica.setBackground(new java.awt.Color(0, 153, 255));
         btnAltaBajaLogica.setText("Editar Estado");
         btnAltaBajaLogica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -387,8 +383,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Detalle de uso: ");
 
-        BtnAgregarAlumno.setBackground(new java.awt.Color(255, 153, 102));
-        BtnAgregarAlumno.setForeground(new java.awt.Color(0, 0, 0));
+        BtnAgregarAlumno.setBackground(new java.awt.Color(0, 153, 255));
         BtnAgregarAlumno.setText("Agregar");
         BtnAgregarAlumno.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -457,8 +452,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
-        jBSalir.setBackground(new java.awt.Color(255, 153, 102));
-        jBSalir.setForeground(new java.awt.Color(0, 0, 0));
+        jBSalir.setBackground(new java.awt.Color(0, 153, 255));
         jBSalir.setText("Salir");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -467,7 +461,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel2.setForeground(new java.awt.Color(0, 153, 255));
         jLabel2.setText("Estado:");
 
         comboEstadoInstalacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activa", "Inactiva" }));
@@ -480,8 +474,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         });
 
-        btnBuscar.setBackground(new java.awt.Color(255, 153, 102));
-        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        btnBuscar.setBackground(new java.awt.Color(0, 153, 255));
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

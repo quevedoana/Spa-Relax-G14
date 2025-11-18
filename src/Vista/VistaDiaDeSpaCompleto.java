@@ -146,7 +146,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setText("<html><u>Seleccione un dia de spa:</u></html>");
 
         jtSpa.setModel(new javax.swing.table.DefaultTableModel(
@@ -163,7 +163,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jtSpa);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel2.setForeground(new java.awt.Color(0, 153, 255));
         jLabel2.setText("<html><u>A continuacion se muestra las sesiones del dia de spa:</u></html>");
 
         jtsesion.setModel(new javax.swing.table.DefaultTableModel(
@@ -179,7 +179,7 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         ));
         jScrollPane3.setViewportView(jtsesion);
 
-        jbSalir.setBackground(new java.awt.Color(255, 153, 102));
+        jbSalir.setBackground(new java.awt.Color(0, 153, 255));
         jbSalir.setText("Salir");
         jbSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

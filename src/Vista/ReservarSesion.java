@@ -782,13 +782,13 @@ private void procesarPagoFinal() {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setText("Reservas de Servicios");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Tratamiento Seleccionado:");
 
-        textTratamientoSeleccionado.setBackground(new java.awt.Color(255, 204, 179));
+        textTratamientoSeleccionado.setBackground(new java.awt.Color(153, 204, 255));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Especialistas:");
@@ -816,7 +816,7 @@ private void procesarPagoFinal() {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Instalacion:");
 
-        btnPreciosInstalaciones.setBackground(new java.awt.Color(255, 102, 51));
+        btnPreciosInstalaciones.setBackground(new java.awt.Color(0, 153, 255));
         btnPreciosInstalaciones.setForeground(new java.awt.Color(255, 255, 255));
         btnPreciosInstalaciones.setText("Consultar Precios");
         btnPreciosInstalaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -832,12 +832,12 @@ private void procesarPagoFinal() {
             }
         });
 
-        textTotal.setBackground(new java.awt.Color(255, 204, 179));
+        textTotal.setBackground(new java.awt.Color(153, 204, 255));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Total:   $");
 
-        btnReservarTurno.setBackground(new java.awt.Color(255, 102, 51));
+        btnReservarTurno.setBackground(new java.awt.Color(0, 153, 255));
         btnReservarTurno.setForeground(new java.awt.Color(255, 255, 255));
         btnReservarTurno.setText("Reservar Servicio");
         btnReservarTurno.addActionListener(new java.awt.event.ActionListener() {

@@ -117,10 +117,10 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 153, 102));
+        jLabel5.setForeground(new java.awt.Color(0, 153, 255));
         jLabel5.setText("Agregar Cliente");
 
-        jPanel2.setBackground(new java.awt.Color(255, 153, 102));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 255));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -138,7 +138,7 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Dni:");
 
-        jTDni.setBackground(new java.awt.Color(255, 204, 179));
+        jTDni.setBackground(new java.awt.Color(153, 204, 255));
         jTDni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTDniActionPerformed(evt);
@@ -147,18 +147,18 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
 
         jLabel6.setForeground(new java.awt.Color(255, 102, 51));
 
-        jTNombreC.setBackground(new java.awt.Color(255, 204, 179));
+        jTNombreC.setBackground(new java.awt.Color(153, 204, 255));
         jTNombreC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTNombreCActionPerformed(evt);
             }
         });
 
-        jTTelefono.setBackground(new java.awt.Color(255, 204, 179));
+        jTTelefono.setBackground(new java.awt.Color(153, 204, 255));
 
-        jTEdad.setBackground(new java.awt.Color(255, 204, 179));
+        jTEdad.setBackground(new java.awt.Color(153, 204, 255));
 
-        jTAfecciones.setBackground(new java.awt.Color(255, 204, 179));
+        jTAfecciones.setBackground(new java.awt.Color(153, 204, 255));
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,14 +182,13 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel7))
                         .addGap(27, 27, 27)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTAfecciones, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTNombreC, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                                .addComponent(jTDni, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTTelefono)
-                                .addComponent(jTEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(156, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTDni, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTNombreC, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                            .addComponent(jTAfecciones))))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +218,8 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
                 .addGap(51, 51, 51))
         );
 
-        jBSalir.setBackground(new java.awt.Color(255, 153, 102));
+        jBSalir.setBackground(new java.awt.Color(0, 153, 255));
+        jBSalir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jBSalir.setForeground(new java.awt.Color(255, 255, 255));
         jBSalir.setText("X");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -228,8 +228,8 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        btnCancelarDia.setBackground(new java.awt.Color(255, 153, 102));
-        btnCancelarDia.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btnCancelarDia.setBackground(new java.awt.Color(0, 153, 255));
+        btnCancelarDia.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         btnCancelarDia.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelarDia.setText("Cancelar");
         btnCancelarDia.addActionListener(new java.awt.event.ActionListener() {
@@ -238,8 +238,8 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        jBAgregar.setBackground(new java.awt.Color(255, 153, 102));
-        jBAgregar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jBAgregar.setBackground(new java.awt.Color(0, 153, 255));
+        jBAgregar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jBAgregar.setForeground(new java.awt.Color(255, 255, 255));
         jBAgregar.setText("Agregar");
         jBAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -262,13 +262,13 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
                 .addComponent(jBAgregar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCancelarDia)
-                .addGap(94, 94, 94))
+                .addGap(121, 121, 121))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(174, 174, 174)
+                        .addGap(159, 159, 159)
                         .addComponent(jBSalir)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -280,9 +280,12 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jBSalir)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jBSalir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(12, 12, 12)))
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -297,8 +300,7 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
