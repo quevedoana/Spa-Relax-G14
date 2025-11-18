@@ -14,7 +14,9 @@ import Persistencia.ConsultorioData;
 import Persistencia.DiaDeSpaData;
 import Persistencia.InstalacionData;
 import Persistencia.TurnoData;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -211,14 +213,29 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         try {
             Instalacion instalacionSeleccionada = instalacionesDisponibles.get(comboInstalaciones.getSelectedIndex());
 
-            String horario = (String) comboHorarios.getSelectedItem();
-            LocalDateTime fechaHoraInicio = LocalDateTime.now()
-                    .withHour(Integer.parseInt(horario.split(":")[0]))
-                    .withMinute(Integer.parseInt(horario.split(":")[1]))
-                    .withSecond(0)
-                    .withNano(0);
+            // Validar formato horario
+        String horario = (String) comboHorarios.getSelectedItem();
+        if (horario == null || !horario.matches("\\d{1,2}:\\d{2}")) {
+            JOptionPane.showMessageDialog(this, "Formato de horario inválido. Use HH:mm");
+            return;
+        }
 
-            LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(60);
+        String[] parts = horario.split(":");
+        int hour = Integer.parseInt(parts[0].trim());
+        int minute = Integer.parseInt(parts[1].trim());
+        LocalTime horaSeleccionada = LocalTime.of(hour, minute);
+
+        // Usar la FECHA del diaDeSpa (diaDeSpa.getFechaYHora() es LocalDateTime)
+        LocalDate fechaReserva;
+        if (diaDeSpa != null && diaDeSpa.getFechaYHora() != null) {
+            fechaReserva = diaDeSpa.getFechaYHora().toLocalDate();
+        } else {
+            // fallback por seguridad (no debería suceder si la vista está vinculada)
+            fechaReserva = LocalDate.now();
+        }
+
+        LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaReserva, horaSeleccionada);
+        LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(60);
 
            
             double costoInstalacion = instalacionSeleccionada.getPrecio30m() * 2;
@@ -308,14 +325,30 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                 }
             }
 
-            String horario = (String) comboHorarios.getSelectedItem();
-            LocalDateTime fechaHoraInicio = LocalDateTime.now()
-                    .withHour(Integer.parseInt(horario.split(":")[0]))
-                    .withMinute(Integer.parseInt(horario.split(":")[1]))
-                    .withSecond(0)
-                    .withNano(0);
+            // ---------------------------------------------------------
+        String horario = (String) comboHorarios.getSelectedItem();
+        if (horario == null || !horario.matches("\\d{1,2}:\\d{2}")) {
+            JOptionPane.showMessageDialog(this, "Formato de horario inválido. Use HH:mm");
+            return;
+        }
 
-            LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(duracionTotal);
+        String[] parts = horario.split(":");
+        int hour = Integer.parseInt(parts[0].trim());
+        int minute = Integer.parseInt(parts[1].trim());
+        LocalTime horaSeleccionada = LocalTime.of(hour, minute);
+
+        // Extraer la fecha desde diaDeSpa.fechaYHora (es LocalDateTime)
+        LocalDate fechaReserva;
+        if (diaDeSpa != null && diaDeSpa.getFechaYHora() != null) {
+            fechaReserva = diaDeSpa.getFechaYHora().toLocalDate();
+        } else {
+            // fallback por seguridad: esto no debería pasar si tu vista está correctamente vinculada
+            fechaReserva = LocalDate.now();
+        }
+
+        LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaReserva, horaSeleccionada);
+        LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(duracionTotal);
+        // ---------------------------------------------------------
 
             double costoServicio = tratamientoSeleccionado.getCosto() + costoInstalacion;
             double totalConEsteServicio = montoAcumulado + costoServicio;
@@ -350,7 +383,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                     diaDeSpa,
                     true
             );
-
+            System.out.println("DEBUG - fecha inicio turno = " + nuevoTurno.getFechaYHoraDeInicio());
             turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
 
             montoAcumulado += costoServicio;
