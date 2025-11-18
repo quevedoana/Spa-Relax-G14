@@ -10,8 +10,10 @@ import Persistencia.ClienteData;
 import Persistencia.DiaDeSpaData;
 import Persistencia.TurnoData;
 import static java.awt.SystemColor.desktop;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -349,12 +351,12 @@ public class VistaDiaDeSpa extends javax.swing.JInternalFrame {
 
     private void jBEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEstadoActionPerformed
         // TODO add your handling code here:
-         cambiarEstadoDiaDeSpa();
+        cambiarEstadoDiaDeSpa();
     }//GEN-LAST:event_jBEstadoActionPerformed
 
     private void jBEstadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBEstadoMouseClicked
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_jBEstadoMouseClicked
 
 
@@ -409,11 +411,11 @@ private void armarCabecera() {
         try {
             java.util.Date fecha = jDDiaDeSpa.getDate();
             modelo.setRowCount(0);
-        
+
             if (fecha == null) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar la fecha", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+                JOptionPane.showMessageDialog(this, "Debe ingresar la fecha", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             java.sql.Date fechaSQL = new java.sql.Date(fecha.getTime());
             diadespa = diadespadata.buscarDiaDeSpaPorFecha(fechaSQL);
             String activo;
@@ -490,6 +492,7 @@ private void armarCabecera() {
             JOptionPane.showMessageDialog(this, "Error al actualizar día de spa: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     private void cambiarEstadoDiaDeSpa() {
         int fila = jTDiaDeSpa.getSelectedRow();
         DiaDeSpa aux = new DiaDeSpa();
@@ -497,9 +500,24 @@ private void armarCabecera() {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un día de spa", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        //validacion para la conversion del valor de la tabla
+        Object valorFecha = modelo.getValueAt(fila, 1);
+        LocalDateTime fechaHora = null;
+
+        if (valorFecha instanceof java.sql.Timestamp) {
+            fechaHora = ((Timestamp) valorFecha).toLocalDateTime();
+        } else if (valorFecha instanceof java.util.Date) {
+            fechaHora = ((java.util.Date) valorFecha).toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+        } else if (valorFecha instanceof String) {
+            fechaHora = LocalDateTime.parse((String) valorFecha);
+        }
+
+        aux.setFechaYHora(fechaHora);
 
         aux.setCodPack((int) modelo.getValueAt(fila, 0));
-        aux.setFechaYHora((LocalDateTime) modelo.getValueAt(fila, 1));
+        aux.setFechaYHora(fechaHora);
         aux.setPreferencias((String) modelo.getValueAt(fila, 2));
         aux.setCliente(cd.buscarCliente((int) modelo.getValueAt(fila, 3)));
         aux.setSesiones(sd.ListarTurnos());
