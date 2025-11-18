@@ -179,10 +179,10 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
     java.util.Date dateValue;
 
     if (raw instanceof java.sql.Time) {
-        // Si el spinner devuelve un Time
+        //Si el spinner devuelve un Time
         dateValue = new java.util.Date(((java.sql.Time) raw).getTime());
     } else if (raw instanceof java.util.Date) {
-        // Si devuelve un util.Date normal
+        //Si devuelve un util.Date normal
         dateValue = (java.util.Date) raw;
     } else {
         throw new IllegalArgumentException("Valor inesperado en el spinner: " + raw);
@@ -548,7 +548,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioEspecialistasLibres);
         LocalTime hFin    = convertirSpinnerAHoraSegura(horaFinEspecialistasLibres);
 
-        //Combinar fecha + horas
+        //Combinar fecha y horas
         LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
         LocalDateTime fin    = LocalDateTime.of(fecha, hFin);
 
@@ -598,7 +598,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         LocalTime hInicio = convertirSpinnerAHoraSegura(horaInicioInstalacionesLibres);
         LocalTime hFin    = convertirSpinnerAHoraSegura(horaFinInstalacionesLibres);
 
-        //Combinar fecha + hora
+        //Combinar fecha y horas
         LocalDateTime inicio = LocalDateTime.of(fecha, hInicio);
         LocalDateTime fin    = LocalDateTime.of(fecha, hFin);
 
