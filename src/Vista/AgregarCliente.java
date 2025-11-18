@@ -32,7 +32,7 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Todos los campos obligatorios deben completarse.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            int dni = Integer.parseInt(jTDni.getText().trim());
+            long dni = Long.parseLong(jTDni.getText().trim());
             String nombreCompleto = jTNombreC.getText().trim();
             long telefono = Long.parseLong(jTTelefono.getText().trim());
             int edad = Integer.parseInt(jTEdad.getText().trim());
