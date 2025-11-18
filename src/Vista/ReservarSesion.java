@@ -268,7 +268,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                 LocalTime t = LocalTime.of(h, m);
 
                 if (horaMinima != null && t.isBefore(horaMinima)) {
-                    continue; // filtrar horarios anteriores a la hora del día de spa
+                    continue; 
                 }
 
                 // construir inicio/fin usando la fecha del diaDeSpa y la duración esperada
@@ -527,13 +527,11 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
             preguntarContinuarReserva();
 
         } catch (Exception e) {
-            // Log más detallado del error
-            System.err.println("Error detallado en reservarSoloInstalacion:");
-            e.printStackTrace();
+            
 
             JOptionPane.showMessageDialog(this,
                     "Error al reservar la instalación: "
-                    + (e.getMessage() != null ? e.getMessage() : "Error desconocido - Ver consola para detalles"),
+                    + (e.getMessage() != null ? e.getMessage() : "Error"),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }

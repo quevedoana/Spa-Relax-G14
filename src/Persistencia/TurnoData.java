@@ -210,7 +210,7 @@ public class TurnoData {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // manejar error (logging, excepción, etc.)
+           
         }
         return sesiones;
     }
