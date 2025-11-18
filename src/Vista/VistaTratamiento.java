@@ -46,7 +46,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         btnEliminarTrata.addActionListener(this::btnEliminarTrataActionPerformed);
         btnModificarTrata.addActionListener(this::btnModificarTrataActionPerformed);
     }
-
+    //Inicializado de tabla
     private void inicializarTabla() {
         modeloTabla = new DefaultTableModel() {
             @Override
@@ -62,7 +62,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
 
         tablaTratamientosFiltrados.setModel(modeloTabla);
     }
-
+    //Carga de tratamientos por tipo de tratamiento pasado por parametro
 
     private void cargarTratamientosPorTipo(String tipo) {
         modeloTabla.setRowCount(0);
@@ -89,7 +89,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         }
     }
     
-    
+    //Inicializa el editor de la especialidad
     private void inicializarEditorEspecialidadEnTabla() {
         String[] opciones = { "Facial", "Corporal", "Relajación", "Estético" };
         TableColumn columnaEspecialidad = tablaTratamientosFiltrados.getColumnModel().getColumn(2);
@@ -312,6 +312,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
     String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+";
     return nombre.matches(regex);
 }
+    //Funcion de modificar action performed que sirve para modificar con lo nuevo que haya agregado
     private void btnModificarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarTrataActionPerformed
         // TODO add your handling code here:
         if (tablaTratamientosFiltrados.isEditing()) {
@@ -389,7 +390,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, " Error al modificar: " + e.getMessage());
         }
     }//GEN-LAST:event_btnModificarTrataActionPerformed
-
+    //Boton eliminar
     private void btnEliminarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTrataActionPerformed
         // TODO add your handling code here:
         int filaSeleccionada = tablaTratamientosFiltrados.getSelectedRow();
@@ -417,7 +418,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_btnEliminarTrataActionPerformed
-
+    //BOTON que agrega el tratamiento 
     private void btnAgregarTratamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTratamActionPerformed
         // TODO add your handling code here:
          AgregarTratamiento agregarTratamiento = new AgregarTratamiento();
@@ -431,7 +432,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
                     (desktopSize.height - jifSize.height) / 2);
                     agregarTratamiento.toFront();
     }//GEN-LAST:event_btnAgregarTratamActionPerformed
-
+    //Actualiza la tabla
     private void btnActualizarTablaTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarTablaTrataActionPerformed
         // TODO add your handling code here:
          cargarTratamientosPorTipo(null);
@@ -442,7 +443,7 @@ public class VistaTratamiento extends javax.swing.JInternalFrame {
         btnEstetico.setSelected(false);
         JOptionPane.showMessageDialog(this, "Tabla actualizada correctamente");
     }//GEN-LAST:event_btnActualizarTablaTrataActionPerformed
-
+    //Los 3 radio buttons
     private void btnCorporalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCorporalActionPerformed
         // TODO add your handling code here:
         cargarTratamientosPorTipo("Corporal");

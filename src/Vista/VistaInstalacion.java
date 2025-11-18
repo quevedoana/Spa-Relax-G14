@@ -24,7 +24,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             return column == 1 || column == 2 || column == 3;
         }
     };
-
+    //Armado de cabecera
     private void armarCabecera() {
         modelo.addColumn("codInstalacion");
         modelo.addColumn("Nombre");
@@ -33,7 +33,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         modelo.addColumn("Estado");
         jTInstalacion.setModel(modelo);
     }
-
+    //Carga de datos a la tabla
     private void cargarDatos() {
         String activo;
         try {
@@ -59,7 +59,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar la instalación " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    //Busqueda de instalacion por codigo
     private void buscarInstalacionPorCod() {
         try {
             String cod = txtBuscaPorCod.getText().trim();
@@ -93,7 +93,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "El codigo es un numero: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    //Funcion que agrega Una instalacion nueva
     private void agregarInstalacionNueva() {
         try {
 
@@ -135,7 +135,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         }
 
     }
-
+    //Metodo que borra una Instalacion
     private void borrarInstalacion() {
         
         int fila = jTInstalacion.getSelectedRow();
@@ -168,7 +168,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             }
         }
     }
-
+    //Funcion para guardar los cambios que haya hecho en la tabla
     private void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTInstalacion.getSelectedRow();
 
@@ -193,7 +193,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al actualizar instalación: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    //Funcion para guardar el cambio de estado
     private void cambiarEstado() {
         int fila = jTInstalacion.getSelectedRow();
         Instalacion aux = new Instalacion();
@@ -225,12 +225,13 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    //Funcion para limpiar los txt
     private void limpiarCampos() {
         txtNombre.setText("");
         txtDetalles.setText("");
         txtPrecio.setText("");
     }
+    //Funcion para deshabilitar botones
     private void deshabilitarBotones() {
         
         btnBorrarInstalacion.setEnabled(false);
@@ -238,6 +239,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         btnAltaBajaLogica.setEnabled(false);
         comboEstadoInstalacion.setEnabled(false);
     }
+    //Funcion para habilitar Botones
     private void habilitarBotones() {
         btnBorrarInstalacion.setEnabled(true);
         btnActualizarInstalacion.setEnabled(true);
@@ -253,6 +255,7 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         armarCabecera();
         cargarDatos();
         deshabilitarBotones(); 
+        //Habilita botones si la tabla es clickeada
     jTInstalacion.getSelectionModel().addListSelectionListener(e -> {
         if (!e.getValueIsAdjusting()) {
             int filaSeleccionada = jTInstalacion.getSelectedRow();
