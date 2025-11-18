@@ -225,7 +225,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         fechaFinTratamientos = new com.toedter.calendar.JDateChooser();
         fechaInformeDiadeSpa = new com.toedter.calendar.JDateChooser();
         btnConsultarEspacialistasLibre1 = new javax.swing.JButton();
-        btnConsultarInformeEstadisticos1 = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -235,6 +235,7 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jLabel16 = new javax.swing.JLabel();
         jDCEspecialistasLibres = new com.toedter.calendar.JDateChooser();
         jDCInstalacionesLibres = new com.toedter.calendar.JDateChooser();
+        btnConsultarInformeEstadisticos2 = new javax.swing.JButton();
 
         setTitle("Consultas");
 
@@ -303,12 +304,12 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
             }
         });
 
-        btnConsultarInformeEstadisticos1.setBackground(new java.awt.Color(255, 153, 102));
-        btnConsultarInformeEstadisticos1.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultarInformeEstadisticos1.setText("Consultar");
-        btnConsultarInformeEstadisticos1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setBackground(new java.awt.Color(255, 153, 102));
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultarInformeEstadisticos1ActionPerformed(evt);
+                btnSalirActionPerformed(evt);
             }
         });
 
@@ -351,6 +352,15 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         jLabel16.setForeground(new java.awt.Color(255, 153, 102));
         jLabel16.setText("a");
 
+        btnConsultarInformeEstadisticos2.setBackground(new java.awt.Color(255, 153, 102));
+        btnConsultarInformeEstadisticos2.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultarInformeEstadisticos2.setText("Consultar");
+        btnConsultarInformeEstadisticos2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarInformeEstadisticos2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -388,8 +398,6 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                             .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnConsultarEspecialistas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnConsultarTratamientos1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConsultarInformeEstadisticos1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,9 +433,17 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                     .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(362, 362, 362)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(645, Short.MAX_VALUE)
+                    .addComponent(btnConsultarInformeEstadisticos2)
+                    .addGap(121, 121, 121)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -473,23 +489,28 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(fechaInicioTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnConsultarInformeEstadisticos1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(fechaInicioTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fechaFinTratamientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton6)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel14)
                                 .addComponent(fechaInformeDiadeSpa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGap(18, 41, Short.MAX_VALUE)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSalir)
+                .addGap(23, 23, 23))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(255, 255, 255)
+                    .addComponent(btnConsultarInformeEstadisticos2)
+                    .addContainerGap(295, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -500,7 +521,9 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 12, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -630,31 +653,9 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
     }
     }//GEN-LAST:event_btnConsultarInstalacionesLibres1ActionPerformed
 
-    private void btnConsultarInformeEstadisticos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarInformeEstadisticos1ActionPerformed
-        try {
-            java.util.Date fechaInicio = fechaInicioTratamientos.getDate();
-            java.util.Date fechaFin = fechaFinTratamientos.getDate();
-
-            if (fechaInicio == null || fechaFin == null) {
-                JOptionPane.showMessageDialog(this, "Seleccione fecha inicio y fin", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Date sqlFechaInicio = new Date(fechaInicio.getTime());
-            Date sqlFechaFin = new Date(fechaFin.getTime());
-
-            textConsultaSeleccionada.setText("Informes estadísticos del "
-                    + new SimpleDateFormat("dd/MM/yyyy").format(fechaInicio) + " al "
-                    + new SimpleDateFormat("dd/MM/yyyy").format(fechaFin));
-
-            // Mostrar instalaciones más solicitadas
-            List<Object[]> resultados = instalacionData.listarInstalacionesMasSolicitadas(sqlFechaInicio, sqlFechaFin);
-            mostrarResultadosEnTabla(resultados, new String[]{"Instalación", "Detalle", "Cantidad Reservas"}, "array");
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error en consulta: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnConsultarInformeEstadisticos1ActionPerformed
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
@@ -677,13 +678,18 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void btnConsultarInformeEstadisticos2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarInformeEstadisticos2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnConsultarInformeEstadisticos2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultarEspacialistasLibre1;
     private javax.swing.JButton btnConsultarEspecialistas1;
-    private javax.swing.JButton btnConsultarInformeEstadisticos1;
+    private javax.swing.JButton btnConsultarInformeEstadisticos2;
     private javax.swing.JButton btnConsultarInstalacionesLibres1;
     private javax.swing.JButton btnConsultarTratamientos1;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> comboEspecialidades;
     private javax.swing.JComboBox<String> comboTiposTratam;
     private com.toedter.calendar.JDateChooser fechaFinTratamientos;

@@ -76,6 +76,8 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         }
         if (dniStr.trim().isEmpty()) {
             abrirAgregarCliente();
+            
+            
             return;
         }
 
@@ -103,8 +105,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                     JOptionPane.YES_NO_OPTION);
 
             if (respuesta == JOptionPane.YES_OPTION) {
-
-                abrirAgregarDiaDeSpa("nuevo");
+                abrirAgregarCliente();
             }
             return;
         }
@@ -240,17 +241,16 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     }
 
     private void abrirAgregarCliente() {
-       VistaCliente vistaCliente = new VistaCliente();
-    vistaCliente.setVisible(true);
+       AgregarCliente agregarCliente = new AgregarCliente();
+        agregarCliente.setVisible(true);
+        javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+            desktop.add(agregarCliente);
 
-    javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
-    desktop.add(vistaCliente);
-
-    java.awt.Dimension desktopSize = desktop.getSize();
-    java.awt.Dimension jifSize = vistaCliente.getSize();
-    vistaCliente.setLocation((desktopSize.width - jifSize.width) / 2,
-            (desktopSize.height - jifSize.height) / 2);
-    vistaCliente.toFront();
+            java.awt.Dimension desktopSize = desktop.getSize();
+            java.awt.Dimension jifSize = agregarCliente.getSize();
+            agregarCliente.setLocation((desktopSize.width - jifSize.width) / 2,
+                    (desktopSize.height - jifSize.height) / 2);
+                    agregarCliente.toFront();
     }
 
     public void diaDeSpaCreado(DiaDeSpa diaDeSpa) {

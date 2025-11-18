@@ -59,6 +59,7 @@ public class ConsultorioData {
             
             if (resultado.next()) {
                 cons = new Consultorio(
+                resultado.getInt("nroConsultorio"),
                 resultado.getString("usos"),
                 resultado.getString("equipamiento"),
                 resultado.getBoolean("apto")
