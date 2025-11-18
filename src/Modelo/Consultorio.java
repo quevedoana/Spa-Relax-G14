@@ -28,6 +28,14 @@ public class Consultorio {
         this.apto = apto;
     }
 
+    public Consultorio(int nroConsultorio, String usos, String equipamiento, boolean apto) {
+        this.nroConsultorio = nroConsultorio;
+        this.usos = usos;
+        this.equipamiento = equipamiento;
+        this.apto = apto;
+    }
+    
+
     public int getNroConsultorio() {
         return nroConsultorio;
     }
