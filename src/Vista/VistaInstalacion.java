@@ -369,6 +369,11 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Precio de 30 minutos:");
 
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNombreKeyTyped(evt);
@@ -668,6 +673,10 @@ public class VistaInstalacion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         btnBorrarInstalacion.setToolTipText("seleccione de la lista la instalación a borrar");
     }//GEN-LAST:event_btnBorrarInstalacionMouseEntered
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
