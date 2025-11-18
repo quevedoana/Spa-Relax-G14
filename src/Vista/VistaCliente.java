@@ -18,7 +18,8 @@ public class VistaCliente extends javax.swing.JInternalFrame {
 
     private Cliente clienteAc = null;
     private ClienteData clientedata = new ClienteData();
-
+    
+    //modelo default de la tabla, con las columnas que se pueden editar.
     private DefaultTableModel modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
@@ -45,6 +46,7 @@ public class VistaCliente extends javax.swing.JInternalFrame {
         }
     });
     }
+    // Deshabilita los botones.
 private void deshabilitarBotones() {
         
         jBBorrar.setEnabled(false);
@@ -52,6 +54,7 @@ private void deshabilitarBotones() {
         jBEstado.setEnabled(false);
         jCEstado.setEnabled(false);
     }
+    //Habilita los botones.
     private void habilitarBotones() {
         jBBorrar.setEnabled(true);
         jBActualizar.setEnabled(true);
@@ -382,7 +385,8 @@ private void deshabilitarBotones() {
     private javax.swing.JTextField jTId;
     private java.awt.TextField textField1;
     // End of variables declaration//GEN-END:variables
-private void armarCabecera() {
+    //arma la cabecera de la tabla.
+    private void armarCabecera() {
 
         modelo.addColumn("ID");
         modelo.addColumn("DNI");
@@ -395,7 +399,7 @@ private void armarCabecera() {
         jTCliente.setModel(modelo);
 
     }
-
+    //Carga los datos en la tabla.
     private void cargarDatos() {
         String activo;
         modelo.setRowCount(0);
@@ -409,7 +413,7 @@ private void armarCabecera() {
             modelo.addRow(new Object[]{c.getCodCli(), c.getDni(), c.getNombreCompleto(), c.getTelefono(), c.getEdad(), c.getAfecciones(), activo});
         }
     }
-
+    //Busca un cliente por su ID.
     private void buscarPorId() {
 
         try {
@@ -445,7 +449,7 @@ private void armarCabecera() {
             JOptionPane.showMessageDialog(this, "El ID debe ser un número", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
-
+    //Método para borrar cliente.
     private void borrarCliente() {
         int fila = jTCliente.getSelectedRow();
         if (fila == -1) {
@@ -483,7 +487,7 @@ private void armarCabecera() {
     }
 
    
-
+    //Método para actualizar los cambios realizados en la tabla.
     private void guardarCambiosDesdeTabla() {
         int filaSeleccionada = jTCliente.getSelectedRow();
         if (filaSeleccionada == -1) {
@@ -518,7 +522,7 @@ private void armarCabecera() {
             }
             
 
-            Cliente clienteActualizado = new Cliente(codcli, nombreCompleto, telefono, edad, afecciones, estado);
+            Cliente clienteActualizado = new Cliente(dni, nombreCompleto, telefono, edad, afecciones, estado);
             clienteActualizado.setCodCli(codcli);
 
             clientedata.actualizarCliente(clienteActualizado);
@@ -533,7 +537,7 @@ private void armarCabecera() {
             JOptionPane.showMessageDialog(this, "Error al actualizar cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    //Método para cambiar el estado del cliente.
     private void cambiarEstadoCliente() {
         int fila = jTCliente.getSelectedRow();
         Cliente aux = new Cliente();
@@ -543,7 +547,7 @@ private void armarCabecera() {
         }
 
         aux.setCodCli((int) modelo.getValueAt(fila, 0));
-        aux.setDni((int) modelo.getValueAt(fila, 1));
+        aux.setDni((long) modelo.getValueAt(fila, 1));
         aux.setNombreCompleto((String) modelo.getValueAt(fila, 2));
         aux.setTelefono((long) modelo.getValueAt(fila, 3));
         aux.setEdad((int) modelo.getValueAt(fila, 4));

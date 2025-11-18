@@ -22,6 +22,7 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
     public AgregarCliente() {
         initComponents();
     }
+    //Método para agregar los clientes a la base de datos.
      private void agregarCliente() {
         try {
             if (jTDni.getText().trim().isEmpty()
@@ -37,7 +38,8 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
             long telefono = Long.parseLong(jTTelefono.getText().trim());
             int edad = Integer.parseInt(jTEdad.getText().trim());
             String afecciones = jTAfecciones.getText().trim();
-
+            
+            //Validaciones para DNI, edad, teléfono y nombre completo.
             if (dni < 1000000 || dni > 99999999) {
                 JOptionPane.showMessageDialog(this, "El DNI debe tener entre 7 y 8 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -75,7 +77,7 @@ public class AgregarCliente extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos en DNI, teléfono y edad.");
         }
     }
-
+     //Método para limpíar los campos de texto.
     private void limpiarCampos() {
         jTDni.setText("");
         jTNombreC.setText("");
