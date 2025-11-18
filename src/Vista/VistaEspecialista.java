@@ -389,7 +389,6 @@ if (!validarNombreApellido(nomYApellido)) {
         jLabel1.setText("<html><u>Matricula del Especialista</u></html>");
 
         btnBuscar.setBackground(new java.awt.Color(255, 153, 102));
-        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -416,7 +415,6 @@ if (!validarNombreApellido(nomYApellido)) {
         jScrollPane1.setViewportView(jtEspecialista);
 
         btnRegrescar.setBackground(new java.awt.Color(255, 153, 102));
-        btnRegrescar.setForeground(new java.awt.Color(0, 0, 0));
         btnRegrescar.setText("Refrescar Tabla");
         btnRegrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -425,7 +423,6 @@ if (!validarNombreApellido(nomYApellido)) {
         });
 
         btnBorrar.setBackground(new java.awt.Color(255, 153, 102));
-        btnBorrar.setForeground(new java.awt.Color(0, 0, 0));
         btnBorrar.setText("Borrar");
         btnBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -439,7 +436,6 @@ if (!validarNombreApellido(nomYApellido)) {
         });
 
         btnActualizar.setBackground(new java.awt.Color(255, 153, 102));
-        btnActualizar.setForeground(new java.awt.Color(0, 0, 0));
         btnActualizar.setText("Actualizar");
         btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -458,11 +454,9 @@ if (!validarNombreApellido(nomYApellido)) {
         jLabel2.setText("Estado:");
 
         comboEstadoEspecialista.setBackground(new java.awt.Color(255, 153, 102));
-        comboEstadoEspecialista.setForeground(new java.awt.Color(0, 0, 0));
         comboEstadoEspecialista.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
         btnEditarEstado.setBackground(new java.awt.Color(255, 153, 102));
-        btnEditarEstado.setForeground(new java.awt.Color(0, 0, 0));
         btnEditarEstado.setText("Editar Estado");
         btnEditarEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -486,7 +480,6 @@ if (!validarNombreApellido(nomYApellido)) {
         jLabel5.setText("Especialidad:");
 
         btnAgregar.setBackground(new java.awt.Color(255, 153, 102));
-        btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -502,7 +495,6 @@ if (!validarNombreApellido(nomYApellido)) {
         });
 
         comboTipoEspecialidad.setBackground(new java.awt.Color(255, 153, 102));
-        comboTipoEspecialidad.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel6.setBackground(new java.awt.Color(255, 102, 51));
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -519,7 +511,6 @@ if (!validarNombreApellido(nomYApellido)) {
         txtTelefono.setBackground(new java.awt.Color(255, 204, 179));
 
         btnSalir.setBackground(new java.awt.Color(255, 153, 102));
-        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
