@@ -63,7 +63,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         mostrarMensajeInformativo();
 
     }
-
+    //Funcion que bbusca un dia de spa que exista para poder sacar el turno
     private void buscarDiaDeSpaExistente() {
     String dniStr = JOptionPane.showInputDialog(this,
             "¿Ya tiene un Día de Spa asignado?\n\n"
@@ -98,7 +98,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                 "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
-
+//Funcion para buscar dia de spa por el dni
     private void buscarDiasDeSpaPorDNI(Long dni) {
         ClienteData clienteData = new ClienteData();
         DiaDeSpaData diaSpaData = new DiaDeSpaData();
@@ -141,7 +141,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
         mostrarSeleccionDiaDeSpa(diasValidos, cliente);
     }
-
+    //Funcion para mostrar la seleccion de dia de spa usado arriba
     private void mostrarSeleccionDiaDeSpa(List<DiaDeSpa> diasSpa, Cliente cliente) {
         String[] opciones = new String[diasSpa.size() + 1];
         
@@ -188,7 +188,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             }
         }
     }
-
+    //Funcion para mostrar mensajes informativo
     private void mostrarMensajeInformativo() {
         JOptionPane.showMessageDialog(this,
                 "¡Bienvenido al Sistema de Reservas!\n\n"
@@ -202,7 +202,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                 "Bienvenido - Sistema de Reservas",
                 JOptionPane.INFORMATION_MESSAGE);
     }
-
+    //Armado de cabecera
     private void armarCabecera() {
         modeloTabla.addColumn("Código");
         modeloTabla.addColumn("Nombre");
@@ -214,7 +214,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         tablaTratamientos.removeColumn(tablaTratamientos.getColumnModel().getColumn(0));
 
     }
-
+    //Funcion para cargar los tratamiento por tipo
     private void cargarTratamientosPorTipo(String tipo) {
         modeloTabla.setRowCount(0);
 
@@ -236,7 +236,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             modeloTabla.addRow(fila);
         }
     }
-
+    //Funcion que agrega el abrir dia de spa
     private void abrirAgregarDiaDeSpa(String tipoReserva, long dni) {
         AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this,dni);
        
@@ -253,6 +253,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         
       
     }
+    //Funcion para abrir el agregar dia de spa
     private void abrirAgregarDiaDeSpa(String tipoReserva) {
         AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this,null);
        
@@ -269,7 +270,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         
       
     }
-
+    //Funcion para abrir el agregar Cliente
     private void abrirAgregarCliente() {
        AgregarCliente agregarCliente = new AgregarCliente();
         agregarCliente.setVisible(true);
@@ -282,7 +283,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                     (desktopSize.height - jifSize.height) / 2);
                     agregarCliente.toFront();
     }
-
+    //Funcion publica de dia de spa creado con carteles
     public void diaDeSpaCreado(DiaDeSpa diaDeSpa) {
         this.diaDeSpaActual = diaDeSpa;
 
@@ -294,7 +295,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
         continuarConReserva();
     }
-
+ //Funcion para continuar con la reserva
     private void continuarConReserva() {
         if (tratamientoPendiente != null) {
             abrirReservaConTratamiento(tratamientoPendiente);
@@ -302,7 +303,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
             abrirReservaSoloInstalacion();
         }
     }
-
+    //Abre reserva con el tratamiento
     private void abrirReservaConTratamiento(Tratamiento tratamiento) {
         ReservarSesion reserva = new ReservarSesion(tratamiento, diaDeSpaActual);
         reserva.setVisible(true);
@@ -318,7 +319,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
         tratamientoPendiente = null;
     }
-
+ //Funcion que habre reserva solo de instalacion
     private void abrirReservaSoloInstalacion() {
         ReservarSesion reserva = new ReservarSesion(diaDeSpaActual);
         reserva.setVisible(true);

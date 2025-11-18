@@ -30,7 +30,7 @@ import javax.swing.JOptionPane;
  * @author maria
  */
 public class ReservarSesion extends javax.swing.JInternalFrame {
-
+    //Creacion de distintas variables usando datas y clases
     private Tratamiento tratamientoSeleccionado;
     private TurnoData turnoData = new TurnoData();
     private InstalacionData instalacionData = new InstalacionData();
@@ -48,6 +48,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     /**
      * Creates new form ReservarSesion
      */
+    //Reserva sesion qe muestra una carta con los datos de la reserva y quien reserva
     public ReservarSesion(Tratamiento tratamiento, DiaDeSpa diaDeSpa) {
         initComponents();
         this.tratamientoSeleccionado = tratamiento;
@@ -100,7 +101,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         btnReservarTurno.setToolTipText("Agregar instalacion al Dia de Spa #" + diaDeSpa.getCodPack());
         cargarDatosInicialesInstalacion();
     }
-
+    //Carga de datos iniciales con la instalacion e invoca la fincion de cargar horarios 
     private void cargarDatosInicialesInstalacion() {
         comboInstalaciones.removeAllItems();
         instalacionesDisponibles = turnoData.ListaInstalaciones();
@@ -113,7 +114,9 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         }
         cargarHorariosSegunDiaDeSpaInstalacion();
     }
-private void cargarHorariosSegunDiaDeSpaInstalacion() {
+    //Funcion que carga el combo box de horarios y controla si hay instalacion, consultorio 
+    //y especialista disponible, a partir de eso tambien muestra los horarios disponibles
+    private void cargarHorariosSegunDiaDeSpaInstalacion() {
     comboHorarios.removeAllItems();
 
     String[] horarios = {
@@ -135,7 +138,7 @@ private void cargarHorariosSegunDiaDeSpaInstalacion() {
             int m = Integer.parseInt(parts[1].trim());
             LocalTime t = LocalTime.of(h, m);
 
-            // Si no hay hora mínima → mostrar todos; Si la hay → solo horarios >= horaMinima
+            // Si no hay hora mínima muestra todos/ Si la hay solo horarios >= horaMinima
             if (horaMinima != null && t.isBefore(horaMinima)) {
                 continue;
             }
@@ -147,7 +150,7 @@ private void cargarHorariosSegunDiaDeSpaInstalacion() {
             LocalDateTime inicio = LocalDateTime.of(fechaReserva, t);
             LocalDateTime fin = inicio.plusMinutes(60); // duración fija para instalación
 
-            // Obtener instalacion seleccionada (recuerda el offset si usas "Sin instalacion adicional")
+            // Obtiene la instalacion seleccionada (recuerda el offset si usas "Sin instalacion adicional")
             Instalacion instalacionSeleccionada = null;
             int idxInst = comboInstalaciones.getSelectedIndex();
             if (idxInst > 0 && instalacionesDisponibles != null && idxInst - 1 < instalacionesDisponibles.size()) {
@@ -198,6 +201,7 @@ private void cargarHorariosSegunDiaDeSpaInstalacion() {
         comboHorarios.addItem("No hay horarios disponibles");
     }
 }
+    //Cargar datos iniciales con controles de campos disponibles
     private void cargarDatosIniciales() {
         
         comboEspecialistas.removeAllItems();
@@ -237,7 +241,7 @@ private void cargarHorariosSegunDiaDeSpaInstalacion() {
         
         cargarHorariosSegunDiaDeSpa();
     }
-//para cargar el combo horarios
+//para cargar el combo horarios  con controles llamando al turnoData
     private void cargarHorariosSegunDiaDeSpa() {
     comboHorarios.removeAllItems();
 
@@ -396,7 +400,7 @@ private void cargarHorariosSegunDiaDeSpaInstalacion() {
 
         textTotal.setText(String.format("$%.2f", total));
     }
-
+ //Metodo para reservar solo una instalacion
     private void reservarSoloInstalacion() {
        
         if (comboInstalaciones.getSelectedIndex() == -1 || comboHorarios.getSelectedIndex() == -1) {
@@ -502,7 +506,7 @@ try {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+//Reserva tratamiento si es con instalacion
     private void reservarTratamientoConInstalacion() {
         if (comboEspecialistas.getSelectedIndex() == -1
                 || comboConsultorios.getSelectedIndex() == -1
@@ -655,7 +659,7 @@ if (instalacionSeleccionada != null) {
     }
     
 
-    
+    //Pregunta si quiere seguir con la reserva
 
   private void preguntarContinuarReserva() {
     int respuesta = JOptionPane.showConfirmDialog(this,
@@ -671,7 +675,7 @@ if (instalacionSeleccionada != null) {
         procesarPagoFinal();
     }
 }
-
+//Procesamiento del pago
 private void procesarPagoFinal() {
     double totalAPagar = diaDeSpa.getMonto();
     mostrarResumenFinal();
@@ -705,7 +709,7 @@ private void procesarPagoFinal() {
     
     this.dispose();
 }
-   
+   //Muestra de resumen de todo
 
     private void mostrarResumenFinal() {
         StringBuilder resumen = new StringBuilder();

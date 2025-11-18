@@ -37,6 +37,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         cargarDatos();
         inicializarEditorEspecialidadEnTabla();
         deshabilitarBotones();
+        //Habilita botones si la tabla es clickeada
         jtEspecialista.getSelectionModel().addListSelectionListener(e -> {
         if (!e.getValueIsAdjusting()) {
             int filaSeleccionada = jtEspecialista.getSelectedRow();
@@ -48,6 +49,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         }
     });
     }
+    //Deshabilitacion de botones
     private void deshabilitarBotones() {
         
         btnBorrar.setEnabled(false);
@@ -55,12 +57,14 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         btnEditarEstado.setEnabled(false);
         comboEstadoEspecialista.setEnabled(false);
     }
+    //Habilitacion de botones
     private void habilitarBotones() {
         btnBorrar.setEnabled(true);
         btnActualizar.setEnabled(true);
         btnEditarEstado.setEnabled(true);
         comboEstadoEspecialista.setEnabled(true);
     }
+    //Inicializacion de combo especialidad
     private void inicializarComboTipoEspecialidad() {
     String[] opciones = { "Seleccione...","Facial", "Corporal", "Relajación", "Estético" };
     comboTipoEspecialidad.removeAllItems();  // limpia items anteriores
@@ -69,14 +73,14 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     }
     comboTipoEspecialidad.setSelectedIndex(0);
     }
-
+    //Combo inicializado dentro de la tabla
     private void inicializarEditorEspecialidadEnTabla() {
         String[] opciones = { "Facial", "Corporal", "Relajación", "Estético" };
         TableColumn columnaEspecialidad = jtEspecialista.getColumnModel().getColumn(3);
         JComboBox<String> comboEditor = new JComboBox<>(opciones);
         columnaEspecialidad.setCellEditor(new DefaultCellEditor(comboEditor));
     }
-
+    //Metodo que agrega el especialista tomando los campos y haciendo controles
     private void agregarEspecialistaNuevo() {
     String nombreYApe = txtNombreyApellido.getText().trim();
     String especialidad = (String) comboTipoEspecialidad.getSelectedItem();
@@ -134,14 +138,14 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     JOptionPane.showMessageDialog(this,"Especialista agregado correctamente","Éxito",JOptionPane.INFORMATION_MESSAGE);
 
     }
-  
+  //Limpieza de los campos de agregacion
     private void limpiarCampos() {
         txtNombreyApellido.setText("");
         //txtEspecialista.setText("");
         txtTelefono.setText("");
         txtMatricula.setText("");
     }
-
+   //Armado de la cabecera de la tabla
     private void armarCabecera() {
         modelo.addColumn("Matricula");
         modelo.addColumn("Nombre y Apellido");
@@ -150,7 +154,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         modelo.addColumn("Estado");
         jtEspecialista.setModel(modelo);
     }
-  
+  //carga de los datos del especialista
     private void cargarDatos() {
         String activo;
         try {
@@ -176,7 +180,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar Especialistas " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    //busqueda del especialista por matricula
      private void buscarEspecialistaPorMatricula() {
         try {
             String matri = txtBuscarMatricula.getText().trim();
@@ -210,7 +214,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "La matricula no esta bien escrita o esta vacia: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+     //Funcion que usa el boton borrar 
       private void borrarEspecialista() {
         int fila = jtEspecialista.getSelectedRow();
         if (fila == -1) {
@@ -240,7 +244,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             }
         }
     }
-
+    //Funciones de validaciones
       private boolean validarNombreApellido(String nombre) {
     if (nombre == null || nombre.trim().isEmpty()) {
         return false;
@@ -248,6 +252,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+";
     return nombre.matches(regex);
 }
+    //Funciones que guarda los datos actualizados de la tabla y tiene sus controles
       private void guardarCambiosDesdeTabla() {
           if (jtEspecialista.isEditing()) {
         jtEspecialista.getCellEditor().stopCellEditing();
@@ -314,7 +319,7 @@ if (!validarNombreApellido(nomYApellido)) {
             JOptionPane.showMessageDialog(this, "Error al actualizar Especialista: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+    //Funcion que cambia el estado del especialista
     private void cambiarEstadoEspecialista() {
         int fila = jtEspecialista.getSelectedRow();
         Especialista aux = new Especialista();
