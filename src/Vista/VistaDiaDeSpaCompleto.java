@@ -28,7 +28,6 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
      */
     public VistaDiaDeSpaCompleto() {
         initComponents();
-        // Definir los nombres de las columnas según tus campos de BD
     modeloSpa = new DefaultTableModel(
         new String[]{"codPack", "FechaHora", "Preferencias", "Cliente", "Estado", "Monto"},
         0
@@ -38,9 +37,9 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
     modeloSesion = new DefaultTableModel(
     new String[]{
         "codSesion",
-        "Fecha Inicio",      // nueva columna para la fecha
-        "Hora Inicio",       // nueva columna para la hora de inicio
-        "Hora Fin",          // nueva columna para la hora de fin
+        "Fecha Inicio",      
+        "Hora Inicio",       
+        "Hora Fin",        
         "Tratamiento",
         "Consultorio",
         "Especialista",
@@ -51,10 +50,9 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
 );
     jtsesion.setModel(modeloSesion);
 
-    // Permitir selección de fila única para detectar bien el cambio
     jtSpa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    // Agregar listener para cuando cambie la fila seleccionada
+    
     jtSpa.getSelectionModel().addListSelectionListener(e -> {
         if (!e.getValueIsAdjusting()) {
             filaSpaSeleccionado();
@@ -64,8 +62,8 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
     }
 
     private void cargarDiasSpa() {
-    modeloSpa.setRowCount(0); // limpiar lo que haya
-    List<DiaDeSpa> lista = dias.listarDiasDeSpa();  // tu DAO
+    modeloSpa.setRowCount(0); 
+    List<DiaDeSpa> lista = dias.listarDiasDeSpa(); 
     for (DiaDeSpa d : lista) {
         modeloSpa.addRow(new Object[]{
             d.getCodPack(),
@@ -73,14 +71,14 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
             d.getPreferencias(),
             d.getCliente().getNombreCompleto(),
             d.isEstado()? "Activo" : "Inactivo",
-            d.getMonto()
+            String.format("%.2f",d.getMonto())
         });
     }
 }
    private void filaSpaSeleccionado() {
     int fila = jtSpa.getSelectedRow();
     if (fila >= 0) {
-        Object o = modeloSpa.getValueAt(fila, 0);  // columna 0 = codPack
+        Object o = modeloSpa.getValueAt(fila, 0);  
         if (o != null) {
             int codPack = (o instanceof Integer) ? ((Integer)o).intValue() : Integer.parseInt(o.toString());
             cargarSesiones(codPack);
@@ -95,9 +93,9 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
         LocalDateTime fin = s.getFechaYHoraDeFin();
 
         // Extraer las partes
-        String fechaInicio = inicio.toLocalDate().toString();   // por ejemplo "2025-11-17"
-        String horaInicio = inicio.toLocalTime().toString();    // por ejemplo "14:30"
-        String horaFin = fin.toLocalTime().toString();          // por ejemplo "15:45"
+        String fechaInicio = inicio.toLocalDate().toString();   
+        String horaInicio = inicio.toLocalTime().toString();    
+        String horaFin = fin.toLocalTime().toString();          
         modeloSesion.addRow(new Object[]{
             s.getCodSesion(),
             fechaInicio,
@@ -105,9 +103,9 @@ public class VistaDiaDeSpaCompleto extends javax.swing.JInternalFrame {
             horaFin,
             s.getTratamiento().getNombre(),
             s.getConsultorio().getNroConsultorio(),
-            s.getEspecialista().getNombreYApellido(),  // acá nombre y apellido juntos
+            s.getEspecialista().getNombreYApellido(),  
             s.getInstalacion().getNombre(),
-            s.isEstado()? "Activo" : "Inactivo"   // <-- convierte boolean a texto
+            s.isEstado()? "Activo" : "Inactivo"   
         });
     }
 }

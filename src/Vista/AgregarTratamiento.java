@@ -65,7 +65,7 @@ public class AgregarTratamiento extends javax.swing.JInternalFrame {
         return "";
     }
 
-    private boolean validarCampos() {// Controles
+    private boolean validarCampos() {
         if (textNombreTratam.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "El nombre del tratamiento es obligatorio");
             return false;

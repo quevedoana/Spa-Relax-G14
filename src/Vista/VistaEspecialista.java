@@ -69,29 +69,21 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     }
     comboTipoEspecialidad.setSelectedIndex(0);
     }
-    //prueba tabla columna especialidad
+
     private void inicializarEditorEspecialidadEnTabla() {
         String[] opciones = { "Facial", "Corporal", "Relajación", "Estético" };
         TableColumn columnaEspecialidad = jtEspecialista.getColumnModel().getColumn(3);
         JComboBox<String> comboEditor = new JComboBox<>(opciones);
         columnaEspecialidad.setCellEditor(new DefaultCellEditor(comboEditor));
     }
-    //Agregar Especialista nuevo
-    private void agregarEspecialistaNuevo() {
-        /*String nombreYApe = txtNombreyApellido.getText().trim();
-        String especialidad = (String) comboTipoEspecialidad.getSelectedItem();
-        long telefono = Long.parseLong(txtTelefono.getText().trim());
-        String matricula=txtMatricula.getText().trim();
 
-        Especialista a = new Especialista(matricula, nombreYApe,telefono, especialidad, true);
-        especialistaData.guardarEspecialista(a);*/
+    private void agregarEspecialistaNuevo() {
     String nombreYApe = txtNombreyApellido.getText().trim();
-    // Obtener la especialidad seleccionada del combo
     String especialidad = (String) comboTipoEspecialidad.getSelectedItem();
     long telefono;
     String matricula = txtMatricula.getText().trim();
 
-    // Validaciones
+
     if (nombreYApe.isEmpty()) {
         JOptionPane.showMessageDialog(this,
             "Ingrese el nombre y apellido del especialista",
@@ -99,7 +91,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.WARNING_MESSAGE);
         return;
     }
-    // Validar que el nombre y apellido contengan solo letras y espacios
+    
     if (!nombreYApe.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
         JOptionPane.showMessageDialog(this,"El nombre y apellido deben contener solo letras y espacios.","Advertencia",JOptionPane.WARNING_MESSAGE);
         return;
@@ -136,22 +128,20 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
     return;
 }
 
-    // Si todo está bien, crear objeto y guardar
     Especialista a = new Especialista(matricula, nombreYApe, telefono, especialidad, true);
     especialistaData.guardarEspecialista(a);
 
     JOptionPane.showMessageDialog(this,"Especialista agregado correctamente","Éxito",JOptionPane.INFORMATION_MESSAGE);
 
     }
-    
-    //Limpiar Campos
+  
     private void limpiarCampos() {
         txtNombreyApellido.setText("");
         //txtEspecialista.setText("");
         txtTelefono.setText("");
         txtMatricula.setText("");
     }
-    //Armado de Cabecera
+
     private void armarCabecera() {
         modelo.addColumn("Matricula");
         modelo.addColumn("Nombre y Apellido");
@@ -160,7 +150,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
         modelo.addColumn("Estado");
         jtEspecialista.setModel(modelo);
     }
-    //Cargar datos
+  
     private void cargarDatos() {
         String activo;
         try {
@@ -186,7 +176,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar Especialistas " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    //Buscar Especialista
+
      private void buscarEspecialistaPorMatricula() {
         try {
             String matri = txtBuscarMatricula.getText().trim();
@@ -220,7 +210,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "La matricula no esta bien escrita o esta vacia: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    //Borrar Especialista
+
       private void borrarEspecialista() {
         int fila = jtEspecialista.getSelectedRow();
         if (fila == -1) {
@@ -250,12 +240,11 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
             }
         }
     }
-    //Guardar cambios de especialista al apretar boton Actualizar 
+
       private boolean validarNombreApellido(String nombre) {
     if (nombre == null || nombre.trim().isEmpty()) {
         return false;
     }
-    // Expresión regular que acepta letras mayúsculas/minúsculas, vocales con tilde, ñ/Ñ, y espacios.
     String regex = "[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+";
     return nombre.matches(regex);
 }
@@ -266,9 +255,7 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
           int filaSeleccionada = jtEspecialista.getSelectedRow();
 
         try {
-            // obtener datos de la fila seleccionada
             String matri=modelo.getValueAt(filaSeleccionada, 0).toString().trim();
-           // Validar matrícula
                 if (!matri.matches("[a-zA-Z0-9]+")) {
                 JOptionPane.showMessageDialog(this,
                 "La matrícula debe contener solo letras y números, sin espacios ni signos.",
@@ -277,8 +264,6 @@ public class VistaEspecialista extends javax.swing.JInternalFrame {
                 return;
                 }
             String nomYApellido = modelo.getValueAt(filaSeleccionada, 1).toString().trim();
-            // Validar nombre y apellido
-            System.out.println("Valor nombre y apellido: '"+nomYApellido+"'");
           
                // Validar nombre y apellido usando el método
 if (!validarNombreApellido(nomYApellido)) {
@@ -295,7 +280,6 @@ if (!validarNombreApellido(nomYApellido)) {
                 }*/
             //long tel = Long.parseLong(modelo.getValueAt(filaSeleccionada, 2).toString().trim());
             String espe = modelo.getValueAt(filaSeleccionada, 3).toString().trim();
-            // Validar especialidad
             String[] especialidadesPermitidas = {"Facial", "Corporal", "Relajación", "Estético"};
                 if (!Arrays.asList(especialidadesPermitidas).contains(espe)) {
                 JOptionPane.showMessageDialog(this,
@@ -330,7 +314,7 @@ if (!validarNombreApellido(nomYApellido)) {
             JOptionPane.showMessageDialog(this, "Error al actualizar Especialista: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-      //Cambio de Estado del Especialista
+    
     private void cambiarEstadoEspecialista() {
         int fila = jtEspecialista.getSelectedRow();
         Especialista aux = new Especialista();
@@ -579,36 +563,33 @@ if (!validarNombreApellido(nomYApellido)) {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtBuscarMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnBuscar))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnBorrar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnActualizar)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(comboEstadoEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(btnRegrescar))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnEditarEstado)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(48, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtBuscarMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBuscar))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnBorrar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnActualizar)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(comboEstadoEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(0, 0, Short.MAX_VALUE)
+                                    .addComponent(btnRegrescar))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnEditarEstado)
+                                    .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(273, 273, 273)
                 .addComponent(btnSalir)
@@ -634,10 +615,11 @@ if (!validarNombreApellido(nomYApellido)) {
                             .addComponent(btnActualizar)
                             .addComponent(btnRegrescar))))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEditarEstado)
-                    .addComponent(jLabel2)
-                    .addComponent(comboEstadoEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(comboEstadoEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(12, 12, 12)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -645,13 +627,13 @@ if (!validarNombreApellido(nomYApellido)) {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombreyApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboTipoEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboTipoEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombreyApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnAgregar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

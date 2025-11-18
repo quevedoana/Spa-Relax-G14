@@ -10,7 +10,6 @@ package Modelo;
  * @author Anitabonita
  */
 public class Especialista {
-    //Masajista: matricula, nombre y ape, teléfono, especialidad (facial, corporal, relajación, o estético), estado
     private String matricula;
     private String NombreYApellido;
     private long telefono;

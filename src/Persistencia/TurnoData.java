@@ -32,12 +32,16 @@ public class TurnoData {
     public TurnoData() {
         conexion = Conexion.getConexion();
     }
+    
 
     private TratamientoData tratamientodata = new TratamientoData();
     private ConsultorioData consultoriodata = new ConsultorioData();
     private EspecialistaData especialistadata = new EspecialistaData();
     private InstalacionData instalaciondata = new InstalacionData();
-
+    
+    public Connection getConexion() {
+        return this.conexion;
+    }
     //AGREGAR TURNO
     public void AltaTurno(Turno sesion) {
         String query = "INSERT INTO sesion(fechaYHoraInicio, fechaYHoraFin, codTratamiento, nroConsultorio, matriculaMasajista, codInstalacion, estado) VALUES (?,?,?,?,?,?,?)";
@@ -114,22 +118,7 @@ public class TurnoData {
     }
 }
 
-    private boolean verificarPackExiste(int codPack) {
-        String sql = "SELECT COUNT(*) FROM dia_de_spa WHERE codPack = ?";
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setInt(1, codPack);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println("❌ ERROR en verificación pack: " + e.getMessage());
-        }
-        return false;
-    }
+    
 
     public List<Turno> buscarSesionesPorDiaSpa(int codPack) {
         String sql = "SELECT * FROM sesion WHERE codPack = ?";
@@ -427,5 +416,7 @@ public class TurnoData {
             JOptionPane.showMessageDialog(null, "Error al eliminar sesiones del día de spa: " + e.getMessage());
         }
     }
+
+   
 
 }

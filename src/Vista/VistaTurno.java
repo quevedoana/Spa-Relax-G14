@@ -5,22 +5,18 @@
  */
 package Vista;
 
+import Modelo.Cliente;
 import Modelo.DiaDeSpa;
 import Modelo.Tratamiento;
-import Modelo.Turno;
-import Persistencia.ConsultorioData;
+import Persistencia.ClienteData;
 import Persistencia.DiaDeSpaData;
-import Persistencia.EspecialistaData;
-import Persistencia.InstalacionData;
-import Persistencia.TurnoData;
 import Persistencia.TratamientoData;
-import java.awt.Dimension;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,20 +25,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VistaTurno extends javax.swing.JInternalFrame {
 
-    private Turno turno = null;
-    private TurnoData turnodata = new TurnoData();
     private TratamientoData tratamientod = new TratamientoData();
-    private ConsultorioData consultoriod = new ConsultorioData();
-    private EspecialistaData especialistad = new EspecialistaData();
-    private InstalacionData instalaciond = new InstalacionData();
-    private DiaDeSpaData diadespad = new DiaDeSpaData();
     private DefaultTableModel modeloTabla = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int fila, int column) {
             return column == 1 || column == 2;
         }
     };
-     private DiaDeSpa diaDeSpaActual;
+    private DiaDeSpa diaDeSpaActual;
     private Tratamiento tratamientoPendiente;
 
     /**
@@ -53,20 +43,18 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         armarCabecera();
         cargarTratamientosPorTipo(null);
 
-        // Agrupar radio buttons para que sean exclusivos
         ButtonGroup grupoTipos = new ButtonGroup();
         grupoTipos.add(radioFacial);
         grupoTipos.add(radioCorporal);
         grupoTipos.add(radioEstetico);
         grupoTipos.add(radioRelajacion);
 
-        // Agregar listeners a los radio buttons
         radioFacial.addActionListener(this::radioFacialActionPerformed);
         radioEstetico.addActionListener(this::radioEsteticoActionPerformed);
         radioCorporal.addActionListener(this::radioCorporalActionPerformed);
         radioRelajacion.addActionListener(this::radioRelajacionActionPerformed);
 
-         btnReservar.setToolTipText("Seleccione un tratamiento y cree un Día de Spa para reservar");
+        btnReservar.setToolTipText("Seleccione un tratamiento y cree un Día de Spa para reservar");
         btnReservaInstalacion.setToolTipText("Cree un Día de Spa para reservar una instalación");
         btnConsultar.setToolTipText("Informacion sobre el tratamiento seleccionado");
         btnContacto.setToolTipText("Contacto");
@@ -74,19 +62,132 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         mostrarMensajeInformativo();
 
     }
-    
+
+    private void buscarDiaDeSpaExistente() {
+        String dniStr = JOptionPane.showInputDialog(this,
+                "¿Ya tiene un Día de Spa asignado?\n\n"
+                + "Ingrese su DNI para buscar días de spa activos:\n"
+                + "(Deje vacío para crear uno nuevo)",
+                "Buscar Día de Spa Existente",
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (dniStr == null) {
+            return;
+        }
+        if (dniStr.trim().isEmpty()) {
+            abrirAgregarCliente();
+            return;
+        }
+
+        try {
+            int dni = Integer.parseInt(dniStr.trim());
+            buscarDiasDeSpaPorDNI(dni);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "DNI inválido. Por favor ingrese solo números.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void buscarDiasDeSpaPorDNI(int dni) {
+        ClienteData clienteData = new ClienteData();
+        DiaDeSpaData diaSpaData = new DiaDeSpaData();
+
+        Cliente cliente = clienteData.buscarClientePorDni(dni);
+
+        if (cliente == null) {
+            int respuesta = JOptionPane.showConfirmDialog(this,
+                    "No se encontró un cliente con DNI: " + dni + "\n\n"
+                    + "¿Desea crear un nuevo cliente y día de spa?",
+                    "Cliente No Encontrado",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (respuesta == JOptionPane.YES_OPTION) {
+
+                abrirAgregarDiaDeSpa("nuevo");
+            }
+            return;
+        }
+
+        List<DiaDeSpa> diasSpa = diaSpaData.buscarDiasDeSpaPorCliente(cliente.getCodCli());
+        List<DiaDeSpa> diasValidos = new ArrayList<>();
+
+        for (DiaDeSpa dia : diasSpa) {
+            if (dia.getFechaYHora().toLocalDate().isEqual(LocalDate.now())
+                    || dia.getFechaYHora().toLocalDate().isAfter(LocalDate.now())) {
+                diasValidos.add(dia);
+            }
+        }
+
+        if (diasValidos.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "No tiene días de spa activos o futuros.\n"
+                    + "Crearemos uno nuevo para usted.",
+                    "Sin Días de Spa",
+                    JOptionPane.INFORMATION_MESSAGE);
+            abrirAgregarDiaDeSpa("nuevo");
+            return;
+        }
+
+        mostrarSeleccionDiaDeSpa(diasValidos, cliente);
+    }
+
+    private void mostrarSeleccionDiaDeSpa(List<DiaDeSpa> diasSpa, Cliente cliente) {
+        String[] opciones = new String[diasSpa.size() + 1];
+        for (int i = 0; i < diasSpa.size(); i++) {
+            DiaDeSpa dia = diasSpa.get(i);
+            String fechaStr = dia.getFechaYHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+            opciones[i] = "Día #" + dia.getCodPack() + " - " + fechaStr + " - "
+                    + dia.getSesiones().size() + " servicios";
+        }
+        opciones[diasSpa.size()] = "Crear nuevo día de spa";
+
+        String seleccion = (String) JOptionPane.showInputDialog(this,
+                "Seleccione un día de spa existente o cree uno nuevo:\n"
+                + "Cliente: " + cliente.getNombreCompleto() + " (DNI: " + cliente.getDni() + ")",
+                "Seleccionar Día de Spa",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]);
+
+        if (seleccion == null) {
+            return;
+        }
+
+        if (seleccion.equals("Crear nuevo día de spa")) {
+            abrirAgregarDiaDeSpa("nuevo");
+        } else {
+
+            int codPack = Integer.parseInt(seleccion.split("#")[1].split(" ")[0]);
+            DiaDeSpa diaSeleccionado = null;
+
+            for (DiaDeSpa dia : diasSpa) {
+                if (dia.getCodPack() == codPack) {
+                    diaSeleccionado = dia;
+                    break;
+                }
+            }
+
+            if (diaSeleccionado != null) {
+                this.diaDeSpaActual = diaSeleccionado;
+                continuarConReserva();
+            }
+        }
+    }
+
     private void mostrarMensajeInformativo() {
         JOptionPane.showMessageDialog(this,
-            "¡Bienvenido al Sistema de Reservas!\n\n" +
-            "Para realizar cualquier reserva, primero debe crear un Dia de Spa.\n\n" +
-            "Flujo de reserva:\n" +
-            "1. Seleccione un tratamiento\n" +
-            "2. Haga click en Reservar Tratamiento o Reservar Instalación\n" +
-            "3. Cree su Dia de Spa\n" +
-            "4. Complete su reserva\n\n" +
-            "¡Empecemos!",
-            "Bienvenido - Sistema de Reservas",
-            JOptionPane.INFORMATION_MESSAGE);
+                "¡Bienvenido al Sistema de Reservas!\n\n"
+                + "Para realizar cualquier reserva, primero debe crear un Dia de Spa.\n\n"
+                + "Flujo de reserva:\n"
+                + "1. Seleccione un tratamiento\n"
+                + "2. Haga click en Reservar Tratamiento o Reservar Instalación\n"
+                + "3. Cree su Dia de Spa\n"
+                + "4. Complete su reserva\n\n"
+                + "¡Empecemos!",
+                "Bienvenido - Sistema de Reservas",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void armarCabecera() {
@@ -126,16 +227,15 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private void abrirAgregarDiaDeSpa(String tipoReserva) {
         String mensaje = "";
         if (tipoReserva.equals("tratamiento")) {
-            mensaje = "Para reservar el tratamiento '" + tratamientoPendiente.getNombre() + 
-                     "', primero debe crear su Día de Spa.";
+            mensaje = "Para reservar el tratamiento '" + tratamientoPendiente.getNombre()
+                    + "', primero debe crear su Día de Spa.";
         } else {
             mensaje = "Para reservar una instalación, primero debe crear su Día de Spa.";
         }
-        
-        JOptionPane.showMessageDialog(this, mensaje,
-            "Crear Día de Spa", JOptionPane.INFORMATION_MESSAGE);
 
-        // Crear instancia de AgregarDiaDeSpa pasando esta VistaTurno como referencia
+        JOptionPane.showMessageDialog(this, mensaje,
+                "Crear Día de Spa", JOptionPane.INFORMATION_MESSAGE);
+
         AgregarDiaDeSpa agregarDiaSpa = new AgregarDiaDeSpa(this);
         agregarDiaSpa.setVisible(true);
 
@@ -149,21 +249,32 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         agregarDiaSpa.toFront();
     }
 
+    private void abrirAgregarCliente() {
+       VistaCliente vistaCliente = new VistaCliente();
+    vistaCliente.setVisible(true);
+
+    javax.swing.JDesktopPane desktop = (javax.swing.JDesktopPane) this.getParent();
+    desktop.add(vistaCliente);
+
+    java.awt.Dimension desktopSize = desktop.getSize();
+    java.awt.Dimension jifSize = vistaCliente.getSize();
+    vistaCliente.setLocation((desktopSize.width - jifSize.width) / 2,
+            (desktopSize.height - jifSize.height) / 2);
+    vistaCliente.toFront();
+    }
+
     public void diaDeSpaCreado(DiaDeSpa diaDeSpa) {
         this.diaDeSpaActual = diaDeSpa;
-        
-        // Mostrar mensaje de confirmacion
+
         JOptionPane.showMessageDialog(this,
-            "¡Dia de Spa creado exitosamente!\n\n" +
-            "Procediendo con su reserva...",
-            "Dia de Spa Creado",
-            JOptionPane.INFORMATION_MESSAGE);
-        
-        // continuar automaticamente con la reserva que el usuario queria hacer
+                "¡Dia de Spa creado exitosamente!\n\n"
+                + "Procediendo con su reserva...",
+                "Dia de Spa Creado",
+                JOptionPane.INFORMATION_MESSAGE);
+
         continuarConReserva();
     }
 
-    //Continuar con la reserva despues de crear el dia de spa
     private void continuarConReserva() {
         if (tratamientoPendiente != null) {
             abrirReservaConTratamiento(tratamientoPendiente);
@@ -172,7 +283,6 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         }
     }
 
-    //Abrir reserva de tratamiento
     private void abrirReservaConTratamiento(Tratamiento tratamiento) {
         ReservarSesion reserva = new ReservarSesion(tratamiento, diaDeSpaActual);
         reserva.setVisible(true);
@@ -185,7 +295,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
         reserva.setLocation((desktopSize.width - jifSize.width) / 2,
                 (desktopSize.height - jifSize.height) / 2);
         reserva.toFront();
-        
+
         tratamientoPendiente = null;
     }
 
@@ -202,6 +312,7 @@ public class VistaTurno extends javax.swing.JInternalFrame {
                 (desktopSize.height - jifSize.height) / 2);
         reserva.toFront();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -453,10 +564,10 @@ public class VistaTurno extends javax.swing.JInternalFrame {
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         int filaSeleccionada = tablaTratamientos.getSelectedRow();
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, 
-                "Seleccione un tratamiento de la lista para reservar",
-                "Selección Requerida", 
-                JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione un tratamiento de la lista para reservar",
+                    "Selección Requerida",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -465,11 +576,12 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
         if (tratamiento != null) {
             this.tratamientoPendiente = tratamiento;
-            
-            abrirAgregarDiaDeSpa("tratamiento");
-            
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: No se encontró el tratamiento seleccionado");
+
+            if (diaDeSpaActual == null) {
+                buscarDiaDeSpaExistente();
+            } else {
+                abrirReservaConTratamiento(tratamientoPendiente);
+            }
         }
     }//GEN-LAST:event_btnReservarActionPerformed
 
@@ -553,7 +665,12 @@ public class VistaTurno extends javax.swing.JInternalFrame {
 
     private void btnReservaInstalacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaInstalacionActionPerformed
         this.tratamientoPendiente = null;
-        abrirAgregarDiaDeSpa("instalacion");
+
+        if (diaDeSpaActual == null) {
+            buscarDiaDeSpaExistente();
+        } else {
+            abrirReservaSoloInstalacion();
+        }
     }//GEN-LAST:event_btnReservaInstalacionActionPerformed
 
 

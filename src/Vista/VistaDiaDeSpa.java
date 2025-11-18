@@ -468,7 +468,6 @@ private void armarCabecera() {
         int filaSeleccionada = jTDiaDeSpa.getSelectedRow();
 
         try {
-            // obtener datos de la fila seleccionada
             int codPack = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 0).toString());
             LocalDateTime fechaYHora = LocalDateTime.parse(modelo.getValueAt(filaSeleccionada, 1).toString().trim());
             String preferencias = modelo.getValueAt(filaSeleccionada, 2).toString().trim();

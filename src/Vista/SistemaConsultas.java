@@ -140,7 +140,6 @@ public class SistemaConsultas extends javax.swing.JInternalFrame {
                         break;
 
                     case "diadespa":
-                        // Solo si realmente es una lista de DiaDeSpa
                         DiaDeSpa dia = (DiaDeSpa) item;
                         fila = new Object[]{
                             dia.getCodPack(),

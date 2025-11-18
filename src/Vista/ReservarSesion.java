@@ -11,9 +11,11 @@ import Modelo.Instalacion;
 import Modelo.Tratamiento;
 import Modelo.Turno;
 import Persistencia.ConsultorioData;
+import Persistencia.DiaDeSpaData;
 import Persistencia.InstalacionData;
 import Persistencia.TurnoData;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -28,7 +30,9 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     private TurnoData turnoData = new TurnoData();
     private InstalacionData instalacionData = new InstalacionData();
     private ConsultorioData consultorioData = new ConsultorioData();
+    private DiaDeSpaData diaSpaData = new DiaDeSpaData();
     private DiaDeSpa diaDeSpa;
+    private double montoAcumulado = 0.0;
 
     private List<Especialista> especialistasDisponibles = new ArrayList<>();
     private List<Consultorio> consultoriosDisponibles = new ArrayList<>();
@@ -43,16 +47,18 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         initComponents();
         this.tratamientoSeleccionado = tratamiento;
         this.diaDeSpa = diaDeSpa;
+        this.montoAcumulado = diaDeSpa.getMonto();
         textTratamientoSeleccionado.setText(tratamiento.getNombre());
 
-        setTitle("Reservar Tratamiento - Dia de Spa #" + diaDeSpa.getCodPack());
+        setTitle("Reservar Tratamiento");
         btnReservarTurno.setText("Agregar Tratamiento al Dia de Spa");
 
         JOptionPane.showMessageDialog(this,
                 "Continuando con su reserva...\n\n"
                 + "Dia de Spa: Nro " + diaDeSpa.getCodPack() + "\n"
                 + "Cliente: " + diaDeSpa.getCliente().getNombreCompleto() + "\n"
-                + "Fecha: " + diaDeSpa.getFechaYHora().toLocalDate() + "\n\n"
+                + "Fecha: " + diaDeSpa.getFechaYHora().toLocalDate() + "\n"
+                + "Monto actual: $" + String.format("%.2f", diaDeSpa.getMonto()) + "\n\n"
                 + "Complete los detalles del tratamiento:",
                 "Paso 2 de 2 - Reservar Tratamiento",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -65,7 +71,9 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         initComponents();
         this.tratamientoSeleccionado = null;
         this.diaDeSpa = diaDeSpa;
+        this.montoAcumulado = diaDeSpa.getMonto(); 
         this.esSoloInstalacion = true;
+        
         textTratamientoSeleccionado.setEnabled(false);
         comboConsultorios.setEnabled(false);
         comboEspecialistas.setEnabled(false);
@@ -78,7 +86,8 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                 "Continuando con su reserva...\n\n"
                 + "Dia de Spa: Nro " + diaDeSpa.getCodPack() + "\n"
                 + "Cliente: " + diaDeSpa.getCliente().getNombreCompleto() + "\n"
-                + "Fecha: " + diaDeSpa.getFechaYHora().toLocalDate() + "\n\n"
+                + "Fecha: " + diaDeSpa.getFechaYHora().toLocalDate() + "\n"
+                + "Monto actual: $" + String.format("%.2f", diaDeSpa.getMonto()) + "\n\n"
                 + "Seleccione la instalacion que desea reservar:",
                 "Paso 2 de 2 - Reservar Instalacion",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -99,7 +108,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         }
         comboHorarios.removeAllItems();
 
-        // Horarios
+        
         String[] horarios = {
             "09:00", "10:00", "11:00", "12:00",
             "14:00", "15:00", "16:00", "17:00", "18:00"
@@ -111,7 +120,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     }
 
     private void cargarDatosIniciales() {
-        //CARGAR ESPECIALISTAS
+        
         comboEspecialistas.removeAllItems();
         especialistasDisponibles = turnoData.ListarEspecialistas(tratamientoSeleccionado.getTipo());
 
@@ -123,7 +132,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
             comboEspecialistas.addItem("No hay especialistas disponibles");
         }
 
-        //CARGAR INSTALACIONES
+        
         comboInstalaciones.removeAllItems();
         instalacionesDisponibles = turnoData.ListaInstalaciones();
 
@@ -134,7 +143,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
             }
         }
 
-        //CARGAR CONSULTORIOS
+      
         comboConsultorios.removeAllItems();
         consultoriosDisponibles = turnoData.ListarConsultorios(tratamientoSeleccionado.getTipo());
 
@@ -146,10 +155,10 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
             comboConsultorios.addItem("No hay consultorios disponibles");
         }
 
-        //CARGAR HORARIOS
+        
         comboHorarios.removeAllItems();
 
-        // Horarios de ejemplo
+       
         String[] horarios = {
             "09:00", "10:00", "11:00", "12:00",
             "14:00", "15:00", "16:00", "17:00", "18:00"
@@ -188,7 +197,7 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     }
 
     private void reservarSoloInstalacion() {
-        // Validaciones
+       
         if (comboInstalaciones.getSelectedIndex() == -1 || comboHorarios.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione una instalación y horario");
             return;
@@ -200,10 +209,8 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         }
 
         try {
-            // Obtener instalacion seleccionada
             Instalacion instalacionSeleccionada = instalacionesDisponibles.get(comboInstalaciones.getSelectedIndex());
 
-            // Crear fecha y hora
             String horario = (String) comboHorarios.getSelectedItem();
             LocalDateTime fechaHoraInicio = LocalDateTime.now()
                     .withHour(Integer.parseInt(horario.split(":")[0]))
@@ -211,43 +218,58 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                     .withSecond(0)
                     .withNano(0);
 
-            LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(60); // 60 minutos para instalación
+            LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(60);
 
-            // Simular pago
-            boolean pago = true;
-            PagoTarjeta pagado = new PagoTarjeta((java.awt.Frame) this.getTopLevelAncestor(), pago);
-            pagado.setVisible(true);
+           
+            double costoInstalacion = instalacionSeleccionada.getPrecio30m() * 2;
+            double totalConEsteServicio = montoAcumulado + costoInstalacion;
 
-            if (!pagado.pagoEfectuado()) {
-                JOptionPane.showMessageDialog(this, "El pago fue cancelado o fallo. La reserva no se completo.");
-                return;
+            int confirmacion = JOptionPane.showConfirmDialog(this,
+                "RESUMEN DEL SERVICIO:\n\n" +
+                "Instalación: " + instalacionSeleccionada.getNombre() + "\n" +
+                "Horario: " + horario + "\n" +
+                "Duración: 60 minutos\n" +
+                "Costo de este servicio: $" + String.format("%.2f", costoInstalacion) + "\n" +
+                "Monto acumulado en el Día de Spa: $" + String.format("%.2f", totalConEsteServicio) + "\n\n" +
+                "¿Desea agregar este servicio al día de spa?",
+                "Confirmar Servicio",
+                JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return; 
             }
 
-            // Crear turno solo para instalacion
-           Turno nuevoTurno = new Turno(
-                fechaHoraInicio,
-                fechaHoraFin,
-                null, // Sin tratamiento
-                null, // Sin consultorio
-                null, // Sin especialista
-                instalacionSeleccionada,
-                diaDeSpa, 
-                true
-        );
 
-        
-        turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
+            Turno nuevoTurno = new Turno(
+                    fechaHoraInicio,
+                    fechaHoraFin,
+                    null,
+                    null,
+                    null,
+                    instalacionSeleccionada,
+                    diaDeSpa,
+                    true
+            );
 
-        JOptionPane.showMessageDialog(this,
-                "¡Instalacion reservada exitosamente!\n"
-                + "Instalacion: " + instalacionSeleccionada.getNombre() + "\n"
-                + "Horario: " + horario + "\n"
-                + "Dia de Spa: #" + diaDeSpa.getCodPack() + "\n"  // ✅ Mostrar codPack
-                + "Duracion: 60 minutos\n"
-                + "Total: " + textTotal.getText());
+            turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
 
-        this.dispose();
+ 
+            montoAcumulado += costoInstalacion;
+            diaDeSpa.setMonto(montoAcumulado);
+            
+            diaSpaData.actualizarMontoDiaDeSpa(diaDeSpa.getCodPack(), diaDeSpa.getMonto());
 
+
+            diaDeSpa.getSesiones().add(nuevoTurno);
+
+            JOptionPane.showMessageDialog(this,
+                    "¡Instalación reservada exitosamente!\n" +
+                    "Instalación: " + instalacionSeleccionada.getNombre() + "\n" +
+                    "Horario: " + horario + "\n" +
+                    "Día de Spa: #" + diaDeSpa.getCodPack() + "\n" +
+                    "Monto total acumulado: $" + String.format("%.2f", diaDeSpa.getMonto()));
+
+            preguntarContinuarReserva();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -257,8 +279,6 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
     }
 
     private void reservarTratamientoConInstalacion() {
-        // Validaciones
-        boolean pago = true;
         if (comboEspecialistas.getSelectedIndex() == -1
                 || comboConsultorios.getSelectedIndex() == -1
                 || comboHorarios.getSelectedIndex() == -1) {
@@ -272,24 +292,22 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
         }
 
         try {
-            // Obtener objetos seleccionados
             Especialista especialistaSeleccionado = especialistasDisponibles.get(comboEspecialistas.getSelectedIndex());
             Consultorio consultorioSeleccionado = consultoriosDisponibles.get(comboConsultorios.getSelectedIndex());
 
-            // Obtener instalacion 
             Instalacion instalacionSeleccionada = null;
             int duracionTotal = tratamientoSeleccionado.getDuracion();
+            double costoInstalacion = 0.0;
 
             if (comboInstalaciones.getSelectedIndex() > 0) {
                 int index = comboInstalaciones.getSelectedIndex() - 1;
                 if (index >= 0 && index < instalacionesDisponibles.size()) {
                     instalacionSeleccionada = instalacionesDisponibles.get(index);
                     duracionTotal += 30;
-
+                    costoInstalacion = instalacionSeleccionada.getPrecio30m() * (tratamientoSeleccionado.getDuracion() / 30.0);
                 }
             }
 
-            // Crear fecha y hora (fecha actual)
             String horario = (String) comboHorarios.getSelectedItem();
             LocalDateTime fechaHoraInicio = LocalDateTime.now()
                     .withHour(Integer.parseInt(horario.split(":")[0]))
@@ -299,38 +317,57 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
 
             LocalDateTime fechaHoraFin = fechaHoraInicio.plusMinutes(duracionTotal);
 
-            PagoTarjeta pagado = new PagoTarjeta((java.awt.Frame) this.getTopLevelAncestor(),
-                    pago);
-            pagado.setVisible(true);
+            double costoServicio = tratamientoSeleccionado.getCosto() + costoInstalacion;
+            double totalConEsteServicio = montoAcumulado + costoServicio;
 
-            if (!pagado.pagoEfectuado()) {
-                JOptionPane.showMessageDialog(this, "El pago fue cancelado o fallo. La reserva no se completo.");
-                return;
+            int confirmacion = JOptionPane.showConfirmDialog(this,
+                "RESUMEN DEL SERVICIO:\n\n" +
+                "Tratamiento: " + tratamientoSeleccionado.getNombre() + "\n" +
+                "Especialista: " + especialistaSeleccionado.getNombreYApellido() + "\n" +
+                "Consultorio: " + consultorioSeleccionado.getNroConsultorio() + "\n" +
+                (instalacionSeleccionada != null ? "Instalación: " + instalacionSeleccionada.getNombre() + "\n" : "") +
+                "Horario: " + horario + "\n" +
+                "Duración: " + duracionTotal + " minutos\n" +
+                "Costo de este servicio: $" + String.format("%.2f", costoServicio) + "\n" +
+                "Monto acumulado en el Día de Spa: $" + String.format("%.2f", totalConEsteServicio) + "\n\n" +
+                "¿Desea agregar este servicio al día de spa?",
+                "Confirmar Servicio",
+                JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return; 
             }
 
-            // Crear el turno
-            Turno nuevoTurno = new Turno(
-                fechaHoraInicio,
-                fechaHoraFin,
-                tratamientoSeleccionado,
-                consultorioSeleccionado,
-                especialistaSeleccionado,
-                instalacionSeleccionada,
-                diaDeSpa, 
-                true
-        );
+            
 
-       
-        turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
+            Turno nuevoTurno = new Turno(
+                    fechaHoraInicio,
+                    fechaHoraFin,
+                    tratamientoSeleccionado,
+                    consultorioSeleccionado,
+                    especialistaSeleccionado,
+                    instalacionSeleccionada,
+                    diaDeSpa,
+                    true
+            );
+
+            turnoData.guardarSesionConPack(nuevoTurno, diaDeSpa.getCodPack());
+
+            montoAcumulado += costoServicio;
+            diaDeSpa.setMonto(montoAcumulado);
+
+            diaSpaData.actualizarMontoDiaDeSpa(diaDeSpa.getCodPack(), diaDeSpa.getMonto());
+
+            diaDeSpa.getSesiones().add(nuevoTurno);
 
             JOptionPane.showMessageDialog(this,
-                    "¡Turno reservado exitosamente!\n"
-                    + "Tratamiento: " + tratamientoSeleccionado.getNombre() + "\n"
-                    + "Especialista: " + especialistaSeleccionado.getNombreYApellido() + "\n"
-                    + "Horario: " + horario + "\n"
-                    + "Total: " + textTotal.getText());
+                    "¡Turno reservado exitosamente!\n" +
+                    "Tratamiento: " + tratamientoSeleccionado.getNombre() + "\n" +
+                    "Especialista: " + especialistaSeleccionado.getNombreYApellido() + "\n" +
+                    "Horario: " + horario + "\n" +
+                    "Monto total acumulado: $" + String.format("%.2f", diaDeSpa.getMonto()));
 
-            this.dispose();
+            preguntarContinuarReserva();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -338,6 +375,92 @@ public class ReservarSesion extends javax.swing.JInternalFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    
+
+  private void preguntarContinuarReserva() {
+    int respuesta = JOptionPane.showConfirmDialog(this,
+            "Servicio agregado exitosamente al Día de Spa #" + diaDeSpa.getCodPack() + "\n\n"
+            + "¿Desea agregar otro servicio/turno al mismo día de spa?",
+            "Continuar con Reservas",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+    if (respuesta == JOptionPane.YES_OPTION) {
+        this.dispose();
+    } else {
+        procesarPagoFinal();
+    }
+}
+
+private void procesarPagoFinal() {
+    double totalAPagar = diaDeSpa.getMonto();
+    mostrarResumenFinal();
+    
+    int opcionPago = JOptionPane.showConfirmDialog(this,
+        "PAGO FINAL\n\n" +
+        "Total a pagar: $" + String.format("%.2f", totalAPagar) + "\n\n" +
+        "¿Desea realizar el pago ahora?",
+        "Procesar Pago",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+
+    if (opcionPago == JOptionPane.YES_OPTION) {
+        PagoTarjeta pagoFinal = new PagoTarjeta((java.awt.Frame) this.getTopLevelAncestor(), true);
+        pagoFinal.setVisible(true);
+
+        if (pagoFinal.pagoEfectuado()) {
+            JOptionPane.showMessageDialog(this,
+                "Pago procesado exitosamente\n" +
+                "¡Gracias por su compra!",
+                "Pago Completado",
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "Pago cancelado\n" +
+                "Total pendiente: $" + String.format("%.2f", totalAPagar),
+                "Pago No Realizado",
+                JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    this.dispose();
+}
+   
+
+    private void mostrarResumenFinal() {
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Reserva Completa\n\n");
+        resumen.append("Día de Spa #").append(diaDeSpa.getCodPack()).append("\n");
+        resumen.append("Cliente: ").append(diaDeSpa.getCliente().getNombreCompleto()).append("\n");
+        resumen.append("Fecha: ").append(diaDeSpa.getFechaYHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))).append("\n");
+        resumen.append("Total de servicios: ").append(diaDeSpa.getSesiones().size()).append("\n");
+        resumen.append("Monto total: $").append(String.format("%.2f", diaDeSpa.getMonto())).append("\n\n");
+        
+        resumen.append("Servicios contratados:\n");
+        double totalCalculado = 0.0;
+        for (Turno sesion : diaDeSpa.getSesiones()) {
+            if (sesion.getTratamiento() != null) {
+                double costo = sesion.getTratamiento().getCosto();
+                totalCalculado += costo;
+                resumen.append("• ").append(sesion.getTratamiento().getNombre())
+                       .append(" - $").append(String.format("%.2f", costo)).append("\n");
+            } else if (sesion.getInstalacion() != null) {
+                double costo = sesion.getInstalacion().getPrecio30m() * 2;
+                totalCalculado += costo;
+                resumen.append("• ").append(sesion.getInstalacion().getNombre())
+                       .append(" (Instalación) - $").append(String.format("%.2f", costo)).append("\n");
+            }
+        }
+        
+        resumen.append("\nTotal verificado: $").append(String.format("%.2f", totalCalculado));
+
+        JOptionPane.showMessageDialog(this,
+                resumen.toString(),
+                "Reserva Completa - Día de Spa #" + diaDeSpa.getCodPack(),
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
