@@ -616,7 +616,7 @@ private void armarCabecera() {
                 JOptionPane.showMessageDialog(this, "La edad debe estar entre 1 y 120.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (String.valueOf(telefono).length() < 10 || String.valueOf(telefono).length() > 15) {
+            if (String.valueOf(telefono).length() < 8 || String.valueOf(telefono).length() > 15) {
                 JOptionPane.showMessageDialog(this, "Número de teléfono no válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -671,7 +671,7 @@ private void armarCabecera() {
                 JOptionPane.showMessageDialog(this, "La edad debe estar entre 1 y 120.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (String.valueOf(telefono).length() < 10 || String.valueOf(telefono).length() > 15) {
+            if (String.valueOf(telefono).length() < 8 || String.valueOf(telefono).length() > 15) {
                 JOptionPane.showMessageDialog(this, "Número de teléfono no válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -679,10 +679,7 @@ private void armarCabecera() {
                 JOptionPane.showMessageDialog(this, "El nombre solo debe contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (clientedata.buscarClientePorDni(dni) != null) {
-                JOptionPane.showMessageDialog(this, "Ya existe un cliente con ese DNI.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+            
 
             Cliente clienteActualizado = new Cliente(codcli, nombreCompleto, telefono, edad, afecciones, estado);
             clienteActualizado.setCodCli(codcli);
